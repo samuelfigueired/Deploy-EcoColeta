@@ -14,7 +14,7 @@ Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
 * Caique Heleno de Souza Melo
 * Kauan Gomes Marques
 * Matheus Augusto Alves Goveia Damião
-* onaldo Augusto Oliveira Lacerda
+* Ronaldo Augusto Oliveira Lacerda
 * Samuel Maciel da Silva Figueiredo 
 * Tiago Souza da Silva
 

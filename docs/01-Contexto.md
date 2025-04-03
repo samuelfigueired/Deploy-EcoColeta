@@ -1,13 +1,13 @@
 # Introdução
 
-Texto descritivo com a visão geral do projeto abordado. Inclui o contexto, o problema, os objetivos, a justificativa e o público-alvo do projeto.
+A coleta seletiva é um processo essencial para a gestão sustentável dos resíduos sólidos, promovendo a separação e destinação adequada dos materiais recicláveis. Visando reduzir o impacto ambiental do descarte incorreto, diminuir a poluição e otimizar o reaproveitamento de recursos.
+Com isso, procuramos buscar uma solução completa para o problema, facilitando o acesso da população a locais adequados para descarte e incentivando a continuar essa ação por meio de prêmios, e assim, promover uma melhor qualidade de vida a população.
+Nosso projeto tem como alvo o poder público, em específico, serviços públicos de limpeza urbana.
 
 ## Problema
-Aqui, a equipe deve fornecer uma descrição detalhada do problema a ser resolvido. Não é o momento adequado para abordar questões técnicas relacionadas ao desenvolvimento da aplicação. O objetivo é compreender e comunicar de maneira precisa qual é o desafio ou necessidade que motiva a criação da aplicação.
-
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de fato existir, pois ainda não é a hora de apresentar requisitos detalhados ou projetos.
-
-O grupo pode optar por fazer uso de ferramentas como Design Thinking, que permite uma visão completa do problema.
+A coleta seletiva intrisicamente relacionada a um problema que afeta a população mundial desde os primórdios da revolução industrial, o lixo.
+A necessidade principal do grupo é combater o descarte incorreto de resíduos, reduzir a poluição gerada por materiais descartados em locais impróprios e diminuir o impacto da exploração de recursos naturais, promovendo o desenvolvendo de materias reutilizáveis.
+Pensando nesse contexto, serviços tecnológicos como o de localização (GPS) e banco de dados dos usuários para o registro de materiais descatados no local apropriado serão fundamentais.
 
 > **Links úteis**:
 > - [Objetivos, problema de pesquisa e justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
@@ -15,26 +15,25 @@ O grupo pode optar por fazer uso de ferramentas como Design Thinking, que permit
 > - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
 
 ## Objetivos
-
-Aqui, você deve descrever os objetivos do trabalho, indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima.
-
-Além disso, apresente alguns (pelo menos 3) objetivos específicos, dependendo de onde você pretende concentrar sua prática investigativa ou como deseja aprofundar seu trabalho.
+O objetivo do trabalho é desenvolver um softwar capaz de localizar os pontos de coleta mais próximos a localização do usuário e que demonstro o impacto ambiental gerado através do descarte no local apropriado.
+O software deverá atender os seguintes pontos: 
+Localização de pontos de coleta: um mapa interativo para encontrar locais adequados.
+Sistema de recompensas: pontos acumuláveis ao usuário por materiais reciclados.
+Impacto ambiental calculado: feedback sobre economia de recursos naturais.
+Comunidade sustentável: espaço para compartilhamento de experiências ecologicas e dicas de sustentabilidade. 
  
 > **Links úteis**:
 > - [Objetivo geral e objetivo específico: como fazer e quais verbos utilizar](https://blog.mettzer.com/diferenca-entre-objetivo-geral-e-objetivo-especifico/)
 
 ## Justificativa
-
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
-
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
+Através de entrevistas realizadas, podemos noticiar que a falta de locais apropriados é principal obstáculo no descarte de materiais em locais apropriados, com entrevistados sem sequer saber da localização de algum ponto de coleta. Outro fator que interfere na coleta seletiva é a falta de incentivo, já que não são tão conhecidas a localização destes pontos, e por vez distante, muitas pessoas se sentem desmotivadas de levarem estes materiais ao local correto de descarte e optam por descarta-los ao serviço de coleta de lixo domiciliar promovido pela prefeitura. 
 
 > **Links úteis**:
 > - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
 
 ## Público-alvo
 
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. O objetivo aqui não é definir quem serão os clientes ou quais serão os papéis dos usuários na aplicação, mas sim oferecer uma visão detalhada do perfil de cada grupo de usuários. Isso inclui informações sobre seu nível de conhecimento prévio, familiaridade com tecnologia, e suas relações hierárquicas ou contextos de uso. Dessa forma, será possível entender melhor as necessidades e expectativas dos diferentes tipos de usuários, garantindo uma experiência mais eficiente e adaptada.
+O público-alvo do nosso trabalho são serviços de limpeza urbana, como empresas de reciclagem e prefeituras, ongs e associações ambientais e a grande popução.
 
 > **Links úteis**:
 > - [Público-alvo](https://blog.hotmart.com/pt-br/publico-alvo/)
