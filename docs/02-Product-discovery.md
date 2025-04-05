@@ -6,19 +6,10 @@
 
 ## Etapa de entendimento
 
-**✳️✳️✳️ APRESENTE OS ARTEFATOS DA ETAPA  ✳️✳️✳️**
+[(files)](<files/Coleta Seletiva (3).pdf>)
+[Link de Design Thinking (MIRO)] https://miro.com/app/board/uXjVINql3iI=/?share_link_id=998066607111
 
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
->
-> Nesta etapa, é necessário aplicar a metodologia de Design Thinking para compreender de forma mais profunda o problema a ser abordado. Durante esse processo, devem ser elaborados os seguintes elementos:
->
-> * **Matriz CSD**:  também conhecida como Matriz de Alinhamento, trata-se de uma ferramenta utilizada no Design Thinking para organizar informações, facilitando a tomada de decisões e a solução de problemas;
-> * **Mapa de stakeholders**: ferramenta que permite identificar e entender o grupo de pessoas e entidades que devem ser analisados e consultados para obter uma visão mais ampla do problema;
-> * **Entrevistas qualitativas**: uma série de entrevistas qualitativas a fim de validar suposições e esclarecer dúvidas junto aos principais envolvidos;
-> * **Highlights de pesquisa**: um compilado das informações levantadas durante as entrevistas realizadas.
-
-> **Links úteis**:
-> - [Mapa de stalkeholders](https://www.racecomunicacao.com.br/blog/como-fazer-o-mapeamento-de-stakeholders/)
+*Como foi informado pelo Kauan, ao salvar o arquivo do Miro em formato PDF, a qualidade das imagens decaíram significativamente (mesmo testando os outros métodos sugeridos pela senhora), sendo assim, optamos por colocar de uma maneira também recomendada por você. O arquivo em pdf, e em seguida, o link de acesso.
 
 ## Etapa de definição
 
