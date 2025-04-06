@@ -31,19 +31,10 @@ Apresente aqui as histórias de usuários que são relevantes para o projeto da 
 
 ## Proposta de valor
 
-**✳️✳️✳️ APRESENTE O DIAGRAMA DA PROPOSTA DE VALOR PARA CADA PERSONA ✳️✳️✳️**
-
-##### Proposta para a persona XPTO ⚠️ EXEMPLO ⚠️
-
-![Exemplo de proposta de valor](images/exemplo-proposta-valor.png)
-
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
->
-> O mapa da proposta de valor é uma ferramenta que auxilia na definição do tipo de produto ou serviço que melhor atende às personas previamente estabelecidas.
-
-
-> **Links úteis**:
-> - [O que é o canvas da proposta de valor e como usar?](https://www.youtube.com/watch?v=Iqb-8Q_eiiA)
+Proposta de valor:
+![(images/Proposta-de-Valor1.jpg)](images/Proposta-de-Valor1.jpg)
+![(images/Proposta-de-Valor1.jpg)](images/Proposta-de-Valor2.jpg)
+![(images/Proposta-de-Valor1.jpg)](images/Proposta-de-Valor3.jpg)
 
 ## Requisitos
 
