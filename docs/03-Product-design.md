@@ -3,31 +3,17 @@
 <span style="color:red">Pré-requisitos: <a href="02-Product-discovery.md"> Product discovery</a></span>
 
 
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
-
-Neste momento, transformam-se os insights e validações obtidos em soluções tangíveis e utilizáveis. Esta fase envolve a definição de uma proposta de valor, detalhando a prioridade de cada ideia, e a consequente criação de wireframes, mockups e protótipos de alta fidelidade, que especificam a interface e a experiência do usuário.
-
-
 ## Histórias de usuários
-
+ 
 Com base na análise das personas, foram identificadas as seguintes histórias de usuários:
 
-|EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
-|--------------------|------------------------------------|----------------------------------------|
-|Usuário do sistema  | Registrar minhas tarefas  ⚠️ EXEMPLO ⚠️         | Não esquecer de fazê-las               |
-|Administrador       | Alterar permissões        ⚠️ EXEMPLO ⚠️         | Permitir que possam administrar contas |
-
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
-
-Apresente aqui as histórias de usuários que são relevantes para o projeto da sua solução. As histórias de usuários consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuários por contexto, para facilitar consultas recorrentes a esta parte do documento.
-
-> **Links úteis**:
-> - [Histórias de usuários com exemplos e template](https://www.atlassian.com/br/agile/project-management/user-stories)
-> - [Como escrever boas histórias de usuário (user stories)](https://medium.com/vertice/como-escrever-boas-users-stories-hist%C3%B3rias-de-usu%C3%A1rios-b29c75043fac)
-> - [User stories: requisitos que humanos entendem](https://www.luiztools.com.br/post/user-stories-descricao-de-requisitos-que-humanos-entendem/)
-> - [Histórias de usuários: mais exemplos](https://www.reqview.com/doc/user-stories-example.html)
-> - [9 common user story mistakes](https://airfocus.com/blog/user-story-mistakes/)
-
+|EU COMO................................| QUERO/PRECISO .................... |PARA ................................ |
+|Cidadão preocupado com o meio ambiente | Localizar pontos de coleta seletiva próximos a mim | Descartar meus resíduos corretamente |
+|Usuário do sistema | Trocá-los por benefícios sustentáveis | Acumular pontos ao reciclar materiais |
+|Administrador da plataforma| Visualizar estatísticas de reciclagem | Monitorar e melhorar o impacto ambiental  |
+|Cidadão sem conhecimento sobre reciclagem  |Acessar informações sobre descarte correto  | Aprender a reciclar de forma eficiente  |
+|Incentivar práticas sustentáveis e fortalecer minha marca| Empresa parceira  |Oferecer descontos e benefícios aos usuários que reciclam  |
+|Membro da comunidade | Interagir com outras pessoas interessadas em sustentabilidade | Trocar experiências e ampliar meu impacto ambiental |
 
 ## Proposta de valor
 
