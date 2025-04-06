@@ -15,7 +15,7 @@ Pensando nesse contexto, serviços tecnológicos como o de localização (GPS) e
 > - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
 
 ## Objetivos
-O objetivo do trabalho é desenvolver um softwar capaz de localizar os pontos de coleta mais próximos a localização do usuário e que demonstro o impacto ambiental gerado através do descarte no local apropriado.
+O objetivo do trabalho é desenvolver um software capaz de localizar os pontos de coleta mais próximos a localização do usuário e que demonstro o impacto ambiental gerado através do descarte no local apropriado.
 O software deverá atender os seguintes pontos: 
 Localização de pontos de coleta: um mapa interativo para encontrar locais adequados.
 Sistema de recompensas: pontos acumuláveis ao usuário por materiais reciclados.
