@@ -3,7 +3,7 @@
 
 <span style="color:red">Pré-requisitos: <a href="03-Product-design.md"> Product design</a></span>
 
-Descreva aqui a metodologia de trabalho do grupo para abordar o problema. Inclua definições sobre os ambientes de trabalho utilizados pela equipe para desenvolver o projeto. Isso abrange a relação dos ambientes utilizados, a estrutura para a gestão do código-fonte, além da definição do processo e das ferramentas por meio dos quais a equipe se organiza (gestão de equipes).
+Utilizamos de medologia do trabalho o Scrum e Kanban e GitHub como repositório do grupo. Como ferramentas do trabalho, utilizamos o Figma para elaboração do Product-design, o Miro como ferramenta para elaboração do design thinking e PowerPoint para a apresentação. 
 
 ## Relação de ambientes de trabalho
 
@@ -42,14 +42,12 @@ Discuta como a configuração do projeto foi feita na ferramenta de versionament
 
 ###  Divisão de papéis
 
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
+> A equipe utiliza o Scrum como base para definição do processo de desenvolvimento.
 
-> A equipe utiliza o Scrum como base para definição do processo de desenvolvimento. [Adicione informações abaixo sobre a divisão de papéis entre os membros da equipe.]
-
-- Scrum Master: nome de um membro da equipe, principal responsável pela gestão do projeto.
-- Product Owner: nome de um membro da equipe, representante dos interesses de todos os envolvidos (stakeholders), define as funcionalidades do produto e prioriza os itens de Product Backlog.
-- Equipe de Desenvolvimento: nomes de todos os membros da equipe, pois todos os membros deverão implementar no mínimo duas telas/funcionalidades.
-- Equipe de Design: nomes dos membros da equipe que trabalharão com design.
+- Scrum Master: Samuel Figueiredo 
+- Product Owner: Thiago Souza da Silva
+- Equipe de Desenvolvimento: Artur Ferreira Silva, Caique Heleno de Souza Melo, Kauan Gomes Marques, Matheus Augusto Alves Goveia Damião, Ronaldo Augusto Oliveira Lacerda, Samuel Maciel da Silva Figueiredo, Tiago Souza da Silva
+- Equipe de Design: Artur Ferreira Silva, Kauan Gomes Marques
 
 > **Links úteis**:
 > - [11 passos essenciais para implantar Scrum no seu projeto](https://mindmaster.com.br/scrum-11-passos/)
@@ -78,14 +76,11 @@ Coloque uma imagem da estrutura da ferramenta de controle de tarefas (Kanban) e 
 
 Liste todas as ferramentas que foram empregadas no projeto, justificando a escolha delas, sempre que possível. Inclua itens como: (1) editor de código, (2) ferramentas de comunicação, (3) ferramentas de diagramação, (4) plataformas de hospedagem, entre outras.
 
-⚠️ EXEMPLO ⚠️ os artefatos do projeto são desenvolvidos a partir de diversas plataformas e a relação dos ambientes com seu respectivo propósito é apresentada na tabela que se segue.
-
 | Ambiente                            | Plataforma                         | Link de acesso                       |
 |-------------------------------------|------------------------------------|--------------------------------------|
-| Processo de Design Thinking         | Miro                               | https://....   ⚠️ EXEMPLO ⚠️        |
-| Repositório de código fonte         | GitHub                             | https://....   ⚠️ EXEMPLO ⚠️        |
+| Processo de Design Thinking         | Miro                               | https://miro.com/app/board/uXjVINql3iI=/?share_link_id=998066607111
+| Repositório de código fonte         | GitHub                             | https://github.com/ICEI-PUC-Minas-PBE-ADS-SI/2025-1-p1-tiaw-ecocoleta.git        |
 | Documentos do projeto               | GitHub                             | http://....    ⚠️ EXEMPLO ⚠️        |
 | Gerenciamento do projeto            | GitHub Projects                    | http://....    ⚠️ EXEMPLO ⚠️        |
-| Projeto de interface                | Figma                              | http://....    ⚠️ EXEMPLO ⚠️        |
+| Projeto de interface                | Figma                              | https://www.figma.com/design/1jmnxX0XPitAI3vsnKt4DY/Wireframe-Coleta-Seletiva
 | Hospedagem                          | Vercel                             | http://....    ⚠️ EXEMPLO ⚠️        |
- 

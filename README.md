@@ -6,7 +6,10 @@
 
 `1º semestre/2025`
 
-Escreva um ou dois parágrafos resumindo o objetivo do seu projeto.
+A coleta seletiva é um processo essencial para a gestão sustentável dos resíduos sólidos, promovendo a separação e destinação adequada dos materiais recicláveis. Visando reduzir o impacto ambiental do descarte incorreto, diminuir a poluição e otimizar o reaproveitamento de recursos.
+
+O objetivo do trabalho é desenvolver um software capaz de localizar os pontos de coleta mais próximos a localização do usuário e que demonstro o impacto ambiental gerado através do descarte no local apropriado.
+O software deverá facilitar o usuário na busca de pontos de coletas e incentivá-lo a continuar reciclando.
 
 ## Integrantes
 

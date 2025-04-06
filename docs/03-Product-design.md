@@ -31,7 +31,7 @@ Apresente aqui as histórias de usuários que são relevantes para o projeto da 
 
 ## Proposta de valor
 
-Proposta de valor:
+Propostas de valor:
 ![(images/Proposta-de-Valor1.jpg)](images/Proposta-de-Valor1.jpg)
 ![(images/Proposta-de-Valor1.jpg)](images/Proposta-de-Valor2.jpg)
 ![(images/Proposta-de-Valor1.jpg)](images/Proposta-de-Valor3.jpg)
