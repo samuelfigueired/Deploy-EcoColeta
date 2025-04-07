@@ -11,6 +11,8 @@ Utilizamos de medologia do trabalho o Scrum e Kanban e GitHub como repositório 
 
 Utilizamos o Git como ferramenta de controle de versão do nosso projeto e o GitHub para a hospedagem do nosso repositório. 
 
+![Controle de versão](<images/Controle de Versão.jpg>)
+
 > **Links úteis**:
 > - [Tutorial GitHub](https://guides.github.com/activities/hello-world/)
 > - [Git e GitHub](https://www.youtube.com/playlist?list=PLHz_AreHm4dm7ZULPAmadvNhH6vk9oNZA)
