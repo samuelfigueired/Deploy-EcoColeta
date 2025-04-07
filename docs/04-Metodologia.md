@@ -3,33 +3,13 @@
 
 <span style="color:red">Pré-requisitos: <a href="03-Product-design.md"> Product design</a></span>
 
-Utilizamos de medologia do trabalho o Scrum e Kanban e GitHub como repositório do grupo. Como ferramentas do trabalho, utilizamos o Figma para elaboração do Product-design, o Miro como ferramenta para elaboração do design thinking e PowerPoint para a apresentação. 
-
 ## Relação de ambientes de trabalho
 
-Os artefatos do projeto são desenvolvidos a partir de diversas plataformas. A relação dos ambientes com seus respectivos propósitos deverá ser apresentada em uma tabela que especifique e detalhe Ambiente, Plataforma e Link de Acesso. Defina também os ambientes e frameworks que serão utilizados no desenvolvimento de aplicações móveis.
+Utilizamos de medologia do trabalho o Scrum e Kanban e GitHub como repositório do grupo. Como ferramentas do trabalho, utilizamos o Figma para elaboração do Product-design, o Miro como ferramenta para elaboração do design thinking e PowerPoint para a apresentação. 
 
 ## Controle de versão
 
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
-
-A ferramenta de controle de versão adotada no projeto foi o [Git](https://git-scm.com/), sendo que o [GitHub](https://github.com) foi utilizado para hospedagem do repositório.
-
-O projeto segue a seguinte convenção para o nome de branches:
-
-- `main`: versão estável já testada do software
-- `unstable`: versão já testada do software, porém instável
-- `testing`: versão em testes do software
-- `dev`: versão de desenvolvimento do software
-
-Quanto à gerência de issues, o projeto adota a seguinte convenção para etiquetas:
-
-- `documentation`: melhorias ou acréscimos à documentação
-- `bug`: uma funcionalidade encontra-se com problemas
-- `enhancement`: uma funcionalidade precisa ser melhorada
-- `feature`: uma nova funcionalidade precisa ser introduzida
-
-Discuta como a configuração do projeto foi feita na ferramenta de versionamento escolhida. Exponha como a gestão de tags, merges, commits e branches é realizada. Discuta também como a gestão de issues foi feita.
+Utilizamos o Git como ferramenta de controle de versão do nosso projeto e o GitHub para a hospedagem do nosso repositório. 
 
 > **Links úteis**:
 > - [Tutorial GitHub](https://guides.github.com/activities/hello-world/)
@@ -56,11 +36,19 @@ Discuta como a configuração do projeto foi feita na ferramenta de versionament
 
 ### Processo
 
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
+Adotamos o processo de Design Thinking como abordagem central para a construção da solução, com o objetivo de garantir que o desenvolvimento fosse centrado nas necessidades dos usuários. O processo foi dividido nas seguintes etapas:
 
-Coloque detalhes sobre o processo de Design Thinking e a implementação do Framework Scrum seguido pelo grupo. O grupo deverá fazer uso do recurso de gerenciamento de projeto oferecido pelo GitHub, o GitHub Projects, que permite acompanhar o andamento do projeto, a execução das tarefas e o status de desenvolvimento da solução. 
+Imersão:
+O grupo iniciou com a compreensão profunda do problema a ser resolvido, realizando pesquisas, entrevistas e análises de contexto para captar as dores, desejos e comportamentos dos usuários. Isso possibilitou a construção de personas e jornadas do usuário.
 
-Coloque uma imagem da estrutura da ferramenta de controle de tarefas (Kanban) e o link do GitHub Projects.
+Definição:
+Com base nos dados coletados, definimos o problema central.
+
+Ideação:
+Foram conduzidas sessões de brainstorming para gerar o máximo de ideias possíveis.
+
+Prototipagem:
+As ideias selecionadas foram transformadas em protótipos de baixa e média fidelidade para validação rápida. Esses protótipos ajudaram a visualizar a solução e facilitaram a comunicação entre os membros do grupo e stakeholders.
  
 > **Links úteis**:
 > - [GitHub Projects - YouTube](https://www.youtube.com/playlist?list=PLiO7XHcmTsldZR93nkTFmmWbCEVF_8F5H)
@@ -72,15 +60,9 @@ Coloque uma imagem da estrutura da ferramenta de controle de tarefas (Kanban) e 
 
 ### Ferramentas
 
-> ⚠️ **APAGUE ESTA PARTE ANTES DE ENTREGAR SEU TRABALHO**
-
-Liste todas as ferramentas que foram empregadas no projeto, justificando a escolha delas, sempre que possível. Inclua itens como: (1) editor de código, (2) ferramentas de comunicação, (3) ferramentas de diagramação, (4) plataformas de hospedagem, entre outras.
 
 | Ambiente                            | Plataforma                         | Link de acesso                       |
 |-------------------------------------|------------------------------------|--------------------------------------|
 | Processo de Design Thinking         | Miro                               | https://miro.com/app/board/uXjVINql3iI=/?share_link_id=998066607111
-| Repositório de código fonte         | GitHub                             | https://github.com/ICEI-PUC-Minas-PBE-ADS-SI/2025-1-p1-tiaw-ecocoleta.git        |
-| Documentos do projeto               | GitHub                             | http://....    ⚠️ EXEMPLO ⚠️        |
-| Gerenciamento do projeto            | GitHub Projects                    | http://....    ⚠️ EXEMPLO ⚠️        |
+| Repositório de código fonte         | GitHub                             | https://github.com/ICEI-PUC-Minas-PBE-ADS-SI/2025-1-p1-tiaw-ecocoleta.git        
 | Projeto de interface                | Figma                              | https://www.figma.com/design/1jmnxX0XPitAI3vsnKt4DY/Wireframe-Coleta-Seletiva
-| Hospedagem                          | Vercel                             | http://....    ⚠️ EXEMPLO ⚠️        |
