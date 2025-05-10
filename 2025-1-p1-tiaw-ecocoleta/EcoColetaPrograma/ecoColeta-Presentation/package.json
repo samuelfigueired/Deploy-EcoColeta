@@ -1,0 +1,12 @@
+{
+  "name": "ecocoleta-encontrarecoponto",
+  "version": "1.0.0",
+  "description": "Sistema de localização de pontos de coleta",
+  "main": "js/script.js",
+  "scripts": {
+    "server": "json-server --watch db.json --port 3000"
+  },
+  "dependencies": {
+    "json-server": "^0.17.3"
+  }
+}
