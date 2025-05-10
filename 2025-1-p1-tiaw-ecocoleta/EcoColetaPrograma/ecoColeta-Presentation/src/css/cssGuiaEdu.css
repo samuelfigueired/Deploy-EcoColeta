@@ -299,6 +299,41 @@ section {
     margin-right: 15px;
 }
 
+/* Quiz buttons */
+.btn-confirm, .btn-next, .btn-restart {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    align-self: center;
+    display: block;
+    width: fit-content;
+}
+
+.btn-confirm:hover, .btn-next:hover, .btn-restart:hover {
+    background-color: var(--primary-dark);
+}
+
+.explanation {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-top: 20px;
+}
+
+.explanation h3 {
+    margin-bottom: 15px;
+}
+
+.explanation p {
+    margin-bottom: 20px;
+}
+
 /* Download Materials Section */
 .download-materials {
     background-color: var(--secondary-color);
