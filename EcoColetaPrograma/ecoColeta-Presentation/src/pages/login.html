@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - EcoColeta</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="../css/login-modern.css" />
+  <meta name="description" content="Login de usuário EcoColeta" />
+  <script>
+    // Redireciona para a página de autenticação unificada
+    window.location.href = "auth.html";
+  </script>
+</head>
+<body>
+    
+  <div class="login-bg-container">
+    <img src="../img/image.png" alt="Reciclagem" class="login-bg-img" />
+    <div class="login-card-container">
+      <div class="login-card">
+        <div class="eco-logo">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_139_375)">
+              <path d="M10.2364 2.64258C11.2618 0.996094 13.0665 0 15.0001 0C16.9337 0 18.7384 0.996094 19.7638 2.64258L22.0255 6.25781L23.6075 5.34375C24.0997 5.05664 24.7149 5.09766 25.1661 5.44336C25.6173 5.78906 25.8165 6.375 25.67 6.92578L24.2989 12.0469C24.0997 12.7969 23.3263 13.2422 22.5763 13.043L17.4552 11.6719C16.9044 11.5254 16.5001 11.0625 16.4239 10.5C16.3477 9.9375 16.6231 9.38086 17.1153 9.09961L18.7794 8.13867L16.5821 4.62891C16.2423 4.08398 15.6446 3.75 15.0001 3.75C14.3556 3.75 13.7579 4.08398 13.4181 4.62891L12.3927 6.26953C11.8536 7.13672 10.7169 7.41211 9.83798 6.88477C8.9415 6.3457 8.65439 5.17383 9.21103 4.2832L10.2364 2.64258ZM25.1661 14.7598C26.045 14.2324 27.1817 14.5078 27.7208 15.375L29.1505 17.666C29.7013 18.5508 29.9942 19.5645 30.006 20.6074C30.0235 23.7188 27.504 26.2559 24.3927 26.2559L18.7501 26.25V28.125C18.7501 28.6934 18.4102 29.209 17.8829 29.4258C17.3556 29.6426 16.752 29.5254 16.3477 29.1211L12.5977 25.3711C12.047 24.8203 12.047 23.9297 12.5977 23.3848L16.3477 19.6348C16.752 19.2305 17.3556 19.1133 17.8829 19.3301C18.4102 19.5469 18.7501 20.0625 18.7501 20.6309V22.5059H24.3868C25.4181 22.5059 26.256 21.6621 26.2501 20.6309C26.2501 20.2852 26.1505 19.9453 25.9688 19.6523L24.5392 17.3613C23.9825 16.4707 24.2638 15.2988 25.1661 14.7598ZM3.80283 12.9434L2.10947 11.9648C1.61728 11.6777 1.34189 11.127 1.41806 10.5645C1.49423 10.002 1.89853 9.53906 2.44931 9.39258L7.5704 8.02148C8.3204 7.82227 9.09384 8.26758 9.29306 9.01758L10.6642 14.1328C10.8106 14.6836 10.6114 15.2637 10.1602 15.6152C9.70907 15.9668 9.09384 16.002 8.60165 15.7148L7.04892 14.8184L4.03134 19.6465C3.8497 19.9395 3.75009 20.2793 3.75009 20.625C3.74423 21.6562 4.58212 22.5 5.61337 22.5H7.50009C8.5372 22.5 9.37509 23.3379 9.37509 24.375C9.37509 25.4121 8.5372 26.25 7.50009 26.25H5.61337C2.50205 26.25 -0.0174867 23.7188 9.14223e-05 20.6016C0.0059508 19.5586 0.29892 18.5449 0.85556 17.6602L3.80283 12.9434Z" fill="#059669"></path>
+            </g>
+            <defs>
+              <clipPath id="clip0_139_375">
+                <path d="M0 0H30V30H0V0Z" fill="white"></path>
+              </clipPath>
+            </defs>
+          </svg>
+          <span class="eco-logo-text">EcoColeta</span>
+        </div>
+        <div class="login-title">Entrar</div>
+        <form id="loginForm" class="eco-form w-100">
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Email</label>
+            <input type="email" name="email" id="loginEmail" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="loginSenha" class="form-label">Senha</label>
+            <input type="password" name="senha" id="loginSenha" class="form-control" required />
+          </div>
+          <button type="submit" class="primary-button btn btn-success">Entrar</button>
+        </form>
+        <p class="mt-3">Não tem uma conta? <a href="auth.html?action=register" class="login-link">Cadastre-se</a></p>
+      </div>
+    </div>
+  </div>
+   <script src="../js/login.js"></script>
+</body>
+</html> 
