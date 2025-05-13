@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro - EcoColeta</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-ENjdO4Dr2bkBIFxQpeoA6DQD5NnQ64u9ZZg3tvkz5Ss5he/rfZe+26p9KI65qnm1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/navFooter.css" />
+  <link rel="stylesheet" href="../css/cadastro.css" />
+  <meta name="description" content="Cadastro de usuário EcoColeta" />
+  <script>
+    // Redireciona para a página de autenticação unificada
+    window.location.href = "auth.html?action=register";
+  </script>
+</head>
+<body>
+  <div class="app-container">
+    <main>
+      <section class="form-section shadow-sm bg-white rounded">
+        <h1 class="section-title mb-4">Crie sua conta</h1>
+        <form id="cadastroForm" class="eco-form">
+          <label class="form-label">Nome completo
+            <input type="text" name="nome" class="form-control" required />
+          </label>
+          <label class="form-label">Email
+            <input type="email" name="email" class="form-control" required />
+          </label>
+          <label class="form-label">Senha
+            <input type="password" name="senha" class="form-control" required minlength="6" />
+          </label>
+          <fieldset class="mb-3">
+            <legend>Endereço</legend>
+            <label class="form-label">Rua
+              <input type="text" name="rua" class="form-control" required />
+            </label>
+            <label class="form-label">Número
+              <input type="text" name="numero" class="form-control" required />
+            </label>
+            <label class="form-label">Bairro
+              <input type="text" name="bairro" class="form-control" required />
+            </label>
+            <label class="form-label">Cidade
+              <input type="text" name="cidade" class="form-control" required />
+            </label>
+            <label class="form-label">Estado
+              <input type="text" name="estado" class="form-control" required />
+            </label>
+            <label class="form-label">CEP
+              <input type="text" name="cep" class="form-control" required />
+            </label>
+          </fieldset>
+          <fieldset class="mb-3">
+            <legend>Preferências</legend>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="preferencias" value="newsletter" id="prefNewsletter">
+              <label class="form-check-label" for="prefNewsletter">Receber newsletter</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="preferencias" value="notificacoes" id="prefNotificacoes">
+              <label class="form-check-label" for="prefNotificacoes">Notificações por email</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="preferencias" value="temas-escuros" id="prefTemaEscuro">
+              <label class="form-check-label" for="prefTemaEscuro">Usar tema escuro</label>
+            </div>
+          </fieldset>
+          <label class="form-label">Imagem de perfil
+            <input type="file" name="imagem" accept="image/*" id="imagemInput" class="form-control" />
+            <img id="imagemPreview" src="#" alt="Prévia da imagem" style="display:none;max-width:100px;margin-top:8px;" class="img-thumbnail mt-2" />
+          </label>
+          <button type="submit" class="primary-button btn btn-success mt-3">Cadastrar</button>
+        </form>
+        <p class="mt-3">Já tem uma conta? <a href="auth.html">Entrar</a></p>
+      </section>
+    </main>
+    <script src="../js/navFooter.js"></script>
+    <script src="../js/cadastro.js"></script>
+  </div>
+</body>
+</html> 
