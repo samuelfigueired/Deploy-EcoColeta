@@ -21,6 +21,11 @@ let logoWrapper = document.createElement('div');
 logoWrapper.className = 'logo-wrapper';
 
 // Filho de logoWrapper
+
+let linksitem = document.createElement('a');
+linksitem.className = 'logo-item';
+linksitem.href = '../pages/index.html';
+
 let logoImage = document.createElement('div');
 logoImage.className = 'logo-image';
 
@@ -45,7 +50,7 @@ let linksMenu = [
   '../pages/guiaEdu.html',
   '../pages/home.html',
   '../pages/comunidade.html',
-  '../pages/doacoes.html'
+  '../pages/home.html'
 ];
 
 itensMenu.forEach((text, index) => {
@@ -61,6 +66,7 @@ itensMenu.forEach((text, index) => {
 });
 
 
+
 let loginContainer = document.createElement('div');
 loginContainer.className = 'login-container';
 
@@ -68,16 +74,48 @@ let loginButton = document.createElement('div');
 loginButton.className = 'login-button';
 loginButton.textContent = 'Entrar';
 
+
+// Menu Toggle (checkbox invisível)
+let menuToggle = document.createElement('input');
+menuToggle.type = 'checkbox';
+menuToggle.id = 'menuToggle';
+menuToggle.style.display = 'none';
+
+// Ícone do menu
+let menuIconLabel = document.createElement('label');
+menuIconLabel.setAttribute('for', 'menuToggle');
+menuIconLabel.className = 'menu-icon';
+menuIconLabel.setAttribute('aria-label', 'Abrir menu');
+
+let menuIconOpen = document.createElement('img');
+menuIconOpen.src = 'img/menu.svg';
+menuIconOpen.width = 20;
+menuIconOpen.alt = 'Abrir menu';
+
+let menuIconClose = document.createElement('img');
+menuIconClose.src = 'https://img.icons8.com/?size=100&id=53395&format=png&color=000000';
+menuIconClose.width = 20;
+menuIconClose.alt = 'Fechar menu';
+
+menuIconLabel.appendChild(menuIconOpen);
+menuIconLabel.appendChild(menuIconClose);
+
+
+
 // Montando Nav
 logoImage.appendChild(navimg);
-logoWrapper.appendChild(logoImage);
-logoWrapper.appendChild(logoText);
+logoWrapper.appendChild(linksitem);
+linksitem.appendChild(logoImage);
+linksitem.appendChild(logoText);
+
 logoContainer.appendChild(logoWrapper);
 loginContainer.appendChild(loginButton);
+navMenu.appendChild(loginContainer);
 
+navContent.appendChild(menuToggle);  // Adicionando o menuToggle ao conteúdo
+navContent.appendChild(menuIconLabel);  // Adicionando o ícone do menu
 navContent.appendChild(logoContainer);
 navContent.appendChild(navMenu);
-navContent.appendChild(loginContainer);
 navContainer.appendChild(navContent);
 nav.appendChild(navContainer);
 body.insertBefore(nav, body.firstChild);
@@ -168,10 +206,18 @@ let sociaisIcons = document.createElement('div');
 sociaisIcons.className = 'social-icons';
 
 let redes = ['facebook', 'twitter', 'instagram', 'linkedin'];
-
-redes.forEach(rede => {
+let redesLinks = [
+  'https://www.facebook.com/',
+  'https://twitter.com/',
+  'https://www.instagram.com/',
+  'https://www.linkedin.com/'
+];
+redes.forEach((rede, index) => {
   let a = document.createElement('a');
-  a.href = '#';
+  a.href = redesLinks[index];
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+
   let i = document.createElement('i');
   i.classList.add('fab', `fa-${rede}`);
   a.appendChild(i);
