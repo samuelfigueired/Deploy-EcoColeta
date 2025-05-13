@@ -88,7 +88,7 @@ menuIconLabel.className = 'menu-icon';
 menuIconLabel.setAttribute('aria-label', 'Abrir menu');
 
 let menuIconOpen = document.createElement('img');
-menuIconOpen.src = 'img/menu.svg';
+menuIconOpen.src = '../img/menuMobile.svg';
 menuIconOpen.width = 20;
 menuIconOpen.alt = 'Abrir menu';
 
