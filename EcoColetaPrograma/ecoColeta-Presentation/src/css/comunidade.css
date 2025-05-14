@@ -148,11 +148,18 @@
   
     /* Scroll horizontal nos top contribuintes */
     .contribuintes-container {
-      overflow-x: auto;
       display: flex;
       flex-wrap: nowrap;
       gap: 16px;
       padding-bottom: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .contribuintes-container::-webkit-scrollbar {
+      display: none;
     }
   
     .contribuinte {
