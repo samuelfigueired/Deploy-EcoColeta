@@ -1,4 +1,17 @@
 {
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "João Silva",
+      "email": "joao.silva@email.com",
+      "senha": "123456",
+      "cpf": "123.456.789-00",
+      "telefone": "11 99999-9999",
+      "endereco": "Rua das Flores, 123 - Centro, Betim - MG",
+      "dataNascimento": "1990-01-01",
+      "tipoUsuario": "doador"
+    }
+  ],
   "pontosDeColeta": [
     {
       "id": 1,

@@ -139,6 +139,12 @@
     border-radius: 0.75rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-sidebar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
   
   .profile-header {
@@ -153,6 +159,12 @@
     height: 8rem;
     border-radius: 9999px;
     object-fit: cover;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .profile-avatar:hover {
+    transform: scale(1.05);
   }
   
   .profile-name {
@@ -184,6 +196,26 @@
     text-align: center;
     transition: all 0.2s;
     flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+  }
+  
+  .btn:active::after {
+    width: 200%;
+    height: 200%;
   }
   
   .btn-primary {
@@ -237,32 +269,48 @@
   
   .tabs-container {
     display: flex;
+    gap: 1rem;
     border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
   }
   
   .tab-button {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 1.5rem;
     color: #6b7280;
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
     cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .tab-button.active {
-    color: #047857;
-    border-bottom-color: #047857;
+    transition: all 0.3s ease;
+    white-space: nowrap;
     font-weight: 500;
+    position: relative;
   }
   
-  .tab-button:hover:not(.active) {
-    color: #10b981;
+  .tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #10b981;
+    transition: width 0.3s ease;
+  }
+  
+  .tab-button:hover::after {
+    width: 100%;
+  }
+  
+  .tab-button.active::after {
+    width: 100%;
   }
   
   .profile-form {
-    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
   }
   
   .form-row {
@@ -274,6 +322,7 @@
   .form-group {
     flex: 1;
     margin-bottom: 1.5rem;
+    position: relative;
   }
   
   .form-label {
@@ -284,16 +333,26 @@
     margin-bottom: 0.5rem;
   }
   
-  .form-input, 
+  .form-input,
   .form-textarea,
   .form-select {
     width: 100%;
-    padding: 0.625rem 0.75rem;
+    padding: 0.75rem;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
     font-size: 0.875rem;
     color: #111827;
     background-color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: #10b981;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.1), 0 2px 4px -1px rgba(16, 185, 129, 0.06);
   }
   
   .form-textarea {
@@ -330,6 +389,62 @@
     min-width: 8rem;
   }
   
+  /* Estilos para checkboxes e radio buttons */
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #4b5563;
+  }
+  
+  .checkbox-label input[type="checkbox"],
+  .checkbox-label input[type="radio"] {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  
+  /* Estilos para métodos de pagamento */
+  .payment-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .payment-method {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .payment-method:hover {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+  }
+  
+  .payment-method input[type="radio"] {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
   /* ==========================================================================
      6. ACTIVITY LOG COMPONENT
      ========================================================================== */
@@ -339,6 +454,7 @@
     border-radius: 0.75rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     padding: 1.5rem;
+    animation: fadeIn 0.5s ease forwards;
   }
   
   .activity-title {
@@ -453,12 +569,7 @@
     justify-content: center;
   }
   
-  .logo-text {
-    color: white;
-    font-size: 1.25rem;
-    font-weight: 700;
-  }
-  
+    
   .footer-description {
     color: #9ca3af;
     font-size: 0.875rem;
@@ -589,6 +700,314 @@
     
     .form-actions .btn {
       width: 100%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .tabs-container {
+      padding-bottom: 0.25rem;
+    }
+
+    .tab-button {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .form-row {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-actions {
+      flex-direction: column-reverse;
+    }
+
+    .btn {
+      width: 100%;
+    }
+  }
+  
+  /* Feedback de loading */
+  .loading {
+    position: relative;
+    pointer-events: none;
+  }
+  
+  .loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+  }
+  
+  /* Tooltips */
+  [data-tooltip] {
+    position: relative;
+  }
+  
+  [data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    background: #1f2937;
+    color: white;
+    font-size: 0.75rem;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  [data-tooltip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-0.5rem);
+  }
+  
+  /* Animações de entrada */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Melhorias de acessibilidade */
+  .form-input:focus-visible,
+  .form-textarea:focus-visible,
+  .form-select:focus-visible,
+  .btn:focus-visible {
+    outline: 2px solid #10b981;
+    outline-offset: 2px;
+  }
+  
+  /* Feedback de sucesso/erro */
+  .form-group.success .form-input {
+    border-color: #10b981;
+  }
+  
+  .form-group.error .form-input {
+    border-color: #ef4444;
+  }
+  
+  .form-group .feedback {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+  
+  .form-group.success .feedback {
+    color: #10b981;
+  }
+  
+  .form-group.error .feedback {
+    color: #ef4444;
+  }
+  
+  /* Melhorias no scroll */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #10b981;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #059669;
+  }
+  
+  /* Modal de Avatar */
+  .avatar-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .avatar-modal.active {
+    display: flex;
+  }
+  
+  .avatar-modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .avatar-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .avatar-modal-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .avatar-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+  }
+  
+  .avatar-modal-close:hover {
+    color: #111827;
+  }
+  
+  .avatar-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .avatar-option {
+    position: relative;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  
+  .avatar-option:hover {
+    transform: scale(1.05);
+  }
+  
+  .avatar-option.selected {
+    border-color: #10b981;
+  }
+  
+  .avatar-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .avatar-upload {
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .avatar-upload:hover {
+    border-color: #10b981;
+    background: #f0fdf4;
+  }
+  
+  .avatar-upload-icon {
+    font-size: 2rem;
+    color: #6b7280;
+    margin-bottom: 1rem;
+  }
+  
+  .avatar-upload-text {
+    color: #4b5563;
+    font-size: 0.875rem;
+  }
+  
+  .avatar-upload input[type="file"] {
+    display: none;
+  }
+  
+  .avatar-preview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    overflow: hidden;
+    border: 3px solid #10b981;
+  }
+  
+  .avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .avatar-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  /* Animações do Modal */
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .avatar-modal.active .avatar-modal-content {
+    animation: modalFadeIn 0.3s ease forwards;
+  }
+  
+  /* Responsividade do Modal */
+  @media (max-width: 640px) {
+    .avatar-modal-content {
+      width: 95%;
+      padding: 1.5rem;
+    }
+    
+    .avatar-options {
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+    
+    .avatar-preview {
+      width: 120px;
+      height: 120px;
     }
   }
   

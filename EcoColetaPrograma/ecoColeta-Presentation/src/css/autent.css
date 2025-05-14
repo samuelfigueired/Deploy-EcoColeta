@@ -1,11 +1,3 @@
-/*
-  auth.css
-  Estilos para a página de autenticação com efeito de scroll lateral entre login e cadastro
-  - Usa flexbox e scroll-snap para efeito de scroll suave
-  - Mantém a responsividade em dispositivos móveis
-  - Design consistente com os estilos existentes do EcoColeta
-*/
-
 /* Reset básico e estilos gerais */
 body {
   margin: 0;
@@ -36,6 +28,7 @@ body {
   align-items: center;
   overflow: hidden;
   position: relative;
+  padding: 2rem;
 }
 
 /* Painel central com imagem é mais amplo */
@@ -52,12 +45,32 @@ body {
   box-shadow: 0px 8px 32px 0px rgba(0,0,0,0.18);
   width: 50vw;
   height: 100%;
-  max-width: none;
+  max-height: 100vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 10;
   margin: 0;
+}
+
+/* Estilização da barra de rolagem */
+.auth-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.auth-card::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.auth-card::-webkit-scrollbar-thumb {
+  background: #10B981;
+  border-radius: 7px;
+}
+
+.auth-card::-webkit-scrollbar-thumb:hover {
+  background: #059669;
 }
 
 /* Logo do EcoColeta */
@@ -67,10 +80,11 @@ body {
   gap: 8px;
   margin-bottom: 25px;
 }
+
 .eco-logo-text {
   font-size: 24px;
   font-weight: 700;
-  color: #000;
+  color: #198754;
 }
 
 /* Título das seções */
@@ -95,6 +109,7 @@ body {
   cursor: pointer;
   margin-top: 16px;
 }
+
 .primary-button:hover {
   background: #059669;
 }
@@ -105,6 +120,7 @@ body {
   text-decoration: none;
   font-weight: 500;
 }
+
 .auth-link:hover {
   text-decoration: underline;
 }
@@ -115,6 +131,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  border-radius: 10px;
 }
 
 .auth-bg-img {
@@ -136,7 +153,7 @@ body {
   align-items: center;
   color: white;
   padding: 20px;
-}
+  }
 
 .img-overlay h2 {
   font-size: 2.5rem;
@@ -170,19 +187,6 @@ body {
   transform: translateX(-50vw);
 }
 
-/* Ajuste final para garantir que o formulário de cadastro não seja cortado */
-#register-section .auth-card {
-  position: relative;
-  right: 0;
-  margin-right: 0;
-}
-
-#login-section .auth-card {
-  position: relative;
-  left: 0;
-  margin-left: 0;
-}
-
 /* Efeito de gradiente nas bordas do container de imagem para transição suave */
 .img-container::before,
 .img-container::after {
@@ -194,53 +198,57 @@ body {
   z-index: 5;
 }
 
-/*.img-container::before {
-  left: 0;
-  background: linear-gradient(to right, rgba(248, 250, 252, 0.85), transparent);
+/* Estilos para login social */
+.social-login {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
 }
 
-.img-container::after {
-  right: 0;
-  background: linear-gradient(to left, rgba(248, 250, 252, 0.85), transparent);
+.social-login p {
+  color: #666;
+  margin-bottom: 15px;
 }
 
-/* Estilos adicionais para as classes ativas */
-.active-panel {
-  z-index: 15;
+.social-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
 }
 
-/* Estilos para o painel de imagem quando mostrado com login ou registro */
-.show-with-login .img-container::before {
-  opacity: 1;
+.social-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.show-with-login .img-container::after {
-  opacity: 0.5;
+.social-button img {
+  width: 20px;
+  height: 20px;
 }
 
-.show-with-register .img-container::before {
-  opacity: 0.5;
+.social-button.google:hover {
+  background: #f1f1f1;
 }
 
-.show-with-register .img-container::after {
-  opacity: 1;
+.social-button.facebook {
+  background: #1877f2;
+  color: white;
+  border: none;
 }
 
-/* Efeito de zoom suave na imagem durante a transição */
-.show-with-login .auth-bg-img,
-.show-with-register .auth-bg-img {
-  transition: transform 1.5s ease-out;
+.social-button.facebook:hover {
+  background: #166fe5;
 }
 
-.show-with-login .auth-bg-img {
-  transform: scale(1.05) translateX(2%);
-}
-
-.show-with-register .auth-bg-img {
-  transform: scale(1.05) translateX(-2%);
-}
-
-/* Responsividade para dispositivos móveis */
+/* Responsividade */
 @media (max-width: 991.98px) {
   .auth-container {
     flex-direction: column;
@@ -296,14 +304,6 @@ body {
     bottom: 0;
     background: linear-gradient(to top, rgba(248, 250, 252, 0.85), transparent);
   }
-
-  .show-with-login .auth-bg-img {
-    transform: scale(1.05) translateY(2%);
-  }
-
-  .show-with-register .auth-bg-img {
-    transform: scale(1.05) translateY(-2%);
-  }
 }
 
 /* Ajustes para telas muito pequenas */
@@ -315,53 +315,8 @@ body {
   .img-overlay h2 {
     font-size: 1.8rem;
   }
-}
-
-/* Estilos para login social */
-.social-login {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.social-login p {
-  color: #666;
-  margin-bottom: 15px;
-}
-
-.social-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.social-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.social-button img {
-  width: 20px;
-  height: 20px;
-}
-
-.social-button.google:hover {
-  background: #f1f1f1;
-}
-
-.social-button.facebook {
-  background: #1877f2;
-  color: white;
-  border: none;
-}
-
-.social-button.facebook:hover {
-  background: #166fe5;
+  
+  .social-buttons {
+    flex-direction: column;
+  }
 } 

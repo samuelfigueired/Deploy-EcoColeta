@@ -13,7 +13,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 // Ícone personalizado
 var iconeColeta = L.icon({
-  iconUrl: "../img/icone-coleta.svg",
+  iconUrl: "assets/img/icone-coleta.svg",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
@@ -163,13 +163,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Lista de filtros disponíveis
   const filtrosDisponiveis = [
-    { nome: "Plástico", valor: "plastico", icone: "icone-coleta.svg" },
-    { nome: "Papel", valor: "papel", icone: "icone-coleta.svg" },
-    { nome: "Vidro", valor: "vidro", icone: "icone-coleta.svg" },
-    { nome: "Pilhas", valor: "pilhas", icone: "icone-coleta.svg" },
-    { nome: "Eletrônicos", valor: "eletronicos", icone: "icone-coleta.svg" },
-    { nome: "Baterias", valor: "baterias", icone: "icone-coleta.svg" },
-    { nome: "Óleo", valor: "oleo", icone: "icone-coleta.svg" },
+    { nome: "Plástico", valor: "plastico", icone: "../../assets/img/plastico.svg" },
+    { nome: "Papel", valor: "papel", icone: "../../assets/img/papel.svg" },
+    { nome: "Vidro", valor: "vidro", icone: "../../assets/img/vidro.svg" },
+    { nome: "Pilhas", valor: "pilhas", icone: "../../assets/img/pilha.svg" },
+    { nome: "Eletrônicos", valor: "eletronicos", icone: "../../assets/img/eletronicos.svg" },
+    { nome: "Baterias", valor: "baterias", icone: "../../assets/img/bateria.svg" },  
+    { nome: "Óleo", valor: "oleo", icone: "../../assets/img/oleo.svg" },
+    { nome: "Metal", valor: "metal", icone: "../../assets/img/metal.svg" },
   ];
 
   // Função para abrir o modal de filtros
@@ -191,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.className =
         "filtro-modal-btn" + (filtrosAtivos.has(filtro.valor) ? " ativo" : "");
       btn.type = "button";
-      btn.innerHTML = `<i class=\"filtro-icon\" style=\"mask-image:url('img/${filtro.icone}');-webkit-mask-image:url('img/${filtro.icone}');\"></i> ${filtro.nome}`;
+      btn.innerHTML = `<i class=\"filtro-icon\" style=\"mask-image:url('assets/img/${filtro.icone}');-webkit-mask-image:url('assets/img/${filtro.icone}');\"></i> ${filtro.nome}`;
       btn.onclick = () => {
         if (filtrosAtivos.has(filtro.valor)) {
           filtrosAtivos.delete(filtro.valor);
@@ -211,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const btnFiltro = document.createElement("button");
             btnFiltro.className = `filtro-button filtro-${filtro.valor} ativo`;
             btnFiltro.type = "button";
-            btnFiltro.innerHTML = `<i class=\"filtro-icon\" style=\"mask-image:url('img/${filtro.icone}');-webkit-mask-image:url('img/${filtro.icone}');\"></i> <span>${filtro.nome}</span>`;
+            btnFiltro.innerHTML = `<i class=\"filtro-icon\" style=\"mask-image:url('assets/img/${filtro.icone}');-webkit-mask-image:url('assets/img/${filtro.icone}');\"></i> <span>${filtro.nome}</span>`;
             btnFiltro.onclick = () => {
               filtrosAtivos.delete(filtro.valor);
               btnFiltro.remove();
@@ -438,6 +439,7 @@ function abrirFormularioAgendamento(idPonto) {
     "Eletrônicos",
     "Baterias",
     "Óleo",
+    "Metal",
   ];
   const preselecaoDiv = document.createElement("div");
   preselecaoDiv.className = "preselecao-produtos";
