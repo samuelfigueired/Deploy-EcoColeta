@@ -57,6 +57,7 @@
 
 /* Menu mobile */
 .mobile-menu {
+  display: none;
   position: fixed;
   top: 0;
   right: 0;
@@ -77,11 +78,13 @@
 }
 
 .menu-toggle:checked ~ .mobile-menu {
+  display: block;
   transform: translateX(0);
   visibility: visible;
 }
 
 .menu-toggle:checked ~ .menu-overlay {
+  display: block;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -285,7 +288,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1004;
@@ -441,7 +444,7 @@
 
 .profile-dropdown-item:hover {
   background-color: #f3f4f6;
-  color: #059669;
+  color: #059669; 
   padding-left: 20px;
 }
 

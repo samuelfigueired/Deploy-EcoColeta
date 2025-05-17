@@ -351,30 +351,21 @@ window.addEventListener('scroll', function() {
 
 // Adicionar eventos após a criação dos elementos
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM carregado, configurando menu mobile...');
   
   const menuToggle = document.querySelector('.menu-toggle');
   const menuIcon = document.querySelector('.menu-icon');
   const mobileMenu = document.querySelector('.mobile-menu');
   const menuOverlay = document.querySelector('.menu-overlay');
 
-  console.log('Elementos do menu:', {
-    menuToggle: menuToggle,
-    menuIcon: menuIcon,
-    mobileMenu: mobileMenu,
-    menuOverlay: menuOverlay
-  });
+
 
   if (menuIcon && menuToggle && mobileMenu && menuOverlay) {
-    console.log('Todos os elementos encontrados, adicionando eventos...');
 
   // Evento de clique no ícone do menu
   menuIcon.addEventListener('click', function(event) {
-      console.log('Menu icon clicado');
       event.preventDefault();
     event.stopPropagation();
     menuToggle.checked = !menuToggle.checked;
-      console.log('Estado do menu:', menuToggle.checked);
       
       if (menuToggle.checked) {
         document.body.style.overflow = 'hidden';
@@ -391,7 +382,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Evento de clique no overlay
   menuOverlay.addEventListener('click', function() {
-      console.log('Overlay clicado');
     menuToggle.checked = false;
       document.body.style.overflow = '';
       mobileMenu.style.transform = 'translateX(100%)';
@@ -404,7 +394,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (menuToggle.checked && 
         !mobileMenu.contains(event.target) && 
         !menuIcon.contains(event.target)) {
-        console.log('Clicado fora do menu');
       menuToggle.checked = false;
         document.body.style.overflow = '';
         mobileMenu.style.transform = 'translateX(100%)';
@@ -518,6 +507,7 @@ redes.forEach((rede, index) => {
 
 let imgsoial = document.createElement('img');
 imgsoial.src = `assets/img/${rede}.svg`;
+imgsoial.style.width = `40px`
 a.appendChild(imgsoial);
 sociaisIcons.appendChild(a);
 });
