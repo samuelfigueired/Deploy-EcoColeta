@@ -383,7 +383,7 @@
   "donations": [
     {
       "id": 1,
-      "amount": 50.00,
+      "amount": 50.0,
       "name": "João Silva",
       "email": "joao.silva@email.com",
       "cpf": "123.456.789-00",
@@ -391,6 +391,5 @@
       "date": "2024-03-20T10:30:00.000Z",
       "status": "completed"
     }
-    
   ]
 }
