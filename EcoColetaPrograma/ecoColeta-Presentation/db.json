@@ -10,6 +10,34 @@
       "endereco": "Rua das Flores, 123 - Centro, Betim - MG",
       "dataNascimento": "1990-01-01",
       "tipoUsuario": "doador"
+    },
+    {
+      "nome": "Matheus Augusto",
+      "email": "matheusaagd2@gmail.com",
+      "telefone": "(31) 99065-1262",
+      "cep": "32606-044",
+      "endereco": "Rua Amapá, Novo Horizonte",
+      "cidade": "Betim",
+      "estado": "MG",
+      "tipoUsuario": "doador",
+      "senha": "2603Betim#2",
+      "imagem": "",
+      "emailVerificado": false,
+      "id": 2
+    },
+    {
+      "nome": "Matheus Augusto",
+      "email": "matheusaagd22@gmail.com",
+      "telefone": "(31) 99065-1262",
+      "cep": "32606-044",
+      "endereco": "Rua Amapá, Novo Horizonte",
+      "cidade": "Betim",
+      "estado": "MG",
+      "tipoUsuario": "doador",
+      "senha": "2603Betim#2",
+      "imagem": "",
+      "emailVerificado": false,
+      "id": 3
     }
   ],
   "pontosDeColeta": [
@@ -38,7 +66,11 @@
       "lng": -44.1876,
       "endereco": "Rua das Alterosas, 789 - Alterosas, Betim - MG",
       "horario": "Segunda a Sexta: 08:00 - 18:00",
-      "materiaisAceitos": ["plastico", "papel", "metal"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "metal"
+      ],
       "contato": "(31) 3512-3001",
       "coletaDomiciliar": false,
       "agenda": []
@@ -50,7 +82,12 @@
       "lng": -44.2012,
       "endereco": "Av. Industrial, 1200 - Distrito Industrial, Betim - MG",
       "horario": "24 horas",
-      "materiaisAceitos": ["plastico", "metal", "eletronicos", "baterias"],
+      "materiaisAceitos": [
+        "plastico",
+        "metal",
+        "eletronicos",
+        "baterias"
+      ],
       "contato": "(31) 3512-3002",
       "coletaDomiciliar": true,
       "agenda": []
@@ -62,7 +99,11 @@
       "lng": -44.1856,
       "endereco": "Rua Belmiro Delgado, 100 - Imbiruçu, Betim - MG",
       "horario": "Segunda a Sábado: 07:00 - 16:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro"
+      ],
       "contato": "(31) 3512-3003",
       "coletaDomiciliar": false,
       "agenda": []
@@ -74,7 +115,12 @@
       "lng": -44.2078,
       "endereco": "Rua São Paulo, 707 - PTB, Betim - MG",
       "horario": "Segunda a Sexta: 09:00 - 18:00",
-      "materiaisAceitos": ["papel", "plastico", "metal", "oleo"],
+      "materiaisAceitos": [
+        "papel",
+        "plastico",
+        "metal",
+        "oleo"
+      ],
       "contato": "(31) 3512-3004",
       "coletaDomiciliar": true,
       "agenda": []
@@ -86,7 +132,11 @@
       "lng": -44.1923,
       "endereco": "Av. Citrolândia, 456 - Citrolândia, Betim - MG",
       "horario": "Segunda a Sábado: 08:00 - 17:00",
-      "materiaisAceitos": ["vidro", "metal", "eletronicos"],
+      "materiaisAceitos": [
+        "vidro",
+        "metal",
+        "eletronicos"
+      ],
       "contato": "(31) 3512-3005",
       "coletaDomiciliar": false,
       "agenda": []
@@ -98,7 +148,13 @@
       "lng": -44.1789,
       "endereco": "Rua do Riacho, 890 - Riacho, Betim - MG",
       "horario": "Segunda a Domingo: 08:00 - 20:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro", "metal", "baterias"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro",
+        "metal",
+        "baterias"
+      ],
       "contato": "(31) 3512-3006",
       "coletaDomiciliar": true,
       "agenda": []
@@ -110,7 +166,10 @@
       "lng": -44.2145,
       "endereco": "Av. Teresópolis, 234 - Teresópolis, Betim - MG",
       "horario": "Segunda a Sexta: 07:00 - 16:00",
-      "materiaisAceitos": ["papel", "plastico"],
+      "materiaisAceitos": [
+        "papel",
+        "plastico"
+      ],
       "contato": "(31) 3512-3007",
       "coletaDomiciliar": false,
       "agenda": []
@@ -122,7 +181,11 @@
       "lng": -44.1967,
       "endereco": "Rua Angola, 567 - Angola, Betim - MG",
       "horario": "24 horas",
-      "materiaisAceitos": ["metal", "eletronicos", "baterias"],
+      "materiaisAceitos": [
+        "metal",
+        "eletronicos",
+        "baterias"
+      ],
       "contato": "(31) 3512-3008",
       "coletaDomiciliar": true,
       "agenda": []
@@ -134,7 +197,12 @@
       "lng": -44.1834,
       "endereco": "Av. das Laranjeiras, 789 - Laranjeiras, Betim - MG",
       "horario": "Segunda a Sábado: 08:00 - 17:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro", "oleo"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro",
+        "oleo"
+      ],
       "contato": "(31) 3512-3009",
       "coletaDomiciliar": false,
       "agenda": []
@@ -146,7 +214,11 @@
       "lng": -44.2034,
       "endereco": "Rua do Brasileiro, 123 - Brasileiro, Betim - MG",
       "horario": "Segunda a Sexta: 08:00 - 18:00",
-      "materiaisAceitos": ["plastico", "papel", "metal"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "metal"
+      ],
       "contato": "(31) 3512-3010",
       "coletaDomiciliar": true,
       "agenda": []
@@ -158,7 +230,12 @@
       "lng": -44.1945,
       "endereco": "Av. Santa Cruz, 456 - Santa Cruz, Betim - MG",
       "horario": "Segunda a Domingo: 07:00 - 19:00",
-      "materiaisAceitos": ["vidro", "metal", "eletronicos", "baterias"],
+      "materiaisAceitos": [
+        "vidro",
+        "metal",
+        "eletronicos",
+        "baterias"
+      ],
       "contato": "(31) 3512-3011",
       "coletaDomiciliar": false,
       "agenda": []
@@ -170,7 +247,11 @@
       "lng": -44.1899,
       "endereco": "Rua Petrovale, 789 - Petrovale, Betim - MG",
       "horario": "24 horas",
-      "materiaisAceitos": ["plastico", "metal", "eletronicos"],
+      "materiaisAceitos": [
+        "plastico",
+        "metal",
+        "eletronicos"
+      ],
       "contato": "(31) 3512-3012",
       "coletaDomiciliar": true,
       "agenda": []
@@ -182,7 +263,11 @@
       "lng": -44.2089,
       "endereco": "Av. São João, 234 - São João, Betim - MG",
       "horario": "Segunda a Sábado: 08:00 - 17:00",
-      "materiaisAceitos": ["papel", "plastico", "vidro"],
+      "materiaisAceitos": [
+        "papel",
+        "plastico",
+        "vidro"
+      ],
       "contato": "(31) 3512-3013",
       "coletaDomiciliar": false,
       "agenda": []
@@ -194,7 +279,11 @@
       "lng": -44.1967,
       "endereco": "Rua Vila Verde, 567 - Vila Verde, Betim - MG",
       "horario": "Segunda a Sexta: 09:00 - 18:00",
-      "materiaisAceitos": ["metal", "baterias", "oleo"],
+      "materiaisAceitos": [
+        "metal",
+        "baterias",
+        "oleo"
+      ],
       "contato": "(31) 3512-3014",
       "coletaDomiciliar": true,
       "agenda": []
@@ -206,7 +295,12 @@
       "lng": -44.1878,
       "endereco": "Av. Teresópolis, 890 - Jardim Teresópolis, Betim - MG",
       "horario": "Segunda a Sábado: 07:00 - 16:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro", "metal"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro",
+        "metal"
+      ],
       "contato": "(31) 3512-3015",
       "coletaDomiciliar": false,
       "agenda": []
@@ -218,7 +312,10 @@
       "lng": -44.1934,
       "endereco": "Rua Santo Afonso, 123 - Santo Afonso, Betim - MG",
       "horario": "24 horas",
-      "materiaisAceitos": ["eletronicos", "baterias"],
+      "materiaisAceitos": [
+        "eletronicos",
+        "baterias"
+      ],
       "contato": "(31) 3512-3016",
       "coletaDomiciliar": true,
       "agenda": []
@@ -230,7 +327,12 @@
       "lng": -44.2023,
       "endereco": "Av. Paulo Camilo, 456 - Paulo Camilo, Betim - MG",
       "horario": "Segunda a Domingo: 08:00 - 20:00",
-      "materiaisAceitos": ["plastico", "papel", "metal", "oleo"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "metal",
+        "oleo"
+      ],
       "contato": "(31) 3512-3017",
       "coletaDomiciliar": false,
       "agenda": []
@@ -242,7 +344,11 @@
       "lng": -44.1845,
       "endereco": "Rua Vianópolis, 789 - Vianópolis, Betim - MG",
       "horario": "Segunda a Sexta: 08:00 - 17:00",
-      "materiaisAceitos": ["vidro", "metal", "eletronicos"],
+      "materiaisAceitos": [
+        "vidro",
+        "metal",
+        "eletronicos"
+      ],
       "contato": "(31) 3512-3018",
       "coletaDomiciliar": true,
       "agenda": []
@@ -254,7 +360,11 @@
       "lng": -44.2056,
       "endereco": "Av. do Cruzeiro, 234 - Cruzeiro, Betim - MG",
       "horario": "Segunda a Sábado: 08:00 - 18:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro"
+      ],
       "contato": "(31) 3512-3019",
       "coletaDomiciliar": false,
       "agenda": []
@@ -266,7 +376,12 @@
       "lng": -44.1923,
       "endereco": "Rua São Caetano, 567 - São Caetano, Betim - MG",
       "horario": "24 horas",
-      "materiaisAceitos": ["metal", "eletronicos", "baterias", "oleo"],
+      "materiaisAceitos": [
+        "metal",
+        "eletronicos",
+        "baterias",
+        "oleo"
+      ],
       "contato": "(31) 3512-3020",
       "coletaDomiciliar": true,
       "agenda": []
@@ -278,7 +393,10 @@
       "lng": -44.1967,
       "endereco": "Av. Casa Branca, 890 - Jardim Casa Branca, Betim - MG",
       "horario": "Segunda a Sexta: 07:00 - 16:00",
-      "materiaisAceitos": ["plastico", "papel"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel"
+      ],
       "contato": "(31) 3512-3021",
       "coletaDomiciliar": false,
       "agenda": []
@@ -290,7 +408,11 @@
       "lng": -44.1889,
       "endereco": "Rua Colonial, 123 - Colonial, Betim - MG",
       "horario": "Segunda a Domingo: 08:00 - 19:00",
-      "materiaisAceitos": ["vidro", "metal", "eletronicos"],
+      "materiaisAceitos": [
+        "vidro",
+        "metal",
+        "eletronicos"
+      ],
       "contato": "(31) 3512-3022",
       "coletaDomiciliar": true,
       "agenda": []
@@ -302,7 +424,12 @@
       "lng": -44.2045,
       "endereco": "Av. das Bandeirinhas, 456 - Bandeirinhas, Betim - MG",
       "horario": "Segunda a Sábado: 08:00 - 17:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro", "metal"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro",
+        "metal"
+      ],
       "contato": "(31) 3512-3023",
       "coletaDomiciliar": false,
       "agenda": []
@@ -314,7 +441,11 @@
       "lng": -44.1912,
       "endereco": "Rua da Capelinha, 789 - Capelinha, Betim - MG",
       "horario": "24 horas",
-      "materiaisAceitos": ["eletronicos", "baterias", "oleo"],
+      "materiaisAceitos": [
+        "eletronicos",
+        "baterias",
+        "oleo"
+      ],
       "contato": "(31) 3512-3024",
       "coletaDomiciliar": true,
       "agenda": []
@@ -326,7 +457,11 @@
       "lng": -44.1978,
       "endereco": "Av. Duque de Caxias, 234 - Centro, Betim - MG",
       "horario": "Segunda a Sexta: 09:00 - 18:00",
-      "materiaisAceitos": ["plastico", "papel", "metal"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "metal"
+      ],
       "contato": "(31) 3512-3025",
       "coletaDomiciliar": false,
       "agenda": []
@@ -338,7 +473,12 @@
       "lng": -44.2001,
       "endereco": "Rua Amazonas, 567 - São Jorge, Betim - MG",
       "horario": "Segunda a Domingo: 07:00 - 19:00",
-      "materiaisAceitos": ["vidro", "metal", "eletronicos", "baterias"],
+      "materiaisAceitos": [
+        "vidro",
+        "metal",
+        "eletronicos",
+        "baterias"
+      ],
       "contato": "(31) 3512-3026",
       "coletaDomiciliar": true,
       "agenda": []
@@ -350,7 +490,12 @@
       "lng": -44.1856,
       "endereco": "Av. Nova Baden, 890 - Nova Baden, Betim - MG",
       "horario": "Segunda a Sábado: 08:00 - 17:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro", "oleo"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro",
+        "oleo"
+      ],
       "contato": "(31) 3512-3027",
       "coletaDomiciliar": false,
       "agenda": []
@@ -362,7 +507,11 @@
       "lng": -44.2034,
       "endereco": "Rua Vila Cristina, 123 - Vila Cristina, Betim - MG",
       "horario": "24 horas",
-      "materiaisAceitos": ["metal", "eletronicos", "baterias"],
+      "materiaisAceitos": [
+        "metal",
+        "eletronicos",
+        "baterias"
+      ],
       "contato": "(31) 3512-3028",
       "coletaDomiciliar": true,
       "agenda": []
@@ -374,7 +523,13 @@
       "lng": -44.1889,
       "endereco": "Av. Brasília, 456 - Jardim Brasília, Betim - MG",
       "horario": "Segunda a Sábado: 08:00 - 18:00",
-      "materiaisAceitos": ["plastico", "papel", "vidro", "metal", "oleo"],
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro",
+        "metal",
+        "oleo"
+      ],
       "contato": "(31) 3512-3029",
       "coletaDomiciliar": false,
       "agenda": []
@@ -383,7 +538,7 @@
   "donations": [
     {
       "id": 1,
-      "amount": 50.0,
+      "amount": 50,
       "name": "João Silva",
       "email": "joao.silva@email.com",
       "cpf": "123.456.789-00",
