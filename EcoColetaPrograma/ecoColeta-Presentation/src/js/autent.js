@@ -434,18 +434,19 @@ document.addEventListener("DOMContentLoaded", function () {
           );
 
           // Exibe mensagem personalizada de sucesso
-          const msgDiv = document.createElement('div');
-          msgDiv.textContent = 'Cadastro realizado com sucesso! Redirecionando para a página inicial...';
-          msgDiv.style.background = '#10b981';
-          msgDiv.style.color = '#fff';
-          msgDiv.style.padding = '16px';
-          msgDiv.style.borderRadius = '8px';
-          msgDiv.style.textAlign = 'center';
-          msgDiv.style.position = 'fixed';
-          msgDiv.style.top = '32px';
-          msgDiv.style.left = '50%';
-          msgDiv.style.transform = 'translateX(-50%)';
-          msgDiv.style.zIndex = '9999';
+          const msgDiv = document.createElement("div");
+          msgDiv.textContent =
+            "Cadastro realizado com sucesso! Redirecionando para a página inicial...";
+          msgDiv.style.background = "#10b981";
+          msgDiv.style.color = "#fff";
+          msgDiv.style.padding = "16px";
+          msgDiv.style.borderRadius = "8px";
+          msgDiv.style.textAlign = "center";
+          msgDiv.style.position = "fixed";
+          msgDiv.style.top = "32px";
+          msgDiv.style.left = "50%";
+          msgDiv.style.transform = "translateX(-50%)";
+          msgDiv.style.zIndex = "9999";
           document.body.appendChild(msgDiv);
           setTimeout(() => {
             msgDiv.remove();
