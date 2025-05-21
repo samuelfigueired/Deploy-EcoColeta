@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu perfil</title>
+    <meta name="description" content="Perfil de usuário" />
+     <link rel="stylesheet" href="../src/css/navFooter.css">
+    <link rel="stylesheet" href="../src/css/perfil.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  </head>
+
+  <body>
+          <!-- Main Content -->
+      <main class="main-content">
+        <div class="content-wrapper">
+          <!-- Sidebar -->
+          <div class="sidebar-container">
+            <div class="profile-sidebar">
+              <div class="profile-header">
+                <img 
+                  src="https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/e9c40d169f51fbec65745ba627609365d0101de8?placeholderIfAbsent=true" 
+                  alt="John Anderson" 
+                  class="profile-avatar"
+                />
+                <h2 class="profile-name">Matheus lindão</h2>
+                <div class="profile-role">dev Sênior</div>
+                <div class="profile-actions">
+                  <button class="btn btn-primary">Editar </button>
+                  <button class="btn btn-secondary">compartilhar</button>
+                </div>
+              </div>
+              <div class="profile-info">
+                <div class="info-item">
+                  <i class="fas fa-envelope info-icon"></i>
+                  <div class="info-text">Matheusaagd2@gmail.com</div>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-phone info-icon"></i>
+                  <div class="info-text">+55 (31) 9065-1262</div>
+                </div>
+                <div class="info-item">
+                  <i class="fas fa-map-marker-alt info-icon"></i>
+                  <div class="info-text">Betim - Mg</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Perfil configuraçoes -->
+          <div class="settings-container">
+            <div class="settings-card">
+              <div class="tabs-container">
+                <button class="tab-button active">configurações da Conta</button>
+                <button class="tab-button">Securança</button>
+                <button class="tab-button">Notificações</button>
+                <button class="tab-button">pagamento</button>
+              </div>
+              <div class="tab-content">
+                <form class="profile-form">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Primeiro Nome</label>
+                      <input type="text" class="form-input" value="Matheus" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Segundo nome</label>
+                      <input type="text" class="form-input" value="Augusto" />
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Email</label>
+                      <input type="email" class="form-input" value="matheusaagd2@gmail.com" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">telefone</label>
+                      <input type="text" class="form-input" value="+55 (31) 9065-1262" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Bio</label>
+                    <textarea class="form-textarea">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt suscipit repellat deleniti, atque explicabo cupiditate maxime, ut, laboriosam iste et quod reprehenderit numquam laudantium harum voluptas voluptates maiores ex optio!</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Fuso horario</label>
+                    <div class="select-container">
+                      <select class="form-select">
+                        <option value="Br" selected>Brasilia</option>
+                        <option value="Ny">Nova york</option>
+                        <option value="Db">Dubai</option>
+                        <option value="CH">Xangai</option>
+                      </select>
+                      <i class="fas fa-chevron-down select-icon"></i>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar configurações</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- atividade recente -->
+            <div class="activity-log">
+              <h3 class="activity-title">Atividade recente</h3>
+              <div class="activity-items">
+                <!-- Itens de doações recentes serão inseridos dinamicamente pelo JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    
+    </div>
+    <script src="../src/js/navFooter.js"></script>
+    <script src="../src/js/perfil.js"></script>
+    
+  </body>
+</html>
