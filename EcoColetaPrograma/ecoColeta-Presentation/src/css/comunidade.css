@@ -1,170 +1,309 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+main {
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.buscar-comunidade {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.buscar-comunidade input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.buscar-comunidade button {
+  padding: 10px 16px;
+  border: none;
+  background-color: #04aa6d;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+h2 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.contribuintes-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.contribuinte {
+  text-align: center;
+  width: 100px;
+}
+
+.contribuinte img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.nome-contribuinte {
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.pontos-contribuinte {
+  color: gray;
+  font-size: 0.9em;
+}
+
+.historias-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.historia-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  position: relative;
+}
+
+.historia-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.historia-card .tag {
+  background-color: #00b894;
+  color: white;
+  padding: 4px 10px;
+  font-size: 0.75em;
+  border-radius: 12px;
+}
+
+.historia-card-content {
+  width: 100%;
+  padding: 15px;
+}
+
+.historia-card h3 {
+  font-size: 1.1em;
+  margin: 10px 0 5px;
+}
+
+.historia-card p {
+  font-size: 0.95em;
+  color: #555;
+}
+
+.autor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-right: 10px;
+}
+
+.autor > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.icones i {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #00b894;
+  color: white;
+  padding: 4px 10px;
+  font-size: 0.75em;
+  border-radius: 12px;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  /* Centralizar os cards de histórias */
+  .historias-container {
+    justify-content: center;
   }
-  
-  main {
-    padding: 20px;
-    background-color: #f8f9fa;
-  }
-  
-  .buscar-comunidade {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
-  }
-  
-  .buscar-comunidade input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-  
-  .buscar-comunidade button {
-    padding: 10px 16px;
-    border: none;
-    background-color: #04aa6d;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  
-  h2 {
-    margin-top: 30px;
-    margin-bottom: 15px;
-    color: #333;
-  }
-  
+
+  /* Scroll horizontal nos top contribuintes */
   .contribuintes-container {
     display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
+    flex-wrap: nowrap;
+    gap: 16px;
+    padding-bottom: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
-  
+
+  .contribuintes-container::-webkit-scrollbar {
+    display: none;
+  }
+
   .contribuinte {
-    text-align: center;
-    width: 100px;
+    min-width: 100px; /* mantém tamanho visível ao rolar */
+    flex-shrink: 0;
   }
-  
-  .contribuinte img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-  }
-  
-  .nome-contribuinte {
-    font-weight: bold;
-    margin-top: 8px;
-  }
-  
-  .pontos-contribuinte {
-    color: gray;
-    font-size: 0.9em;
-  }
-  
-  .historias-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .historia-card {
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    width: 300px;
-    position: relative;
-  }
-  
-  .historia-card img {
-    width: 100%;
-    border-radius: 8px;
-  }
-  
-  .historia-card .tag {
-    background-color: #00b894;
-    color: white;
-    padding: 4px 10px;
-    font-size: 0.75em;
-    border-radius: 12px;
-  }
+}
 
-  .historia-card-content{
-    width: 100%;
-    padding: 15px;
-  }
-  
-  .historia-card h3 {
-    font-size: 1.1em;
-    margin: 10px 0 5px;
-  }
-  
-  .historia-card p {
-    font-size: 0.95em;
-    color: #555;
-  }
-  
-  .autor {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 12px;
-    padding-right: 10px;
-  }
-
-  .autor > img{
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  
-  .icones i {
-    margin-left: 10px;
-    cursor: pointer;
-  }
-
-  .tag {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: #00b894;
-    color: white;
-    padding: 4px 10px;
-    font-size: 0.75em;
-    border-radius: 12px;
-    z-index: 1;
-  }
-  
-  
-  @media (max-width: 768px) {
-    /* Centralizar os cards de histórias */
-    .historias-container {
-      justify-content: center;
-    }
-  
-    /* Scroll horizontal nos top contribuintes */
-    .contribuintes-container {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 16px;
-      padding-bottom: 10px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-
-    .contribuintes-container::-webkit-scrollbar {
-      display: none;
-    }
-  
-    .contribuinte {
-      min-width: 100px; /* mantém tamanho visível ao rolar */
-      flex-shrink: 0;
-    }
-  }
-  
+/* DARK MODE SUAVE PADRÃO ECOPONTO - AJUSTES DE CONTRASTE ENTRE CONTAINERS */
+body.dark-mode {
+  background: #23272e !important;
+  color: #e3e6eb !important;
+}
+body.dark-mode main,
+body.dark-mode .main-content,
+body.dark-mode .community-container {
+  background: #23272e !important;
+}
+body.dark-mode .community-header {
+  background: #1f2227 !important;
+}
+body.dark-mode .community-sidebar {
+  background: #20252a !important;
+}
+body.dark-mode .community-card {
+  background: #23272e !important;
+  color: #e3e6eb !important;
+  border-color: #2c2f34 !important;
+  box-shadow: 0 2px 8px 0 #14161833 !important;
+}
+body.dark-mode .historia-card {
+  background: #26292f !important;
+  color: #e3e6eb !important;
+  border-color: #2f3237 !important;
+  box-shadow: 0 2px 8px 0 #181a1b33 !important;
+}
+body.dark-mode .historia-card-content {
+  background: #292c31 !important;
+}
+body.dark-mode .buscar-comunidade {
+  background: #1e2126 !important;
+}
+body.dark-mode .contribuintes-container {
+  background: #1c1f24 !important;
+}
+body.dark-mode .tag {
+  background: #047857 !important;
+  color: #e3e6eb !important;
+}
+body.dark-mode .nome-contribuinte {
+  color: #10b981 !important;
+}
+body.dark-mode .pontos-contribuinte {
+  color: #b5bac1 !important;
+}
+body.dark-mode .historia-card h3 {
+  color: #b5bac1 !important;
+}
+body.dark-mode .historia-card p {
+  color: #b5bac1 !important;
+}
+body.dark-mode .autor {
+  background: #23272e !important;
+}
+body.dark-mode .buscar-comunidade input {
+  background: #1f2227 !important;
+  color: #e3e6eb !important;
+  border-color: #35383d !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+}
+body.dark-mode .buscar-comunidade button {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  padding: 12px 18px !important;
+  transition: background 0.3s ease !important;
+}
+body.dark-mode .buscar-comunidade button:hover {
+  background: #10b981 !important;
+}
+body.dark-mode .icones i {
+  color: #10b981 !important;
+}
+body.dark-mode .btn,
+body.dark-mode .btn-primary,
+body.dark-mode .btn-secondary {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #fff !important;
+  border: none !important;
+}
+body.dark-mode .btn-primary:hover,
+body.dark-mode .btn-secondary:hover {
+  background: #10b981 !important;
+}
+body.dark-mode .form-input,
+body.dark-mode .form-textarea,
+body.dark-mode .form-select {
+  color: #e3e6eb !important;
+  background: #23272e !important;
+  border-color: #35383d !important;
+}
+body.dark-mode .form-input::placeholder,
+body.dark-mode .form-textarea::placeholder {
+  color: #888 !important;
+}
+body.dark-mode .footer,
+body.dark-mode footer {
+  background: #23272e !important;
+  color: #e3e6eb !important;
+}
+body.dark-mode .footer-links a {
+  color: #b5bac1 !important;
+}
+body.dark-mode .footer-links a:hover {
+  color: #10b981 !important;
+}
+body.dark-mode .footer-social-icons a {
+  background: #26292f !important;
+  color: #e3e6eb !important;
+}
+body.dark-mode .footer-social-icons a:hover {
+  background: #10b981 !important;
+  color: #fff !important;
+}
+body.dark-mode .community-title,
+body.dark-mode .community-description,
+body.dark-mode .form-label,
+body.dark-mode .form-check-label,
+body.dark-mode .form-actions {
+  color: #b5bac1 !important;
+}
+/* Remover animações de fade no dark mode */
+body.dark-mode .community-card,
+body.dark-mode .btn,
+body.dark-mode .btn-primary,
+body.dark-mode .btn-secondary {
+  animation: none !important;
+  transition: none !important;
+}
+/* ESCONDER TUDO QUE NÃO FOR USADO NO DARK MODE */
+body.dark-mode [style*="display:none"],
+body.dark-mode [hidden],
+body.dark-mode .invisivel,
+body.dark-mode .nao-usado {
+  display: none !important;
+  visibility: hidden !important;
+}

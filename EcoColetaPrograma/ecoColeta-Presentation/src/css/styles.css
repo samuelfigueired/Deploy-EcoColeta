@@ -3,9 +3,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
-    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 body {
@@ -23,7 +22,6 @@ body {
   background-color: white;
   border-radius: 0.5rem;
 }
-
 
 /* Hero Section Styles */
 .hero {
@@ -1219,104 +1217,185 @@ body {
   background-color: #047857;
 }
 
-
 .ecoimpact-body {
-    background: #eafff3;
-    font-family: 'Montserrat', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .ecoimpact-container {
-    max-width: 500px;
-    margin: 60px auto;
-    background: none;
-    text-align: center;
-  }
-  
-  
-  .ecoimpact-form-box {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px 24px 24px 24px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-  }
-  
-  .ecoimpact-form-row {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    margin-bottom: 18px;
-  }
-  
-  .ecoimpact-form-group {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 120px;
-  }
-  
-  .ecoimpact-label {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 6px;
-    text-align: left;
-  }
-  
-  select, input[type="number"] {
-    padding: 8px 10px;
-    border: 1px solid #d0e6db;
-    border-radius: 6px;
-    font-size: 1rem;
-    outline: none;
-    background: #f7fdfb;
-  }
-  
-  #calcular {
-    width: 100%;
-    background: #16a36a;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 0;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  
-  .ecoimpact-result-box {
-    display: flex;
-    justify-content: space-around;
-    background: #eafff3;
-    border-radius: 12px;
-    margin-top: 28px;
-    padding: 24px 0;
-  }
-  
-  .ecoimpact-result-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 120px;
-  }
-  
-  .material-icons {
-    font-size: 2.2rem;
-    color: #16a36a;
-    margin-bottom: 4px;
-  }
-  
-  .ecoimpact-result-value{
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #222;
-  }
-  
-  .ecoimpact-result-value {
-    font-size: 1rem;
-    color: #555;
-    margin-top: 2px;
-  }
+  background: #eafff3;
+  font-family: "Montserrat", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.ecoimpact-container {
+  max-width: 500px;
+  margin: 60px auto;
+  background: none;
+  text-align: center;
+}
+
+.ecoimpact-form-box {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px 24px 24px 24px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+}
+
+.ecoimpact-form-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.ecoimpact-form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 120px;
+}
+
+.ecoimpact-label {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+select,
+input[type="number"] {
+  padding: 8px 10px;
+  border: 1px solid #d0e6db;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  background: #f7fdfb;
+}
+
+#calcular {
+  width: 100%;
+  background: #16a36a;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ecoimpact-result-box {
+  display: flex;
+  justify-content: space-around;
+  background: #eafff3;
+  border-radius: 12px;
+  margin-top: 28px;
+  padding: 24px 0;
+}
+
+.ecoimpact-result-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.material-icons {
+  font-size: 2.2rem;
+  color: #16a36a;
+  margin-bottom: 4px;
+}
+
+.ecoimpact-result-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #222;
+}
+
+.ecoimpact-result-value {
+  font-size: 1rem;
+  color: #555;
+  margin-top: 2px;
+}
+
+body.dark-mode {
+  background: #23272e !important;
+  color: #e3e6eb !important;
+}
+body.dark-mode .hero,
+body.dark-mode .ecoimpact-body,
+body.dark-mode .ecoimpact-form-box,
+body.dark-mode .ecoimpact-result-box,
+body.dark-mode .calculator-card,
+body.dark-mode .calculator-form,
+body.dark-mode .form-group,
+body.dark-mode .form-label,
+body.dark-mode .form-input,
+body.dark-mode .calculator-button,
+body.dark-mode .impact-results,
+body.dark-mode .impact-result,
+body.dark-mode .rewards,
+body.dark-mode .reward-card,
+body.dark-mode .stats,
+body.dark-mode .stats-card,
+body.dark-mode .testimonial-card,
+body.dark-mode .community,
+body.dark-mode .community-container,
+body.dark-mode .community-content {
+  background: #26292f !important;
+  color: #e3e6eb !important;
+  border-color: #35383d !important;
+}
+body.dark-mode .hero-title,
+body.dark-mode .hero-description,
+body.dark-mode .ecoimpact-label,
+body.dark-mode .ecoimpact-result-value,
+body.dark-mode .reward-title,
+body.dark-mode .reward-description,
+body.dark-mode .stats-description,
+body.dark-mode .testimonial-location,
+body.dark-mode .testimonial-text {
+  color: #b5bac1 !important;
+}
+body.dark-mode .primary-button,
+body.dark-mode .calculator-button,
+body.dark-mode .cta-button,
+body.dark-mode .cta-button-dark {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #fff !important;
+  border: none !important;
+}
+body.dark-mode .primary-button:hover,
+body.dark-mode .calculator-button:hover,
+body.dark-mode .cta-button:hover,
+body.dark-mode .cta-button-dark:hover {
+  background: #10b981 !important;
+}
+body.dark-mode .form-input,
+body.dark-mode .form-label {
+  color: #e3e6eb !important;
+  background: #26292f !important;
+  border-color: #35383d !important;
+}
+body.dark-mode .form-input::placeholder {
+  color: #888 !important;
+}
+body.dark-mode .footer,
+body.dark-mode footer {
+  background: #23272e !important;
+  color: #e3e6eb !important;
+}
+body.dark-mode .footer-links a {
+  color: #b5bac1 !important;
+}
+body.dark-mode .footer-links a:hover {
+  color: #10b981 !important;
+}
+/* Remover animações de fade no dark mode */
+body.dark-mode .ecoimpact-form-box,
+body.dark-mode .calculator-card,
+body.dark-mode .reward-card,
+body.dark-mode .stats-card,
+body.dark-mode .testimonial-card {
+  animation: none !important;
+  transition: none !important;
+}
