@@ -38,6 +38,20 @@
       "imagem": "",
       "emailVerificado": false,
       "id": 3
+    },
+    {
+      "nome": "kauan gomes marques",
+      "email": "kayangomes849@gmail.com",
+      "telefone": "(31) 97170-7010",
+      "cep": "32450-000",
+      "endereco": "Alameda Beija Flor 113",
+      "cidade": "Sarzedo",
+      "estado": "MG",
+      "tipoUsuario": "doador",
+      "senha": "ScrumMaster@123",
+      "imagem": "",
+      "emailVerificado": false,
+      "id": 4
     }
   ],
   "pontosDeColeta": [
