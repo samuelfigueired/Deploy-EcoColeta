@@ -91,43 +91,41 @@ function switchTab(tabName) {
     });
 
     // Atualiza o conteúdo da tab
-    content.innerHTML = "";
-
-    switch (tabName.toLowerCase()) {
-      case "configurações da conta":
+    content.innerHTML = "";    switch (tabName.toLowerCase()) {      case "configurações da conta":
+      case "Configurações da Conta":
         content.innerHTML = `
           <form class="profile-form">
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Primeiro Nome</label>
-                <input type="text" class="form-input" value="${
+                <input type="text" class="form-input" name="perfilNomeFirst" value="${
                   usuarioLogado.nome?.split(" ")[0] || ""
                 }" />
               </div>
               <div class="form-group">
                 <label class="form-label">Segundo nome</label>
-                <input type="text" class="form-input" value="${
-                  usuarioLogado.nome?.split(" ")[1] || ""
+                <input type="text" class="form-input" name="perfilNomeLast" value="${
+                  usuarioLogado.nome?.split(" ").slice(1).join(" ") || ""
                 }" />
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Email</label>
-                <input type="email" class="form-input" value="${
+                <input type="email" class="form-input" name="perfilEmail" value="${
                   usuarioLogado.email || ""
                 }" />
               </div>
               <div class="form-group">
                 <label class="form-label">Telefone</label>
-                <input type="text" class="form-input" value="${
+                <input type="text" class="form-input" name="perfilTelefone" value="${
                   usuarioLogado.telefone || ""
                 }" />
               </div>
             </div>
             <div class="form-group">
               <label class="form-label">Bio</label>
-              <textarea class="form-textarea">${
+              <textarea class="form-textarea" name="perfilBio">${
                 usuarioLogado.bio || ""
               }</textarea>
             </div>
@@ -137,8 +135,7 @@ function switchTab(tabName) {
             </div>
           </form>
         `;
-        break;
-
+        break;      case "securança":  
       case "segurança":
         content.innerHTML = `
           <form class="profile-form">
@@ -160,9 +157,8 @@ function switchTab(tabName) {
             </div>
           </form>
         `;
-        break;
-
-      case "notificações":
+        break;      case "notificações":
+      case "Notificações":
         content.innerHTML = `
           <form class="profile-form">
             <div class="form-group">
@@ -199,9 +195,8 @@ function switchTab(tabName) {
             </div>
           </form>
         `;
-        break;
-
-      case "pagamento":
+        break;      case "pagamento":
+      case "Pagamento":
         content.innerHTML = `
           <form class="profile-form payment-form">
             <div class="form-group">
@@ -340,58 +335,12 @@ tabButtons.forEach((button) => {
 
 // Event Listeners melhorados
 document.addEventListener("DOMContentLoaded", () => {
+  // Inicializa as informações de perfil
+  preencherPerfil();
+  
   // Carrega a primeira tab por padrão
-  switchTab("configurações da conta");
-
-  // Atualiza informações do perfil com animação
-  const profileName = document.querySelector(".profile-name");
-  const profileEmail = document.querySelector(".info-text.email");
-  const profileTelefone = document.querySelector(".info-text.telefone");
-  const profileTipoConta = document.querySelector(".profile-tipo-conta");
-  const profileAvatar = document.querySelector(".profile-avatar");
-
-  if (profileName) {
-    profileName.style.opacity = "0";
-    setTimeout(() => {
-      profileName.textContent = usuarioLogado.nome || "Usuário";
-      profileName.style.opacity = "1";
-    }, 200);
-  }
-
-  if (profileEmail) {
-    profileEmail.style.opacity = "0";
-    setTimeout(() => {
-      profileEmail.textContent = usuarioLogado.email || "";
-      profileEmail.style.opacity = "1";
-    }, 400);
-  }
-
-  if (profileTelefone) {
-    profileTelefone.style.opacity = "0";
-    setTimeout(() => {
-      profileTelefone.textContent = usuarioLogado.telefone || "";
-      profileTelefone.style.opacity = "1";
-    }, 500);
-  }
-
-  // Exibe o tipo de conta, padronizando o campo
-  if (profileTipoConta) {
-    profileTipoConta.style.opacity = "0";
-    setTimeout(() => {
-      profileTipoConta.textContent =
-        usuarioLogado.tipoUsuario || usuarioLogado.tipoConta || "";
-      profileTipoConta.style.opacity = "1";
-    }, 600);
-  }
-
-  if (profileAvatar && usuarioLogado.imagem) {
-    profileAvatar.style.opacity = "0";
-    setTimeout(() => {
-      profileAvatar.src = usuarioLogado.imagem;
-      profileAvatar.style.opacity = "1";
-    }, 600);
-  }
-
+  switchTab("Configurações da Conta");
+  
   // Adiciona tooltips
   document.querySelectorAll("[data-tooltip]").forEach((element) => {
     element.addEventListener("mouseenter", () => {
@@ -399,13 +348,28 @@ document.addEventListener("DOMContentLoaded", () => {
       element.setAttribute("title", tooltip);
     });
   });
-
+  
+  // Inicializa modal de avatar
   initAvatarModal();
+  
+  // Troca nome da aba de Atividade para Doações recentes
+  tabButtons.forEach((btn) => {
+    if (btn.textContent.toLowerCase().includes("atividade")) {
+      btn.textContent = "Doações recentes";
+    }
+  });
+  
+  // Troca título da seção
+  const activityTitle = document.querySelector(".activity-title");
+  if (activityTitle) activityTitle.textContent = "Doações recentes";
+  
+  // Exibe doações recentes ao carregar
+  exibirDoacoesRecentes();
 });
 
 // Event Listeners para formulários melhorados
 document.addEventListener("submit", async (e) => {
-  if (e.target.classList.contains("profile-form")) {
+  if (e.target.classList.contains("profile-form") && !e.target.classList.contains("payment-form")) {
     e.preventDefault();
 
     if (!validateForm(e.target)) {
@@ -416,15 +380,37 @@ document.addEventListener("submit", async (e) => {
     showLoading(submitButton);
 
     try {
-      const formData = new FormData(e.target);
+      const form = e.target;
       const dados = {};
-      formData.forEach((value, key) => {
-        dados[key] = value;
-      });
 
+      // Captura os valores diretamente de cada campo
+      // Tratamento de nome - junta primeiro e segundo nome
+      const firstName = form.elements.namedItem("perfilNomeFirst") ? form.elements.namedItem("perfilNomeFirst").value : "";
+      const lastName = form.elements.namedItem("perfilNomeLast") ? form.elements.namedItem("perfilNomeLast").value : "";
+      
+      if (firstName || lastName) {
+        dados.nome = `${firstName} ${lastName}`.trim();
+      }
+      
+      // Email
+      if (form.elements.namedItem("perfilEmail")) {
+        dados.email = form.elements.namedItem("perfilEmail").value;
+      }
+      
+      // Telefone
+      if (form.elements.namedItem("perfilTelefone")) {
+        dados.telefone = form.elements.namedItem("perfilTelefone").value;
+      }
+      
+      // Bio
+      if (form.elements.namedItem("perfilBio")) {
+        dados.bio = form.elements.namedItem("perfilBio").value;
+      }
+      
       await salvarAlteracoes(dados);
       showFeedback(submitButton, "Alterações salvas com sucesso!", "success");
     } catch (error) {
+      console.error("Erro ao salvar alterações:", error);
       showFeedback(submitButton, "Erro ao salvar alterações", "error");
     } finally {
       hideLoading(submitButton);
@@ -434,13 +420,57 @@ document.addEventListener("submit", async (e) => {
 
 // Função para salvar alterações com feedback
 async function salvarAlteracoes(dados) {
-  const usuarioAtualizado = { ...usuarioLogado, ...dados };
-  localStorage.setItem("usuarioLogado", JSON.stringify(usuarioAtualizado));
+  // Optimistic update for localStorage, but primary source of truth will be server response
+  // const usuarioAtualizadoTemporariamente = { ...usuarioLogado, ...dados };
+  // localStorage.setItem("usuarioLogado", JSON.stringify(usuarioAtualizadoTemporariamente));
 
-  // Simula uma requisição
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  try {
+    const response = await fetch(`http://localhost:3000/usuarios/${usuarioLogado.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dados), // Envia apenas os dados alterados
+    });
 
-  return usuarioAtualizado;
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status} - ${await response.text()}`);
+    }
+
+    const dataServidor = await response.json();
+    
+    // Atualiza o localStorage com os dados retornados do servidor
+    localStorage.setItem("usuarioLogado", JSON.stringify(dataServidor));
+    // Atualiza a variável global usuarioLogado também
+    Object.assign(usuarioLogado, dataServidor); // Garante que a variável global está sincronizada
+    
+    // Atualiza a imagem de perfil na barra lateral se ela foi alterada através deste formulário
+    // (Normalmente, a imagem é alterada pelo modal, mas para consistência)
+    if (dados.imagem && document.getElementById('perfilImagemPreview')) {
+      document.getElementById('perfilImagemPreview').src = dataServidor.imagem;
+    }
+     if (dados.imagem && document.querySelector(".profile-avatar")) {
+      document.querySelector(".profile-avatar").src = dataServidor.imagem;
+    }
+
+    // Atualiza o nome na barra lateral se foi alterado
+    if (dados.nome && document.querySelector(".profile-name")) {
+        document.querySelector(".profile-name").textContent = dataServidor.nome;
+    }
+
+    return dataServidor; // Retorna os dados atualizados do servidor
+  } catch (error) {
+    console.error("Erro ao salvar alterações no servidor:", error);
+    // Em caso de erro, idealmente, reverteria a UI para o estado de `usuarioLogado`
+    // ou informaria o usuário de forma mais clara.
+    // Por agora, o localStorage já reflete o estado antes da tentativa ou o estado otimista.
+    // Para garantir consistência com o servidor, podemos recarregar os dados do localStorage (que deve ser o último estado válido conhecido)
+    // ou, se a falha for crítica, forçar um refresh dos dados do servidor na UI.
+    // Re-setting from usuarioLogado (que não foi modificado se o PATCH falhou antes de Object.assign)
+    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado)); 
+    preencherPerfil(); // Repopula a UI com os dados consistentes
+    throw error; // Re-throw para que o chamador (submit listener) possa tratar
+  }
 }
 
 // Função para preencher o formulário com os dados do usuário
@@ -450,29 +480,132 @@ async function preencherPerfil() {
       `http://localhost:3000/usuarios/${usuarioLogado.id}`
     );
     const usuario = await response.json();
-    form.perfilNome.value = usuario.nome;
-    form.perfilEmail.value = usuario.email;
-    form.perfilRua.value = usuario.endereco.rua;
-    form.perfilNumero.value = usuario.endereco.numero;
-    form.perfilBairro.value = usuario.endereco.bairro;
-    form.perfilCidade.value = usuario.endereco.cidade;
-    form.perfilEstado.value = usuario.endereco.estado;
-    form.perfilCep.value = usuario.endereco.cep;
-    // Preferências
-    form.prefNewsletter.checked = usuario.preferencias.includes("newsletter");
-    form.prefNotificacoes.checked =
-      usuario.preferencias.includes("notificacoes");
-    form.prefTemaEscuro.checked =
-      usuario.preferencias.includes("temas-escuros");
-    // Imagem
-    if (usuario.imagem) {
-      imagemPreview.src = usuario.imagem;
-      imagemPreview.style.display = "block";
-    } else {
-      imagemPreview.style.display = "none";
+    
+    // Atualiza os dados do usuário logado com os dados mais recentes do servidor
+    Object.assign(usuarioLogado, usuario);
+    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+    
+    // Atualize os elementos da interface
+    // Atualizar informações do perfil
+    const profileName = document.querySelector(".profile-name");
+    const profileEmailElement = document.querySelector(".info-item:nth-child(1) .info-text");
+    const profileTelefoneElement = document.querySelector(".info-item:nth-child(2) .info-text");
+    const profileEnderecoElement = document.querySelector(".info-item:nth-child(3) .info-text");
+    const profileRole = document.querySelector(".profile-role");
+    
+    if (profileName) {
+      profileName.textContent = usuario.nome || "Usuário";
     }
+    
+    if (profileEmailElement) {
+      profileEmailElement.textContent = usuario.email || "";
+    }
+    
+    if (profileTelefoneElement) {
+      profileTelefoneElement.textContent = usuario.telefone || "";
+    }
+    
+    if (profileEnderecoElement) {
+      // Formatação do endereço completo
+      const cidade = usuario.cidade || "";
+      const estado = usuario.estado || "";
+      const endereco = usuario.endereco || "";
+      
+      const enderecoCompleto = endereco ? 
+        (cidade && estado ? `${endereco}, ${cidade} - ${estado}` : endereco) : 
+        (cidade && estado ? `${cidade} - ${estado}` : "");
+      
+      profileEnderecoElement.textContent = enderecoCompleto || "";
+    }
+
+    // Atualiza tipo de usuário
+    if (profileRole) {
+      // Formatar o tipo de usuário corretamente
+      let tipoFormatado = usuario.tipoUsuario || "";
+      if (tipoFormatado.toLowerCase() === "doador") {
+        tipoFormatado = "Doador";
+      } else if (tipoFormatado.toLowerCase() === "coletor") {
+        tipoFormatado = "Coletor";
+      } else if (tipoFormatado.toLowerCase() === "admin") {
+        tipoFormatado = "Administrador";
+      }
+      profileRole.textContent = tipoFormatado;
+    }
+    
+    // Se o formulário atual existir e tiver os campos necessários
+    if (form) {
+      // Verifica nome completo e o separa em primeiro e segundo nome
+      if (usuario.nome) {
+        const nomePartes = usuario.nome.split(" ");
+        const primeiroNome = nomePartes[0] || "";
+        const segundoNome = nomePartes.slice(1).join(" ") || "";
+        
+        if (form.elements.namedItem("perfilNomeFirst")) {
+          form.elements.namedItem("perfilNomeFirst").value = primeiroNome;
+        }
+        
+        if (form.elements.namedItem("perfilNomeLast")) {
+          form.elements.namedItem("perfilNomeLast").value = segundoNome;
+        }
+      }
+      
+      // Preenche outros campos básicos
+      if (form.elements.namedItem("perfilEmail")) {
+        form.elements.namedItem("perfilEmail").value = usuario.email || "";
+      }
+      
+      if (form.elements.namedItem("perfilTelefone")) {
+        form.elements.namedItem("perfilTelefone").value = usuario.telefone || "";
+      }
+      
+      if (form.elements.namedItem("perfilBio")) {
+        form.elements.namedItem("perfilBio").value = usuario.bio || "";
+      }
+      
+      // Verifica se há uma estrutura de endereço
+      if (usuario.endereco && typeof usuario.endereco === 'object') {
+        if (form.elements.namedItem("perfilRua")) form.elements.namedItem("perfilRua").value = usuario.endereco.rua || "";
+        if (form.elements.namedItem("perfilNumero")) form.elements.namedItem("perfilNumero").value = usuario.endereco.numero || "";
+        if (form.elements.namedItem("perfilBairro")) form.elements.namedItem("perfilBairro").value = usuario.endereco.bairro || "";
+        if (form.elements.namedItem("perfilCidade")) form.elements.namedItem("perfilCidade").value = usuario.endereco.cidade || "";
+        if (form.elements.namedItem("perfilEstado")) form.elements.namedItem("perfilEstado").value = usuario.endereco.estado || "";
+        if (form.elements.namedItem("perfilCep")) form.elements.namedItem("perfilCep").value = usuario.endereco.cep || "";
+      }
+      
+      // Preferências, verifica se o array preferencias existe
+      if (usuario.preferencias && Array.isArray(usuario.preferencias)) {
+        if (form.elements.namedItem("prefNewsletter")) 
+          form.elements.namedItem("prefNewsletter").checked = usuario.preferencias.includes("newsletter");
+        if (form.elements.namedItem("prefNotificacoes")) 
+          form.elements.namedItem("prefNotificacoes").checked = usuario.preferencias.includes("notificacoes");
+        if (form.elements.namedItem("prefTemaEscuro")) 
+          form.elements.namedItem("prefTemaEscuro").checked = usuario.preferencias.includes("temas-escuros");
+      }
+    }
+    
+    // Atualiza avatar/imagem
+    const profileAvatar = document.querySelector(".profile-avatar");
+    if (profileAvatar) {
+      if (usuario.imagem) {
+        profileAvatar.src = usuario.imagem;
+      } else {
+        // Define uma imagem padrão se não houver imagem
+        profileAvatar.src = defaultAvatars[0];
+      }
+    }
+    
+    // Imagem preview (se existir)
+    if (imagemPreview) {
+      if (usuario.imagem) {
+        imagemPreview.src = usuario.imagem;
+        imagemPreview.style.display = "block";
+      } else {
+        imagemPreview.style.display = "none";
+      }
+    }
+    
   } catch (err) {
-    alert("Erro ao carregar perfil.");
+    console.error("Erro ao carregar perfil:", err);
   }
 }
 
@@ -814,13 +947,63 @@ function initAvatarModal() {
   });
 
   // Salvar avatar
-  modal.querySelector('[data-action="save"]').addEventListener("click", () => {
-    const profileAvatar = document.querySelector(".profile-avatar");
-    profileAvatar.src = selectedAvatar;
-    usuarioLogado.imagem = selectedAvatar;
-    localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
-    modal.classList.remove("active");
-    showFeedback(profileAvatar, "Avatar atualizado com sucesso!", "success");
+  modal.querySelector('[data-action="save"]').addEventListener("click", async () => {
+    const saveButton = modal.querySelector('[data-action="save"]');
+    showLoading(saveButton);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/usuarios/${usuarioLogado.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ imagem: selectedAvatar }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status} - ${await response.text()}`);
+      }
+
+      const updatedUserFromServer = await response.json();
+
+      // Atualiza a imagem no objeto usuarioLogado global e no localStorage com dados do servidor
+      usuarioLogado.imagem = updatedUserFromServer.imagem;
+      localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
+
+      // Atualiza a imagem de perfil na UI (sidebar e modal preview)
+      const profileAvatarElement = document.querySelector(".profile-avatar");
+      if (profileAvatarElement) {
+        profileAvatarElement.src = usuarioLogado.imagem;
+      }
+      const perfilImagemPreviewSidebar = document.getElementById("perfilImagemPreview");
+      if (perfilImagemPreviewSidebar) {
+        perfilImagemPreviewSidebar.src = usuarioLogado.imagem;
+      }
+      if (preview) { // preview dentro do modal
+        preview.src = usuarioLogado.imagem;
+      }
+      
+      // Atualiza a imagem no header, se existir (exemplo)
+      const headerUserImage = document.querySelector('.header-user-image'); // Supondo que exista tal classe
+      if (headerUserImage) {
+        headerUserImage.src = usuarioLogado.imagem;
+      }
+
+      modal.classList.remove("active");
+      // O showFeedback original estava atrelado ao profileAvatar, o que pode não ser ideal se ele não for um form-group
+      // Poderia ser melhor atrelar ao saveButton ou ao modal content
+      showFeedback(saveButton.closest('.avatar-modal-content') || saveButton, "Avatar atualizado com sucesso!", "success");
+
+    } catch (error) {
+      console.error("Erro ao salvar avatar:", error);
+      // Feedback de erro
+       showFeedback(saveButton.closest('.avatar-modal-content') || saveButton, "Erro ao salvar avatar.", "error");
+    } finally {
+      hideLoading(saveButton);
+    }
   });
 
   // Cancelar
@@ -857,5 +1040,5 @@ function gerarPixQrCode(pixKey, container, isLink = false, valor = 10) {
 }
 
 // Inicialização
-preencherPerfil();
+// preencherPerfil(); // Já chamado no DOMContentLoaded
 desabilitarEdicao();
