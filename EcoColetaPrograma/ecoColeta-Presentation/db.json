@@ -52,6 +52,20 @@
       "imagem": "",
       "emailVerificado": false,
       "id": 4
+    },
+    {
+      "nome": "Samuel Maciel da Silva Figueiredo",
+      "email": "samuelfigsre@gmail.com",
+      "telefone": "(31) 99226-8649",
+      "cep": "32602-384",
+      "endereco": "Rua São Salvador, Cachoeira",
+      "cidade": "Betim",
+      "estado": "MG",
+      "tipoUsuario": "doador",
+      "senha": "Samuca02.",
+      "imagem": "",
+      "emailVerificado": false,
+      "id": 5
     }
   ],
   "pontosDeColeta": [
