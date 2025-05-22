@@ -13,7 +13,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 // Ícone personalizado
 var iconeColeta = L.icon({
-  iconUrl: "assets/img/icone-coleta.svg",
+  iconUrl: "./assets/img/icone-coleta.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
@@ -163,12 +163,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Lista de filtros disponíveis
   const filtrosDisponiveis = [
-    { nome: "Plástico", valor: "plastico", icone: "../../assets/img/plastico.svg" },
+    {
+      nome: "Plástico",
+      valor: "plastico",
+      icone: "../../assets/img/plastico.svg",
+    },
     { nome: "Papel", valor: "papel", icone: "../../assets/img/papel.svg" },
     { nome: "Vidro", valor: "vidro", icone: "../../assets/img/vidro.svg" },
     { nome: "Pilhas", valor: "pilhas", icone: "../../assets/img/pilha.svg" },
-    { nome: "Eletrônicos", valor: "eletronicos", icone: "../../assets/img/eletronicos.svg" },
-    { nome: "Baterias", valor: "baterias", icone: "../../assets/img/bateria.svg" },  
+    {
+      nome: "Eletrônicos",
+      valor: "eletronicos",
+      icone: "../../assets/img/eletronicos.svg",
+    },
+    {
+      nome: "Baterias",
+      valor: "baterias",
+      icone: "../../assets/img/bateria.svg",
+    },
     { nome: "Óleo", valor: "oleo", icone: "../../assets/img/oleo.svg" },
     { nome: "Metal", valor: "metal", icone: "../../assets/img/metal.svg" },
   ];

@@ -35,16 +35,15 @@ body {
   flex-direction: column;
   font-family: "Poppins", "Roboto", "Montserrat", Arial, sans-serif;
 }
-.leaflet-top, .leaflet-bottom {
+.leaflet-top,
+.leaflet-bottom {
   position: absolute;
-  z-index: 1000; 
+  z-index: 1000;
   pointer-events: none;
 }
 .leaflet-control-attribution {
   display: none;
-
 }
-
 
 /* Layout principal */
 .main {
@@ -315,17 +314,33 @@ body {
   color: #000000;
 }
 
-.icon-location,
-.icon-clock,
+.icon-location {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-color: #059669;
+  mask: url("../../public/assets/img/location.svg") no-repeat center / contain;
+  -webkit-mask: url("../../public/assets/img/location.svg") no-repeat center /
+    contain;
+}
+
+.icon-clock {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  background-color: #059669;
+  mask: url("../../public/assets/img/relogio.svg") no-repeat center / contain;
+  -webkit-mask: url("../../public/assets/img/relogio.svg") no-repeat center /
+    contain;
+}
 .icon-phone {
   width: 16px;
   height: 16px;
   margin-right: 8px;
   background-color: #059669;
-  mask-size: contain;
-  -webkit-mask-size: contain;
-  mask-repeat: no-repeat;
-  -webkit-mask-repeat: no-repeat;
+  mask: url("../../public/assets/img/phone.svg") no-repeat center / contain;
+  -webkit-mask: url("../../public/assets/img/phone.svg") no-repeat center /
+    contain;
 }
 
 .materiais {
