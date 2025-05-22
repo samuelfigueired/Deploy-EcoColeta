@@ -13,7 +13,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 // Ícone personalizado
 var iconeColeta = L.icon({
-  iconUrl: "./assets/img/icone-coleta.svg",
+  iconUrl: "./assets/img/icone-coleta.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
