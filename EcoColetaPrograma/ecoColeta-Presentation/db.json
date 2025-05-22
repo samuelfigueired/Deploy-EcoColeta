@@ -1,5 +1,4 @@
 {
-
   "usuarios": [
     {
       "id": 1,
@@ -23,9 +22,10 @@
       "estado": "MG",
       "tipoUsuario": "doador",
       "senha": "2603Betim#2",
-      "imagem": "",
+      "imagem": "assets/img/avatarCaique.jpg",
       "emailVerificado": false,
-      "id": 2
+      "id": 2,
+      "bio": "n sei oque não sei oque la\n"
     },
     {
       "nome": "Matheus Augusto",

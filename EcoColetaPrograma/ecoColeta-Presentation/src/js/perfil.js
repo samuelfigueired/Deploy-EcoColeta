@@ -23,12 +23,12 @@ const imagemPreview = document.getElementById("perfilImagemPreview");
 
 // Avatares pré-definidos
 const defaultAvatars = [
-  "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/e9c40d169f51fbec65745ba627609365d0101de8",
-  "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/7c3b0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
-  "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/8d4b0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
-  "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/9e5b0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
-  "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/0f6c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
-  "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/1g7d0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
+  "assets/img/AvatarArthurzin.jpg",
+  "assets/img/avatarCaique.jpg",
+  "assets/img/AvatarThiagão.jpg",
+  "assets/img/AvatarArthurzin.jpg",
+  "assets/img/avatarCaique.jpg",
+  "assets/img/AvatarThiagão.jpg",
 ];
 
 // Função para mostrar feedback visual
@@ -66,16 +66,13 @@ function validateForm(form) {
 
   return isValid;
 }
-
 // Função para mostrar loading
 function showLoading(element) {
   element.classList.add("loading");
 }
-
 function hideLoading(element) {
   element.classList.remove("loading");
 }
-
 // Função para alternar entre as tabs com animação
 function switchTab(tabName) {
   const content = document.querySelector(".tab-content");
@@ -259,14 +256,10 @@ function switchTab(tabName) {
           const pixAmountBtns = paymentForm.querySelectorAll(".btn-pix-amount");
 
           // Chaves PIX
-          const PIX_LINK_10 =
-            "https://nubank.com.br/cobrar/2zkc72/682cf078-6f61-4bdb-a0a0-e5dcf8947ec9";
-          const PIX_LINK_15 =
-            "https://nubank.com.br/cobrar/2zkc72/682cf00c-0df3-4ed2-95c9-e418abda4a92";
-          const PIX_LINK_20 =
-            "https://nubank.com.br/cobrar/2zkc72/682cf08d-92ba-4233-91f4-39208335b24d";
-          const PIX_LINK_40 =
-            "https://nubank.com.br/cobrar/2zkc72/682cef8f-dae2-4c40-b11e-fa91145856b2";
+          const PIX_LINK_10 = "../../assets/img/papel.svg";
+          const PIX_LINK_15 = "../../assets/img/papel.svg";
+          const PIX_LINK_20 = "../../assets/img/papel.svg";
+          const PIX_LINK_40 = "../../assets/img/papel.svg";
           const PIX_KEY_VALUE = "02275388621";
 
           // Valor padrão
@@ -586,10 +579,10 @@ async function preencherPerfil() {
     // Atualiza avatar/imagem
     const profileAvatar = document.querySelector(".profile-avatar");
     if (profileAvatar) {
-      if (usuario.imagem) {
+      if (usuario.imagem && usuario.imagem !== "") {
         profileAvatar.src = usuario.imagem;
       } else {
-        // Define uma imagem padrão se não houver imagem
+        // Usa um avatar padrão se não houver imagem
         profileAvatar.src = defaultAvatars[0];
       }
     }
@@ -794,7 +787,7 @@ function exibirDoacoesRecentes() {
     const doacoes = valores.map((valor, i) => ({
       tipo: tipos[i % 2],
       valor,
-      detalhes: tipos[i % 2] === 'PIX' ? { link: 'https://nubank.com.br/cobrar/2zkc72/682cf078-6f61-4bdb-a0a0-e5dcf8947ec9' } : { numero: '**** **** **** 1234', nome: 'Matheus Augusto', validade: '12/25', cvv: '123' },
+      detalhes: tipos[i % 2] === 'PIX' ? { link: '../../assets/img/papel.svg",e5dcf8947ec9' } : { numero: '**** **** **** 1234', nome: 'Matheus Augusto', validade: '12/25', cvv: '123' },
       data: new Date(agora.getTime() - i * 86400000).toISOString() // dias anteriores
     }));
     localStorage.setItem(key, JSON.stringify(doacoes));
@@ -827,7 +820,7 @@ document.addEventListener("submit", async (e) => {
     if (tipo === "PIX") {
       const btnAtivo = form.querySelector(".btn-pix-amount.active");
       valor = btnAtivo ? parseInt(btnAtivo.getAttribute("data-valor")) : 10;
-      detalhes = { link: btnAtivo ? btnAtivo.dataset.link : "" };
+      detalhes = { link: PIX_KEY_VALUE };
     } else {
       valor = 0; // Valor não definido para cartão, pode ser ajustado se necessário
       detalhes = {
@@ -1018,9 +1011,7 @@ function initAvatarModal() {
 function gerarPixQrCode(pixKey, container, isLink = false, valor = 10) {
   let url;
   if (isLink) {
-    url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-      pixKey
-    )}`;
+    url = pixKey; // agora pixKey é o link da imagem
   } else {
     // Gera payload PIX dinâmico com valor
     const nome = "EcoColeta";
@@ -1032,9 +1023,7 @@ function gerarPixQrCode(pixKey, container, isLink = false, valor = 10) {
         2,
         "0"
       )}${pixKey}5204000053039865404${valorStr}5802BR5910${nome}6006${cidade}62070503***6304`;
-    url = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-      payload
-    )}`;
+    url = "../../assets/img/papel.svg";
   }
   container.innerHTML = `<img src="${url}" alt="QR Code PIX" style="width:200px;height:200px;" />`;
 }
