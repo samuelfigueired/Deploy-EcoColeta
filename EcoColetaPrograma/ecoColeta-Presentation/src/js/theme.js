@@ -9,6 +9,9 @@ function toggleDarkMode() {
 }
 
 // Aplica tema salvo ao carregar
-if (localStorage.getItem("theme") === "dark") {
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme === "dark") {
   document.body.classList.add("dark-mode");
+} else {
+  document.body.classList.remove("dark-mode");
 }

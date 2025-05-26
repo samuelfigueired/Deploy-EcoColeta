@@ -1,428 +1,401 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EcoColeta</title>
-    <link rel="icon" type="image/png" href="assets/img/logo.svg">
-    <link rel="stylesheet" href="../src/css/doacoes.css" />
-    <link rel="stylesheet" href="../src/css/navFooter.css" />
-    <meta
-      name="description"
-      content="EcoColeta - Transformando a reciclagem em uma experiência recompensadora"
-    />
-  </head>
-  <body>
-    <div class="app-container">
-      <main>
-        <!-- Hero Section -->
-        <section class="hero">
-          <div class="hero-container">
-            <div class="hero-text">
-              <h1 class="hero-title">Pequenas atitudes, grande impacto</h1>
-              <p class="hero-description">
-                Sua doação nos ajuda a promover a reciclagem, preservar o meio
-                ambiente e conscientizar a comunidade. Cada contribuição conta!
-              </p>
-              <div class="hero-buttons">
-                <button class="primary-button">Doe agora</button>
-                <button class="secondary-button">Saber mais</button>
-              </div>
-            </div>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/762a7f6408592d2be8cacf156dd8978e6899b721"
-              alt="Eco-friendly illustration"
-              class="hero-image"
-            />
-          </div>
-        </section>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DoarComAmor - Pequenas atitudes, grande impacto</title>
+  <link rel="stylesheet" href="../src/css/doacoes.css">
+  <link rel="stylesheet" href="../src/css/navFooter.css">
+</head>
+<body>
+  <!-- Barra de progresso de rolagem -->
+  <div id="scroll-progress" aria-hidden="true"></div>
 
-        <!-- Donation Options Section -->
-        <section class="donation-options">
-          <h2 class="section-title">Escolha como você quer ajudar</h2>
-          <div class="cards-grid">
-            <!-- Monthly Donation Card -->
-            <div class="donation-card">
-              <div class="card-icon">
-                <svg
-                  width="41"
-                  height="36"
-                  viewBox="0 0 41 36"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clip-path="url(#clip0_126_198)">
-                    <path
-                      d="M11.0625 5.38594C11.0625 2.41172 13.4742 0 16.4484 0C17.8758 0 19.2469 0.569531 20.2523 1.575L20.9062 2.22891L21.5602 1.575C22.5656 0.569531 23.9367 0 25.3641 0C28.3383 0 30.75 2.41172 30.75 5.38594C30.75 6.81328 30.1805 8.18437 29.175 9.18984L21.8977 16.4602C21.3492 17.0086 20.4562 17.0086 19.9078 16.4602L12.6375 9.18984C11.632 8.18437 11.0625 6.81328 11.0625 5.38594ZM40.6078 23.6461C41.5289 24.8977 41.2617 26.6555 40.0102 27.5766L31.1086 34.1367C29.4633 35.3461 27.4805 36 25.4344 36H14.1562H2.90625C1.66172 36 0.65625 34.9945 0.65625 33.75V29.25C0.65625 28.0055 1.66172 27 2.90625 27H5.49375L8.65078 24.4688C10.2469 23.1891 12.2297 22.5 14.2758 22.5H19.7812H20.9062H25.4062C26.6508 22.5 27.6562 23.5055 27.6562 24.75C27.6562 25.9945 26.6508 27 25.4062 27H20.9062H19.7812C19.1625 27 18.6562 27.5063 18.6562 28.125C18.6562 28.7437 19.1625 29.25 19.7812 29.25H28.2609L36.6773 23.0484C37.9289 22.1273 39.6867 22.3945 40.6078 23.6461ZM14.2688 27H14.2055C14.2266 27 14.2477 27 14.2688 27Z"
-                      fill="#059669"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_126_198">
-                      <path d="M0 0H40.5V36H0V0Z" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
-              <h3 class="card-title">Doação Mensal</h3>
-              <p class="card-description">
-                Apoie nossa causa com uma doação mensal recorrente
-              </p>
-              <div class="option-buttons">
-                <button class="option-button">R$10/mensal</button>
-                <button class="option-button selected">R$25/mensal</button>
-                <button class="option-button">R$50/mensal</button>
-              </div>
+  
+  <main>
+    <!-- Hero Section -->
+    <section id="hero">
+      <div class="container">
+        <h1>Pequenas atitudes, <br><span>grande impacto</span></h1>
+        <p>Sua doação nos ajuda a promover a reciclagem, preservar o meio ambiente e conscientizar a comunidade. Cada contribuição conta!</p>
+        <div class="hero-actions">
+          <button type="button" class="btn-primary">Doe agora</button>
+          <button type="button" class="btn-secondary">Saber mais</button>
+        </div>
+        <div class="scroll-indicator">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="32" height="32">
+            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"></path>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section id="impacto">
+      <div class="container">
+        <header>
+          <h2>Seu impacto em tempo real</h2>
+          <p>Acompanhe como sua contribuição está transformando vidas e ajudando o planeta.</p>
+        </header>
+
+        <div class="impact-meter">
+          <div class="impact-header">
+            <div class="impact-amount">
+              <h3>Total arrecadado</h3>
+              <div class="amount-display">R$ 125.750</div>
             </div>
 
-            <!-- One Time Donation Card -->
-            <div class="donation-card">
-              <div class="card-icon">
-                <svg
-                  width="42"
-                  height="36"
-                  viewBox="0 0 42 36"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clip-path="url(#clip0_126_210)">
-                    <path
-                      d="M11.0625 5.38594C11.0625 2.41172 13.4742 0 16.4484 0C17.8758 0 19.2469 0.569531 20.2523 1.575L20.9062 2.22891L21.5602 1.575C22.5656 0.569531 23.9367 0 25.3641 0C28.3383 0 30.75 2.41172 30.75 5.38594C30.75 6.81328 30.1805 8.18437 29.175 9.18984L21.8977 16.4602C21.3492 17.0086 20.4562 17.0086 19.9078 16.4602L12.6375 9.18984C11.632 8.18437 11.0625 6.81328 11.0625 5.38594ZM40.6078 23.6461C41.5289 24.8977 41.2617 26.6555 40.0102 27.5766L31.1086 34.1367C29.4633 35.3461 27.4805 36 25.4344 36H14.1562H2.90625C1.66172 36 0.65625 34.9945 0.65625 33.75V29.25C0.65625 28.0055 1.66172 27 2.90625 27H5.49375L8.65078 24.4688C10.2469 23.1891 12.2297 22.5 14.2758 22.5H19.7812H20.9062H25.4062C26.6508 22.5 27.6562 23.5055 27.6562 24.75C27.6562 25.9945 26.6508 27 25.4062 27H20.9062H19.7812C19.1625 27 18.6562 27.5063 18.6562 28.125C18.6562 28.7437 19.1625 29.25 19.7812 29.25H28.2609L36.6773 23.0484C37.9289 22.1273 39.6867 22.3945 40.6078 23.6461ZM14.2688 27H14.2055C14.2266 27 14.2477 27 14.2688 27Z"
-                      fill="#059669"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_126_210">
-                      <path d="M0.65625 0H41.1562V36H0.65625V0Z" fill="white" />
-                    </clipPath>
-                  </defs>
-                </svg>
+            <div class="impact-stats">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                  </svg>
+                </div>
+                <div class="stat-number">1.243</div>
+                <div class="stat-label">Doadores</div>
               </div>
-              <h3 class="card-title">Doação única</h3>
-              <p class="card-description">
-                Faça uma única doação para ajudar o nosso lindo meio-ambiente
-              </p>
-              <div class="option-buttons">
-                <button class="option-button">R$50</button>
-                <button class="option-button selected">R$100</button>
-                <button class="option-button">R$200</button>
-              </div>
-            </div>
 
-            <!-- Other Causes Card -->
-            <div class="donation-card">
-              <div class="card-icon">
-                <svg
-                  width="37"
-                  height="36"
-                  viewBox="0 0 37 36"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g clip-path="url(#clip0_126_222)">
-                    <path
-                      d="M16.2537 6.53202C17.2591 9.54843 16.2326 12.593 13.9615 13.3383C11.6904 14.0836 9.03256 12.2414 8.0271 9.22499C7.02163 6.20858 8.04819 3.16405 10.3193 2.41874C12.5904 1.67343 15.2482 3.51561 16.2537 6.53202ZM7.38725 13.9641C8.71616 16.2422 8.39272 18.893 6.67006 19.8773C4.94741 20.8617 2.47241 19.8141 1.15053 17.5359C-0.171342 15.2578 0.138033 12.607 1.86069 11.6226C3.58335 10.6383 6.05835 11.6859 7.38022 13.9641H7.38725ZM5.1935 28.2094C8.87788 18.2742 15.424 15.75 18.3279 15.75C21.2318 15.75 27.7779 18.2742 31.4623 28.2094C31.7154 28.8914 31.8279 29.6226 31.8279 30.3539V30.4664C31.8279 32.2805 30.3583 33.75 28.5443 33.75C27.7357 33.75 26.9341 33.6516 26.1537 33.4547L19.9662 31.9078C18.8904 31.6406 17.7654 31.6406 16.6896 31.9078L10.5021 33.4547C9.72163 33.6516 8.92006 33.75 8.11147 33.75C6.29741 33.75 4.82788 32.2805 4.82788 30.4664V30.3539C4.82788 29.6226 4.94038 28.8914 5.1935 28.2094ZM29.9857 19.8773C28.263 18.893 27.9396 16.2422 29.2685 13.9641C30.5974 11.6859 33.0654 10.6383 34.788 11.6226C36.5107 12.607 36.8341 15.2578 35.5052 17.5359C34.1763 19.8141 31.7083 20.8617 29.9857 19.8773ZM22.1318 13.3383C19.8607 12.593 18.8341 9.54843 19.8396 6.53202C20.8451 3.51561 23.5029 1.67343 25.774 2.41874C28.0451 3.16405 29.0716 6.20858 28.0662 9.22499C27.0607 12.2414 24.4029 14.0836 22.1318 13.3383Z"
-                      fill="#059669"
-                    />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_126_222">
-                      <path
-                        d="M0.328125 0H36.3281V36H0.328125V0Z"
-                        fill="white"
-                      />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </div>
-              <h3 class="card-title">Outras Causas</h3>
-              <p class="card-description">
-                Ajude plantando uma árvore em locais apropriados. Temos
-                parceiros que nos fornecem:
-              </p>
-              <div class="option-buttons">
-                <button class="option-button">Áreas de plantio</button>
-                <button class="option-button selected">sementes</button>
-                <button class="option-button">vasos</button>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"></path>
+                  </svg>
+                </div>
+                <div class="stat-number">18</div>
+                <div class="stat-label">Projetos</div>
               </div>
             </div>
           </div>
-        </section>
 
-        <!-- Impact Stats Section -->
-        <section class="impact-stats">
-          <h2 class="section-title">Seu Impacto</h2>
-          <div class="stats-grid">
-            <div class="stat-item">
-              <div class="stat-value">2,500+</div>
-              <div class="stat-label">Árvores Salvas</div>
+          <div class="progress-section">
+            <div class="progress-info">
+              <span>63% da meta</span>
+              <span>Meta: R$ 200.000</span>
             </div>
-            <div class="stat-item">
-              <div class="stat-value">R$150K</div>
-              <div class="stat-label">Doações recebidas</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 63%"></div>
             </div>
-            <div class="stat-item">
-              <div class="stat-value">1,200</div>
-              <div class="stat-label">Doadores Ativos</div>
-            </div>
-            <div class="stat-item">
-              <div class="stat-value">98%</div>
-              <div class="stat-label">Fundos para programas</div>
+
+            <div class="milestones">
+              <div class="milestone achieved">25%</div>
+              <div class="milestone achieved">50%</div>
+              <div class="milestone">75%</div>
             </div>
           </div>
-        </section>
 
-        <!-- Rewards Banner Section -->
-        <section class="rewards-banner">
-          <div class="rewards-content">
-            <h2 class="rewards-title">Ganhe recompensas pela sua gentileza</h2>
-            <p class="rewards-description">
-              Obtenha benefícios exclusivos e reconhecimento pelo seu apoio
-              contínuo ao nosso amigo meio-ambiente
-            </p>
-            <button class="rewards-button">Veja seus pontos</button>
+          <div class="impact-footer">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+              <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path>
+            </svg>
+            <span><strong>1.243</strong> pessoas já contribuíram. Junte-se a elas!</span>
           </div>
-        </section>
+        </div>
+      </div>
+    </section>
 
-        <!-- Reward Levels Section -->
-        <section class="reward-levels">
-          <h2 class="section-title">Níveis de recompensas</h2>
-          <div class="rewards-grid">
-            <!-- Bronze Tier -->
-            <div class="reward-tier bronze">
-              <div class="tier-icon">Bronze Icon</div>
-              <h3 class="tier-title">Bronze</h3>
-              <p class="tier-points">0-100 pontos</p>
-              <div class="tier-benefits">
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Boletim Mensal</span>
+    <!-- Donation Options -->
+    <section id="causas">
+      <div class="container">
+        <header>
+          <h2>Escolha como você quer ajudar</h2>
+          <p>Personalize sua contribuição e veja o impacto direto que ela terá.</p>
+        </header>
+
+        <div class="tabs-container">
+          <div class="tabs-nav" role="tablist">
+            <button type="button" id="tab-monthly" class="tab-button active" role="tab" aria-selected="true" aria-controls="panel-monthly">Doação Mensal</button>
+            <button type="button" id="tab-single" class="tab-button" role="tab" aria-selected="false" aria-controls="panel-single">Doação única</button>
+            <button type="button" id="tab-other" class="tab-button" role="tab" aria-selected="false" aria-controls="panel-other">Outras Causas</button>
+          </div>
+
+          <div id="panel-monthly" class="tab-content active" role="tabpanel" aria-labelledby="tab-monthly">
+            <p class="tab-description">"Sua doação mensal proporciona estabilidade aos nossos projetos e permite planejamento a longo prazo."</p>
+
+            <div class="donation-cards">
+              <article class="donation-card">
+                <div class="card-header">
+                  <div class="card-icon">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+                      <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"></path>
+                    </svg>
+                  </div>
+                  <div class="card-amount">
+                    <span class="amount">R$10</span>
+                    <span class="period">/mensal</span>
+                  </div>
                 </div>
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Distintivo Digital</span>
+                <div class="card-content">
+                  <p class="card-description">Alimenta uma família por um dia</p>
+                  <p class="card-impact">Você ajudará 30 pessoas por mês</p>
                 </div>
-              </div>
+                <button type="button" class="card-btn">Selecionar</button>
+              </article>
+
+              <article class="donation-card highlighted">
+                <div class="card-highlight"></div>
+                <div class="card-header">
+                  <div class="card-icon">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+                      <path d="M17 8c.7 0 1.38.18 2 .5V3c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2v5.5c.62-.32 1.3-.5 2-.5h10zm0 2H7c-1.66 0-3 1.34-3 3v6c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-6c0-1.66-1.34-3-3-3zm-7 1c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm7 7H7v-1c0-1.33 2.67-2 4-2s4 .67 4 2v1z"></path>
+                    </svg>
+                  </div>
+                  <div class="card-amount">
+                    <span class="amount">R$25</span>
+                    <span class="period">/mensal</span>
+                  </div>
+                  <div class="selected-indicator">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                    </svg>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <p class="card-description">Planta 5 árvores por mês</p>
+                  <p class="card-impact">Você compensará 60kg de CO2 por mês</p>
+                </div>
+                <button type="button" class="card-btn selected">Selecionado</button>
+              </article>
+
+              <article class="donation-card">
+                <div class="card-header">
+                  <div class="card-icon">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+                      <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"></path>
+                    </svg>
+                  </div>
+                  <div class="card-amount">
+                    <span class="amount">R$50</span>
+                    <span class="period">/mensal</span>
+                  </div>
+                </div>
+                <div class="card-content">
+                  <p class="card-description">Fornece material escolar para 10 crianças</p>
+                  <p class="card-impact">Você transformará o futuro de 120 crianças por ano</p>
+                </div>
+                <button type="button" class="card-btn">Selecionar</button>
+              </article>
             </div>
 
-            <!-- Silver Tier -->
-            <div class="reward-tier silver">
-              <div class="tier-icon">Silver Icon</div>
-              <h3 class="tier-title">Prata</h3>
-              <p class="tier-points">101-250 pontos</p>
-              <div class="tier-benefits">
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Benefícios do Bronze</span>
-                </div>
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Presente trimestral</span>
-                </div>
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Suporte Prioritário</span>
-                </div>
+            <!-- Donation Form -->
+            <form class="donation-form">
+              <div class="form-header">
+                <h3>Faça sua doação personalizada</h3>
               </div>
-            </div>
 
-            <!-- Gold Tier -->
-            <div class="reward-tier gold">
-              <div class="tier-icon">Gold Icon</div>
-              <h3 class="tier-title">Ouro</h3>
-              <p class="tier-points">251-500 pontos</p>
-              <div class="tier-benefits">
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Benefícios do Prata</span>
+              <div class="form-step active">
+                <div class="form-group">
+                  <label>Escolha uma causa</label>
+                  <div class="cause-options">
+                    <button type="button" class="cause-option selected">
+                      <div class="cause-icon">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+                          <path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"></path>
+                        </svg>
+                      </div>
+                      <span>Combate à Fome</span>
+                    </button>
+                    <button type="button" class="cause-option">
+                      <div class="cause-icon">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+                          <path d="M17 8c.7 0 1.38.18 2 .5V3c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2v5.5c.62-.32 1.3-.5 2-.5h10zm0 2H7c-1.66 0-3 1.34-3 3v6c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-6c0-1.66-1.34-3-3-3zm-7 1c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm7 7H7v-1c0-1.33 2.67-2 4-2s4 .67 4 2v1z"></path>
+                        </svg>
+                      </div>
+                      <span>Meio Ambiente</span>
+                    </button>
+                    <button type="button" class="cause-option">
+                      <div class="cause-icon">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+                          <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"></path>
+                        </svg>
+                      </div>
+                      <span>Educação</span>
+                    </button>
+                  </div>
                 </div>
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Eventos Exclusivos</span>
-                </div>
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Nome no site</span>
-                </div>
-              </div>
-            </div>
 
-            <!-- Platinum Tier -->
-            <div class="reward-tier platinum">
-              <div class="tier-icon">Platinum Icon</div>
-              <h3 class="tier-title">Platinum</h3>
-              <p class="tier-points">500+ pontos</p>
-              <div class="tier-benefits">
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Benefícios do ouro</span>
+                <div class="form-group">
+                  <label>Valor da doação mensal</label>
+                  <div class="amount-options">
+                    <label class="amount-option">
+                      <input type="radio" name="amount" value="10">
+                      <span>R$ 10</span>
+                    </label>
+                    <label class="amount-option selected">
+                      <input type="radio" name="amount" value="25" checked>
+                      <span>R$ 25</span>
+                    </label>
+                    <label class="amount-option">
+                      <input type="radio" name="amount" value="50">
+                      <span>R$ 50</span>
+                    </label>
+                    <label class="amount-option">
+                      <input type="radio" name="amount" value="100">
+                      <span>R$ 100</span>
+                    </label>
+                  </div>
+
+                  <div class="custom-amount">
+                    <span class="currency-symbol">R$</span>
+                    <input type="text" placeholder="Outro valor">
+                  </div>
                 </div>
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Acesso VIP</span>
+
+                <button type="button" class="btn-continue">Continuar</button>
+              </div>
+
+              <div class="form-step">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="name">Nome completo</label>
+                    <input type="text" id="name" placeholder="Seu nome">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com">
+                  </div>
                 </div>
-                <div class="benefit-item">
-                  <svg
-                    width="12"
-                    height="14"
-                    viewBox="0 0 13 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.9931 2.88202C12.3349 3.22382 12.3349 3.77889 11.9931 4.12069L4.99307 11.1207C4.65127 11.4625 4.09619 11.4625 3.75439 11.1207L0.254395 7.62069C-0.0874023 7.27889 -0.0874023 6.72382 0.254395 6.38202C0.596191 6.04022 1.15127 6.04022 1.49307 6.38202L4.3751 9.26132L10.7571 2.88202C11.0989 2.54022 11.654 2.54022 11.9958 2.88202H11.9931Z"
-                      fill="#10B981"
-                    />
-                  </svg>
-                  <span class="benefit-text">Vantagens personalizadas</span>
+
+                <div class="donation-summary">
+                  <div class="summary-header">
+                    <p>Resumo da doação</p>
+                    <p>Doação mensal</p>
+                  </div>
+                  <div class="summary-amount">
+                    R$ 25<span>/mês</span>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn-back">Voltar</button>
+                  <button type="submit" class="btn-submit">
+                    Finalizar doação
+                    <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                    </svg>
+                  </button>
                 </div>
               </div>
+            </form>
+          </div>
+
+          <div id="panel-single" class="tab-content" role="tabpanel" aria-labelledby="tab-single">
+            <!-- Conteúdo similar ao panel-monthly, mas para doação única -->
+            <p class="tab-description">"Uma única doação pode fazer toda a diferença para quem precisa de ajuda imediata."</p>
+            
+            <div class="donation-cards">
+              <!-- Cards de doação única -->
+            </div>
+            
+            <!-- Formulário de doação única -->
+          </div>
+
+          <div id="panel-other" class="tab-content" role="tabpanel" aria-labelledby="tab-other">
+            <!-- Conteúdo para outras formas de doação -->
+            <p class="tab-description">"Além de doações financeiras, você pode contribuir de outras formas significativas."</p>
+            
+            <div class="donation-cards">
+              <!-- Cards de outras formas de doação -->
             </div>
           </div>
-        </section>
+        </div>
+      </div>
+    </section>
 
-        
-        <section class="points-earning">
-          <h2 class="section-title">Como ganhar pontos</h2>
-          <div class="earning-grid">
-            <div class="earning-method">
-              <div class="method-icon">Donation Icon</div>
-              <h3 class="method-title">Doações</h3>
-              <p class="method-description">
-                Ganhe 1 ponto para cada R$5 doado.
-              </p>
+    <!-- Story Timeline -->
+    <section id="historia">
+      <div class="container">
+        <header>
+          <h2>Veja onde sua doação vai parar</h2>
+          <p>Acompanhe a jornada da sua contribuição e o impacto real que ela causa.</p>
+        </header>
+
+        <div class="timeline">
+          <div class="timeline-line"></div>
+
+          <article class="timeline-item">
+            <div class="timeline-dot">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+              </svg>
             </div>
-            <div class="earning-method">
-              <div class="method-icon">Volunteer Icon</div>
-              <h3 class="method-title">Voluntário</h3>
-              <p class="method-description">
-                Ganhe 50 pontos por cada hora sendo voluntariado
-              </p>
+            <div class="timeline-content">
+              <h3>Sua doação é recebida</h3>
+              <p>Seu apoio financeiro é processado com segurança e transparência.</p>
             </div>
-            <div class="earning-method">
-              <div class="method-icon">Referral Icon</div>
-              <h3 class="method-title">Indicações</h3>
-              <p class="method-description">
-                Ganhe 100 pontos para cada nova indicação de doador
-              </p>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-dot">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M17 8c.7 0 1.38.18 2 .5V3c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2v5.5c.62-.32 1.3-.5 2-.5h10zm0 2H7c-1.66 0-3 1.34-3 3v6c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-6c0-1.66-1.34-3-3-3zm-7 1c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm7 7H7v-1c0-1.33 2.67-2 4-2s4 .67 4 2v1z"></path>
+              </svg>
             </div>
-          </div>
-        </section>
-      </main>
-      <script src="https://js.stripe.com/v3/"></script>
-      <script src="../src/js/navFooter.js"></script>
-      <script src="../src/js/doacoes.js"></script>
-      <script src="../src/js/theme.js"></script>
+            <div class="timeline-content">
+              <h3>Recursos são alocados</h3>
+              <p>98% dos recursos são direcionados diretamente para os projetos.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-dot">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"></path>
+              </svg>
+            </div>
+            <div class="timeline-content">
+              <h3>Projetos são implementados</h3>
+              <p>Equipes locais trabalham para implementar as iniciativas.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-dot">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+              </svg>
+            </div>
+            <div class="timeline-content">
+              <h3>Impacto é medido</h3>
+              <p>Monitoramos e avaliamos o impacto de cada projeto.</p>
+            </div>
+          </article>
+
+          <article class="timeline-item">
+            <div class="timeline-dot">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"></path>
+              </svg>
+            </div>
+            <div class="timeline-content">
+              <h3>Você recebe feedback</h3>
+              <p>Enviamos relatórios detalhados sobre o impacto da sua contribuição.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+   
+
+    <!-- Floating CTA -->
+    <div class="floating-cta">
+      <button type="button" class="btn-floating">
+        Doe agora
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+        </svg>
+      </button>
     </div>
-  </body>
+  </main>
+
+
+  <!-- Confetti Effect (hidden) -->
+  <div id="confetti-container" aria-hidden="true"></div>
+   <script src="../src/js/navFooter.js"></script>
+  <script src="../src/js/doacoes.js"></script>
+  <script src="../src/js/theme.js"></script>
+  
+</body>
 </html>
