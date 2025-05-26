@@ -161,6 +161,10 @@ body {
     padding: 2rem;
   }
 }
+.footer {
+  display: none;
+  
+}
 
 .page-title {
   font-size: 1.5rem;
