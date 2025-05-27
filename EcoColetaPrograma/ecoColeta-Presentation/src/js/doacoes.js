@@ -43,7 +43,11 @@ const AppState = {
   donationCount: 0,
   totalDonated: 0,
   userLevel: 'bronze',
-  userPoints: 0
+  userPoints: 0,
+  selectedPaymentMethod: 'credit',
+  savedPaymentData: null,
+  userEmail: '',
+  userName: ''
 };
 
 // Cache de elementos DOM para performance
@@ -65,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function() {
   initHeroAnimations();
   initImpactMeter();
   initTabs();
-  initDonationCards();
-  initDonationForm();
+  initDonationCards();  initDonationForm();
+  initPaymentSystem();
   initTimeline();
   initBadgeSystem();
   initFloatingCTA();
@@ -104,11 +108,16 @@ function cacheElements() {
   Elements.submitBtn = document.querySelector('.btn-submit');
   Elements.backBtn = document.querySelector('.btn-back');
   Elements.timelineItems = document.querySelectorAll('.timeline-item');
-  Elements.badgeTabs = document.querySelectorAll('.badge-tab');
-  Elements.badgePanels = document.querySelectorAll('.badge-panel');
+  Elements.badgeTabs = document.querySelectorAll('.badge-tab');  Elements.badgePanels = document.querySelectorAll('.badge-panel');
   Elements.floatingCTA = document.querySelector('.floating-cta');
   Elements.soundToggle = document.getElementById('toggle-sound');
   Elements.confettiContainer = document.getElementById('confetti-container');
+  
+  // Elementos de método de pagamento
+  Elements.paymentMethods = document.querySelectorAll('.payment-method');
+  Elements.paymentContainer = document.querySelector('.payment-container');
+  Elements.savedPaymentInfo = document.querySelector('.saved-payment-info');
+  Elements.useSavedPayment = document.querySelector('#use-saved-payment');
 }
 
 // ============================================================================
@@ -723,8 +732,13 @@ function validateStep2() {
   
   const isNameValid = nameInput && validateName(nameInput.value);
   const isEmailValid = emailInput && validateEmail(emailInput.value);
+  const isPaymentValid = validatePaymentMethod();
   
-  return isNameValid && isEmailValid;
+  if (!isPaymentValid) {
+    showNotification('Por favor, complete os dados de pagamento', 'error');
+  }
+  
+  return isNameValid && isEmailValid && isPaymentValid;
 }
 
 function updateFormValidation() {
@@ -818,6 +832,518 @@ function resetDonationForm() {
 }
 
 // ============================================================================
+// SISTEMA DE PAGAMENTO E DADOS SALVOS
+// ============================================================================
+
+function initPaymentSystem() {
+  // Carregar dados salvos do usuário logado
+  loadSavedUserData();
+  
+  // Verificar se há métodos de pagamento salvos
+  checkSavedPaymentMethods();
+  
+  // Inicializar eventos de método de pagamento
+  initPaymentMethodEvents();
+}
+
+function loadSavedUserData() {
+  // Buscar usuário logado no localStorage
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+  
+  if (usuarioLogado) {
+    AppState.userName = usuarioLogado.nome || '';
+    AppState.userEmail = usuarioLogado.email || '';
+    
+    // Preencher dados automaticamente no formulário se disponíveis
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    
+    if (nameInput && AppState.userName) {
+      nameInput.value = AppState.userName;
+      nameInput.setAttribute('data-auto-filled', 'true');
+    }
+    
+    if (emailInput && AppState.userEmail) {
+      emailInput.value = AppState.userEmail;
+      emailInput.setAttribute('data-auto-filled', 'true');
+    }
+    
+    // Carregar dados de pagamento salvos
+    if (usuarioLogado.cartao) {
+      AppState.savedPaymentData = {
+        type: 'credit',
+        ...usuarioLogado.cartao
+      };
+    } else if (usuarioLogado.pix) {
+      AppState.savedPaymentData = {
+        type: 'pix',
+        ...usuarioLogado.pix
+      };
+    }
+  }
+}
+
+function checkSavedPaymentMethods() {
+  if (AppState.savedPaymentData) {
+    // Mostrar opção de usar dados salvos
+    showSavedPaymentOption();
+  }
+}
+
+function showSavedPaymentOption() {
+  if (!AppState.savedPaymentData) return;
+  
+  // Criar seção de dados salvos se não existir
+  let savedPaymentSection = document.querySelector('.saved-payment-section');
+  
+  if (!savedPaymentSection) {
+    const formStep2 = document.querySelector('.form-step:nth-child(2)');
+    const summaryElement = formStep2?.querySelector('.donation-summary');
+    
+    if (summaryElement) {
+      savedPaymentSection = document.createElement('div');
+      savedPaymentSection.className = 'saved-payment-section';
+      savedPaymentSection.innerHTML = generateSavedPaymentHTML();
+      
+      // Inserir antes do resumo da doação
+      summaryElement.parentNode.insertBefore(savedPaymentSection, summaryElement);
+      
+      // Adicionar eventos
+      initSavedPaymentEvents();
+    }
+  }
+}
+
+function generateSavedPaymentHTML() {
+  const paymentData = AppState.savedPaymentData;
+  const isCredit = paymentData.type === 'credit';
+  
+  return `
+    <div class="payment-methods">
+      <h4>Método de pagamento</h4>
+      
+      <div class="saved-payment-option">
+        <label class="payment-method-card saved-payment active">
+          <input type="radio" name="payment-method" value="saved" checked>
+          <div class="payment-method-content">
+            <div class="payment-method-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24">
+                ${isCredit ? 
+                  '<path fill="currentColor" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>' :
+                  '<path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'
+                }
+              </svg>
+            </div>
+            <div class="payment-method-details">
+              <div class="payment-method-title">
+                ${isCredit ? 'Cartão salvo' : 'PIX salvo'}
+                <span class="saved-badge">Salvo</span>
+              </div>
+              <div class="payment-method-subtitle">
+                ${isCredit ? 
+                  `**** **** **** ${paymentData.numero?.slice(-4) || '****'}` :
+                  paymentData.email || 'PIX configurado'
+                }
+              </div>
+            </div>
+            <div class="payment-method-security">
+              <svg viewBox="0 0 24 24" width="16" height="16">
+                <path fill="currentColor" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9L10,17Z"/>
+              </svg>
+              <span>Dados protegidos</span>
+            </div>
+          </div>
+        </label>
+      </div>
+      
+      <div class="alternative-payment-options">
+        <button type="button" class="btn-alt-payment">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+          </svg>
+          Usar outro método
+        </button>
+      </div>
+    </div>
+    
+    <div class="new-payment-methods" style="display: none;">
+      <div class="payment-method-tabs">
+        <button type="button" class="payment-tab active" data-method="credit">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+          </svg>
+          Cartão de Crédito
+        </button>
+        <button type="button" class="payment-tab" data-method="pix">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          PIX
+        </button>
+      </div>
+      
+      <div class="payment-content">
+        <div class="payment-form credit-form active">
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="card-number">Número do cartão</label>
+              <input type="text" id="card-number" placeholder="**** **** **** ****" maxlength="19">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-name">Nome no cartão</label>
+              <input type="text" id="card-name" placeholder="Nome completo">
+            </div>
+            <div class="form-group">
+              <label for="card-expiry">Validade</label>
+              <input type="text" id="card-expiry" placeholder="MM/AA" maxlength="5">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-cvv">CVV</label>
+              <input type="text" id="card-cvv" placeholder="***" maxlength="4">
+            </div>
+            <div class="form-group">
+              <label class="checkbox-group">
+                <input type="checkbox" id="save-card">
+                <span class="checkmark"></span>
+                Salvar para próximas doações
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="payment-form pix-form">
+          <div class="pix-info">
+            <div class="pix-icon">
+              <svg viewBox="0 0 24 24" width="32" height="32">
+                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </div>
+            <div class="pix-details">
+              <h5>Pagamento via PIX</h5>
+              <p>Após finalizar, você receberá as instruções para pagamento via PIX</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="checkbox-group">
+              <input type="checkbox" id="save-pix">
+              <span class="checkmark"></span>
+              Salvar preferência PIX para próximas doações
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function initSavedPaymentEvents() {
+  // Botão para usar outro método
+  const altPaymentBtn = document.querySelector('.btn-alt-payment');
+  if (altPaymentBtn) {
+    altPaymentBtn.addEventListener('click', showAlternativePaymentMethods);
+  }
+  
+  // Tabs de método de pagamento
+  const paymentTabs = document.querySelectorAll('.payment-tab');
+  paymentTabs.forEach(tab => {
+    tab.addEventListener('click', function() {
+      switchPaymentTab(this.getAttribute('data-method'));
+    });
+  });
+  
+  // Formatação de inputs
+  initPaymentInputFormatting();
+  
+  // Validação em tempo real
+  initPaymentValidation();
+}
+
+function initPaymentMethodEvents() {
+  // Este método é chamado quando não há dados salvos
+  // Implementar inicialização de métodos de pagamento padrão se necessário
+}
+
+function showAlternativePaymentMethods() {
+  const savedOption = document.querySelector('.saved-payment-option');
+  const newMethods = document.querySelector('.new-payment-methods');
+  const altBtn = document.querySelector('.btn-alt-payment');
+  
+  if (savedOption && newMethods && altBtn) {
+    savedOption.style.display = 'none';
+    altBtn.style.display = 'none';
+    newMethods.style.display = 'block';
+    
+    // Desmarcar opção salva
+    const savedRadio = savedOption.querySelector('input[type="radio"]');
+    if (savedRadio) savedRadio.checked = false;
+    
+    AppState.selectedPaymentMethod = 'credit';
+    
+    // Animar entrada
+    newMethods.style.opacity = '0';
+    newMethods.style.transform = 'translateY(10px)';
+    
+    setTimeout(() => {
+      newMethods.style.transition = 'all 0.3s ease-out';
+      newMethods.style.opacity = '1';
+      newMethods.style.transform = 'translateY(0)';
+    }, 10);
+  }
+}
+
+function switchPaymentTab(method) {
+  AppState.selectedPaymentMethod = method;
+  
+  // Atualizar tabs
+  const tabs = document.querySelectorAll('.payment-tab');
+  tabs.forEach(tab => {
+    tab.classList.remove('active');
+    if (tab.getAttribute('data-method') === method) {
+      tab.classList.add('active');
+    }
+  });
+  
+  // Atualizar formulários
+  const forms = document.querySelectorAll('.payment-form');
+  forms.forEach(form => {
+    form.classList.remove('active');
+    if (form.classList.contains(`${method}-form`)) {
+      form.classList.add('active');
+    }
+  });
+}
+
+function initPaymentInputFormatting() {
+  // Formatação do número do cartão
+  const cardNumberInput = document.getElementById('card-number');
+  if (cardNumberInput) {
+    cardNumberInput.addEventListener('input', function() {
+      let value = this.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+      let formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+      if (formattedValue.length > 19) {
+        formattedValue = formattedValue.substring(0, 19);
+      }
+      this.value = formattedValue;
+    });
+  }
+  
+  // Formatação da validade
+  const cardExpiryInput = document.getElementById('card-expiry');
+  if (cardExpiryInput) {
+    cardExpiryInput.addEventListener('input', function() {
+      let value = this.value.replace(/\D/g, '');
+      if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+      }
+      this.value = value;
+    });
+  }
+  
+  // Formatação do CVV
+  const cardCvvInput = document.getElementById('card-cvv');
+  if (cardCvvInput) {
+    cardCvvInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').substring(0, 4);
+    });
+  }
+}
+
+function initPaymentValidation() {
+  const cardNumberInput = document.getElementById('card-number');
+  const cardNameInput = document.getElementById('card-name');
+  const cardExpiryInput = document.getElementById('card-expiry');
+  const cardCvvInput = document.getElementById('card-cvv');
+  
+  if (cardNumberInput) {
+    cardNumberInput.addEventListener('blur', function() {
+      validateCardNumber(this.value);
+    });
+  }
+  
+  if (cardNameInput) {
+    cardNameInput.addEventListener('blur', function() {
+      validateCardName(this.value);
+    });
+  }
+  
+  if (cardExpiryInput) {
+    cardExpiryInput.addEventListener('blur', function() {
+      validateCardExpiry(this.value);
+    });
+  }
+  
+  if (cardCvvInput) {
+    cardCvvInput.addEventListener('blur', function() {
+      validateCardCvv(this.value);
+    });
+  }
+}
+
+function validateCardNumber(number) {
+  const cleanNumber = number.replace(/\s/g, '');
+  
+  if (cleanNumber.length < 13 || cleanNumber.length > 19) {
+    showFieldError(document.getElementById('card-number'), 'Número do cartão inválido');
+    return false;
+  }
+  
+  // Validação Luhn Algorithm
+  if (!isValidCardNumber(cleanNumber)) {
+    showFieldError(document.getElementById('card-number'), 'Número do cartão inválido');
+    return false;
+  }
+  
+  clearFieldError(document.getElementById('card-number'));
+  return true;
+}
+
+function validateCardName(name) {
+  if (name.length < 2 || !name.includes(' ')) {
+    showFieldError(document.getElementById('card-name'), 'Nome completo é obrigatório');
+    return false;
+  }
+  
+  clearFieldError(document.getElementById('card-name'));
+  return true;
+}
+
+function validateCardExpiry(expiry) {
+  const [month, year] = expiry.split('/');
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear() % 100;
+  const currentMonth = currentDate.getMonth() + 1;
+  
+  if (!month || !year || month < 1 || month > 12) {
+    showFieldError(document.getElementById('card-expiry'), 'Data de validade inválida');
+    return false;
+  }
+  
+  const expYear = parseInt('20' + year);
+  const expMonth = parseInt(month);
+  const currentFullYear = currentDate.getFullYear();
+  
+  if (expYear < currentFullYear || (expYear === currentFullYear && expMonth < currentMonth)) {
+    showFieldError(document.getElementById('card-expiry'), 'Cartão expirado');
+    return false;
+  }
+  
+  clearFieldError(document.getElementById('card-expiry'));
+  return true;
+}
+
+function validateCardCvv(cvv) {
+  if (cvv.length < 3 || cvv.length > 4) {
+    showFieldError(document.getElementById('card-cvv'), 'CVV inválido');
+    return false;
+  }
+  
+  clearFieldError(document.getElementById('card-cvv'));
+  return true;
+}
+
+function isValidCardNumber(number) {
+  // Algoritmo de Luhn
+  let sum = 0;
+  let isEven = false;
+  
+  for (let i = number.length - 1; i >= 0; i--) {
+    let digit = parseInt(number.charAt(i));
+    
+    if (isEven) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    
+    sum += digit;
+    isEven = !isEven;
+  }
+  
+  return sum % 10 === 0;
+}
+
+function validatePaymentMethod() {
+  const savedPaymentRadio = document.querySelector('input[name="payment-method"][value="saved"]');
+  
+  if (savedPaymentRadio && savedPaymentRadio.checked) {
+    return true; // Dados salvos são válidos
+  }
+  
+  if (AppState.selectedPaymentMethod === 'credit') {
+    const cardNumber = document.getElementById('card-number')?.value;
+    const cardName = document.getElementById('card-name')?.value;
+    const cardExpiry = document.getElementById('card-expiry')?.value;
+    const cardCvv = document.getElementById('card-cvv')?.value;
+    
+    return validateCardNumber(cardNumber) &&
+           validateCardName(cardName) &&
+           validateCardExpiry(cardExpiry) &&
+           validateCardCvv(cardCvv);
+  } else if (AppState.selectedPaymentMethod === 'pix') {
+    return true; // PIX sempre válido
+  }
+  
+  return false;
+}
+
+function savePaymentData() {
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+  if (!usuarioLogado) return;
+  
+  const savedPaymentRadio = document.querySelector('input[name="payment-method"][value="saved"]');
+  
+  // Se está usando dados salvos, não precisa salvar novamente
+  if (savedPaymentRadio && savedPaymentRadio.checked) {
+    return;
+  }
+  
+  if (AppState.selectedPaymentMethod === 'credit') {
+    const saveCard = document.getElementById('save-card')?.checked;
+    
+    if (saveCard) {
+      usuarioLogado.cartao = {
+        numero: document.getElementById('card-number')?.value,
+        nome: document.getElementById('card-name')?.value,
+        validade: document.getElementById('card-expiry')?.value,
+        cvv: document.getElementById('card-cvv')?.value
+      };
+      
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+      
+      showNotification('Dados do cartão salvos com segurança', 'success');
+    }
+  } else if (AppState.selectedPaymentMethod === 'pix') {
+    const savePix = document.getElementById('save-pix')?.checked;
+    
+    if (savePix) {
+      usuarioLogado.pix = {
+        email: usuarioLogado.email,
+        preferencia: true
+      };
+      
+      localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+      
+      showNotification('Preferência PIX salva', 'success');
+    }
+  }
+}
+
+function getPaymentMethodDisplay() {
+  const savedPaymentRadio = document.querySelector('input[name="payment-method"][value="saved"]');
+  
+  if (savedPaymentRadio && savedPaymentRadio.checked && AppState.savedPaymentData) {
+    return AppState.savedPaymentData.type === 'credit' ? 'Cartão salvo' : 'PIX salvo';
+  }
+  
+  return AppState.selectedPaymentMethod === 'credit' ? 'Cartão de crédito' : 'PIX';
+}
+
+// ============================================================================
 // SUBMISSÃO DE DOAÇÃO E CONFIRMAÇÃO
 // ============================================================================
 
@@ -835,10 +1361,70 @@ function submitDonation() {
     Processando...
   `;
   
+  // Salvar dados de pagamento se necessário
+  savePaymentData();
+  
+  // Registrar doação no sistema do usuário se logado
+  registerUserDonation();
+  
   // Simular processamento
   setTimeout(() => {
     processDonationSuccess();
   }, 2000);
+}
+
+function registerUserDonation() {
+  const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+  if (!usuarioLogado) return;
+  
+  const donationData = {
+    tipo: getPaymentMethodDisplay(),
+    valor: parseFloat(AppState.selectedAmount),
+    detalhes: getPaymentDetails(),
+    data: new Date().toISOString(),
+    causa: AppState.selectedCause,
+    frequencia: AppState.currentTab
+  };
+  
+  // Registrar doação no histórico do usuário
+  const usuarioId = usuarioLogado.id || usuarioLogado.email;
+  const key = `doacoesRecentes_${usuarioId}`;
+  const doacoes = JSON.parse(localStorage.getItem(key)) || [];
+  
+  doacoes.unshift(donationData);
+  localStorage.setItem(key, JSON.stringify(doacoes.slice(0, 10))); // Manter apenas 10 doações
+  
+  console.log('Doação registrada para o usuário:', donationData);
+}
+
+function getPaymentDetails() {
+  const savedPaymentRadio = document.querySelector('input[name="payment-method"][value="saved"]');
+  
+  if (savedPaymentRadio && savedPaymentRadio.checked && AppState.savedPaymentData) {
+    if (AppState.savedPaymentData.type === 'credit') {
+      return {
+        numero: AppState.savedPaymentData.numero,
+        nome: AppState.savedPaymentData.nome,
+        validade: AppState.savedPaymentData.validade
+      };
+    } else {
+      return {
+        email: AppState.savedPaymentData.email || AppState.userEmail
+      };
+    }
+  }
+  
+  if (AppState.selectedPaymentMethod === 'credit') {
+    return {
+      numero: document.getElementById('card-number')?.value,
+      nome: document.getElementById('card-name')?.value,
+      validade: document.getElementById('card-expiry')?.value
+    };
+  } else {
+    return {
+      email: AppState.userEmail
+    };
+  }
 }
 
 function processDonationSuccess() {

@@ -65,9 +65,10 @@
       "estado": "MG",
       "tipoUsuario": "doador",
       "senha": "Samuca02.",
-      "imagem": "",
+      "imagem": "assets/img/AvatarScrollMaster.jpg",
       "emailVerificado": false,
-      "id": 5
+      "id": 5,
+      "bio": ""
     },
     {
       "nome": "Matheus Augusto",
@@ -81,13 +82,43 @@
       "senha": "12345678910",
       "imagem": "assets/img/AvatarScrollMaster.jpg",
       "emailVerificado": false,
-      "razaoSocial": "",
-      "cnpj": "",
-      "areaAtuacao": "",
+      "razaoSocial": "EcoColeta Matheus MEI",
+      "cnpj": "11.222.333/0001-44",
+      "areaAtuacao": "Betim - Bairros Novo Horizonte e Adjacências",
       "coletaDomiciliar": "sim",
-      "horarioColeta": "",
-      "materiaisColeta": [],
+      "horarioColeta": "Seg a Sex, 08:00-12:00 e 14:00-18:00",
+      "materiaisColeta": [
+        "papel",
+        "plástico",
+        "metal leve"
+      ],
       "id": 6
+    },
+    {
+      "nome": "Samuel Maciel da Silva Figueiredo",
+      "email": "samuelsilvamaciel02@gmail.com",
+      "telefone": "(31) 99226-8649",
+      "cep": "32602-384",
+      "endereco": "Rua São Salvador",
+      "cidade": "Betim",
+      "estado": "MG",
+      "tipoUsuario": "coletor",
+      "razaoSocial": "Organização EcoColeta",
+      "cnpj": "87.654.677/6565-55",
+      "areaAtuacao": "comercial",
+      "coletaDomiciliar": "nao",
+      "horarioColeta": "13h as 17h",
+      "materiaisColeta": [
+        "eletronicos",
+        "pilhas",
+        "baterias"
+      ],
+      "senha": "Samuca02.",
+      "imagem": "assets/img/AvatarThiagão.jpg",
+      "emailVerificado": false,
+      "dataCadastro": "2025-05-27T18:20:40.084Z",
+      "id": 7,
+      "ecopontoId": 31
     }
   ],
   "pontosDeColeta": [
@@ -107,7 +138,37 @@
       ],
       "contato": "(31) 3512-3000",
       "coletaDomiciliar": true,
-      "agenda": []
+      "agenda": [
+        {
+          "idAgenda": "agenda-ecoponto1-001",
+          "idUsuarioAgendamento": 2,
+          "dataHoraInicio": "2025-06-10T10:00:00Z",
+          "dataHoraFim": "2025-06-10T11:00:00Z",
+          "tipo": "coleta_agendada_empresa",
+          "descricao": "Coleta de papelão agendada pela Empresa Exemplo Ltda.",
+          "status": "agendado",
+          "materiais": [
+            "papelão"
+          ],
+          "contatoResponsavel": "Sr. Carlos (Empresa Exemplo)",
+          "observacoes": "Acesso pela doca dos fundos."
+        },
+        {
+          "idAgenda": "agenda-ecoponto1-002",
+          "idUsuarioAgendamento": 5,
+          "dataHoraInicio": "2025-06-12T14:00:00Z",
+          "dataHoraFim": "2025-06-12T14:30:00Z",
+          "tipo": "entrega_voluntaria_grande_volume",
+          "descricao": "Entrega de eletrônicos por Samuel.",
+          "status": "confirmado",
+          "materiais": [
+            "eletronicos",
+            "baterias"
+          ],
+          "contatoResponsavel": "Samuel Maciel",
+          "observacoes": "Necessário auxílio para descarregar."
+        }
+      ]
     },
     {
       "id": 2,
@@ -583,6 +644,24 @@
       "contato": "(31) 3512-3029",
       "coletaDomiciliar": false,
       "agenda": []
+    },
+    {
+      "nome": "Ecoponto Organização EcoColeta",
+      "lat": -19.962058,
+      "lng": -44.2210885,
+      "endereco": "Rua São Salvador, Betim - MG",
+      "horario": "13h as 17h",
+      "materiaisAceitos": [
+        "eletronicos",
+        "pilhas",
+        "baterias"
+      ],
+      "contato": "(31) 99226-8649",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "coletorId": 7,
+      "status": "ativo",
+      "id": 31
     }
   ],
   "donations": [
@@ -595,6 +674,135 @@
       "paymentId": "pay_123456",
       "date": "2024-03-20T10:30:00.000Z",
       "status": "completed"
+    },
+    {
+      "id": 2,
+      "amount": 75,
+      "name": "Maria Oliveira",
+      "email": "maria.oliveira@email.com",
+      "cpf": "987.654.321-00",
+      "paymentId": "pay_678901",
+      "date": "2025-05-15T14:00:00.000Z",
+      "status": "completed"
     }
-  ]
+  ],
+  "relatorios": [
+    {
+      "id": "rel_maio_2025_geral",
+      "titulo": "Relatório Mensal de Coletas - Maio 2025",
+      "dataGeracao": "2025-06-01T09:00:00Z",
+      "tipoRelatorio": "coleta_mensal_geral",
+      "periodo": {
+        "inicio": "2025-05-01T00:00:00Z",
+        "fim": "2025-05-31T23:59:59Z"
+      },
+      "dados": {
+        "totalColetadoKg": 1850,
+        "detalhePorMaterial": [
+          {
+            "material": "plástico",
+            "quantidadeKg": 800,
+            "valorEstimadoReais": 400
+          },
+          {
+            "material": "papel",
+            "quantidadeKg": 550,
+            "valorEstimadoReais": 220
+          },
+          {
+            "material": "vidro",
+            "quantidadeKg": 300,
+            "valorEstimadoReais": 90
+          },
+          {
+            "material": "metal",
+            "quantidadeKg": 200,
+            "valorEstimadoReais": 300
+          }
+        ],
+        "topPontosColeta": [
+          {
+            "idPontoColeta": 1,
+            "nomePontoColeta": "Ecoponto Central Betim",
+            "totalColetadoKg": 400
+          },
+          {
+            "idPontoColeta": 7,
+            "nomePontoColeta": "Ecoponto Riacho",
+            "totalColetadoKg": 350
+          }
+        ],
+        "coletasDomiciliaresRealizadas": 45,
+        "novosUsuariosNoPeriodo": 3
+      },
+      "geradoPor": "sistema_automatico"
+    }
+  ],
+  "dashboardData": {
+    "visaoGeral": {
+      "totalUsuarios": 6,
+      "totalColetoresAtivos": 1,
+      "totalPontosColeta": 30,
+      "totalDoacoesMesCorrente": 1,
+      "valorTotalDoadoMesCorrente": 75
+    },
+    "desempenho": {
+      "coletasRealizadasMesCorrente": 150,
+      "novosUsuariosMesCorrente": 2,
+      "taxaReciclagemEstimadaPercentual": 68,
+      "materiaisMaisColetadosMesCorrente": [
+        {
+          "material": "Plástico",
+          "quantidade": "800 kg"
+        },
+        {
+          "material": "Papel",
+          "quantidade": "550 kg"
+        },
+        {
+          "material": "Vidro",
+          "quantidade": "300 kg"
+        }
+      ]
+    },
+    "ultimasAtividades": [
+      {
+        "idAtividade": "act_003",
+        "tipo": "nova_doacao",
+        "descricao": "Nova doação de R$75.00 recebida de Maria Oliveira.",
+        "data": "2025-05-15T14:00:00.000Z",
+        "link": "/donations/2"
+      },
+      {
+        "idAtividade": "act_002",
+        "tipo": "novo_usuario_coletor",
+        "descricao": "Matheus Augusto (coletor) atualizou seu perfil.",
+        "data": "2025-05-10T09:30:00Z",
+        "link": "/usuarios/6"
+      },
+      {
+        "idAtividade": "act_001",
+        "tipo": "novo_ponto_coleta",
+        "descricao": "Ecoponto Jardim Brasília adicionado.",
+        "data": "2025-05-05T16:00:00Z",
+        "link": "/pontosDeColeta/30"
+      }
+    ],
+    "alertasImportantes": [
+      {
+        "idAlerta": "alert_001",
+        "severidade": "alta",
+        "mensagem": "Capacidade do Ecoponto Central atingindo 90%.",
+        "data": "2025-05-25T08:00:00Z",
+        "acaoRecomendada": "Agendar coleta extra ou desvio de material."
+      },
+      {
+        "idAlerta": "alert_002",
+        "severidade": "media",
+        "mensagem": "Novo tipo de material (resíduos de construção civil) solicitado para coleta por 3 usuários.",
+        "data": "2025-05-24T11:00:00Z",
+        "acaoRecomendada": "Avaliar viabilidade de inclusão."
+      }
+    ]
+  }
 }
