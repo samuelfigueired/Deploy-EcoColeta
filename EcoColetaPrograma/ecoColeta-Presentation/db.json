@@ -138,6 +138,7 @@
       ],
       "contato": "(31) 3512-3000",
       "coletaDomiciliar": true,
+      "criadoPor": 2,
       "agenda": [
         {
           "idAgenda": "agenda-ecoponto1-001",
@@ -146,7 +147,7 @@
           "dataHoraFim": "2025-06-10T11:00:00Z",
           "tipo": "coleta_agendada_empresa",
           "descricao": "Coleta de papelão agendada pela Empresa Exemplo Ltda.",
-          "status": "agendado",
+          "status": "confirmado",
           "materiais": [
             "papelão"
           ],
@@ -184,6 +185,7 @@
       ],
       "contato": "(31) 3512-3001",
       "coletaDomiciliar": false,
+      "criadoPor": 7,
       "agenda": []
     },
     {
@@ -201,7 +203,38 @@
       ],
       "contato": "(31) 3512-3002",
       "coletaDomiciliar": true,
-      "agenda": []
+      "criadoPor": 2,
+      "agenda": [
+        {
+          "idAgenda": "agenda-ecoponto3-001",
+          "idUsuarioAgendamento": 3,
+          "dataHoraInicio": "2025-05-28T09:00:00Z",
+          "dataHoraFim": "2025-05-28T10:00:00Z",
+          "tipo": "coleta_agendada_empresa",
+          "descricao": "Coleta de equipamentos eletrônicos da empresa Tech Solutions",
+          "status": "agendado",
+          "materiais": [
+            "eletronicos",
+            "baterias"
+          ],
+          "contatoResponsavel": "João Tech Solutions",
+          "observacoes": "Equipamentos pesados, necessário caminhão."
+        },
+        {
+          "idAgenda": "agenda-ecoponto3-002",
+          "idUsuarioAgendamento": 4,
+          "dataHoraInicio": "2025-05-29T14:00:00Z",
+          "dataHoraFim": "2025-05-29T15:30:00Z",
+          "tipo": "entrega_voluntaria_grande_volume",
+          "descricao": "Entrega de sucata metálica por empresa local",
+          "status": "confirmado",
+          "materiais": [
+            "metal"
+          ],
+          "contatoResponsavel": "Maria Silva",
+          "observacoes": "Material já separado e catalogado."
+        }
+      ]
     },
     {
       "id": 4,
@@ -662,6 +695,132 @@
       "coletorId": 7,
       "status": "ativo",
       "id": 31
+    },
+    {
+      "nome": "Eco Point * 3",
+      "endereco": "Rua São Salvador, Cachoeira, Betim - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "papel",
+        "vidro",
+        "pilhas"
+      ],
+      "contato": "(31) 99226-8649",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "lat": -19.96065504361038,
+      "lng": -44.204491729823346,
+      "id": 32
+    },
+    {
+      "nome": "Eco teste",
+      "endereco": "Rua São Salvador, Niteroi, Betim - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "plastico",
+        "eletronicos",
+        "pilhas"
+      ],
+      "contato": "(31) 99226-8649",
+      "coletaDomiciliar": true,
+      "agenda": [],
+      "lat": -19.96293787082152,
+      "lng": -44.20422085958715,
+      "id": 33
+    },
+    {
+      "nome": "Eco teste",
+      "endereco": "Rua Cravo, Vianópolis, Betim - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "pilhas"
+      ],
+      "contato": "(31) 99226-8649",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "lat": -19.975836382330492,
+      "lng": -44.20379575334571,
+      "id": 34
+    },
+    {
+      "nome": "Teste 2",
+      "endereco": "Rua Begônia, Vianópolis, Betim - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro"
+      ],
+      "contato": "(31) 99226-8649",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "lat": -19.966894423648945,
+      "lng": -44.19588467550427,
+      "id": 35
+    },
+    {
+      "nome": "Teste 3",
+      "endereco": "Rua Antúrio, Vianópolis, Betim - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "papel",
+        "pilhas"
+      ],
+      "contato": "(31) 99226-8649",
+      "coletaDomiciliar": true,
+      "agenda": [],
+      "lat": -19.948694,
+      "lng": -44.2721425,
+      "id": 36
+    },
+    {
+      "nome": "teste 5",
+      "endereco": "Rua Antúrio, Vianópolis, Betim - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "vidro"
+      ],
+      "contato": "(19) 99999-9999",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "lat": -19.973318256807175,
+      "lng": -44.19756726922341,
+      "id": 37
+    },
+    {
+      "nome": "Teste 44",
+      "endereco": "Rua Alberto Passini Filho, Vianópolis, Betim - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "plastico",
+        "papel",
+        "baterias"
+      ],
+      "contato": "(31) 92222-2222",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "lat": -19.958044097233515,
+      "lng": -44.18935578578149,
+      "id": 38
+    },
+    {
+      "nome": "Mineirao",
+      "endereco": "Praça Augusto César Sandino, Mineirão, Belo Horizonte - MG",
+      "horario": "08:00 - 18:00",
+      "materiaisAceitos": [
+        "papel",
+        "pilhas"
+      ],
+      "contato": "(31) 99999-9999",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "lat": -19.97669986378522,
+      "lng": -44.19887672871801,
+      "id": 39
     }
   ],
   "donations": [
