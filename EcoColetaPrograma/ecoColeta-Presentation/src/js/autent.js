@@ -237,10 +237,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Função unificada para processar login social
   async function handleSocialLogin(userData) {
-    try {
-      // Verifica se o usuário já existe
+    try {      // Verifica se o usuário já existe
       const response = await fetch(
-        `http://localhost:3000/usuarios?email=${encodeURIComponent(
+        `http://localhost:3000/api/usuarios?email=${encodeURIComponent(
           userData.email
         )}`
       );
@@ -249,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
       let usuario;
       if (usuarios.length === 0) {
         // Cria novo usuário
-        const createResponse = await fetch("http://localhost:3000/usuarios", {
+        const createResponse = await fetch("http://localhost:3000/api/usuarios", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -263,17 +262,16 @@ document.addEventListener("DOMContentLoaded", function () {
           throw new Error("Erro ao criar usuário");
         }
         usuario = await createResponse.json();
-      } else {
-        usuario = usuarios[0];
+      } else {        usuario = usuarios[0];
         // Atualiza informações do usuário se necessário
         if (userData.provider === "google" && !usuario.googleId) {
-          await fetch(`http://localhost:3000/usuarios/${usuario.id}`, {
+          await fetch(`http://localhost:3000/api/usuarios/${usuario.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ googleId: userData.googleId }),
           });
         } else if (userData.provider === "facebook" && !usuario.facebookId) {
-          await fetch(`http://localhost:3000/usuarios/${usuario.id}`, {
+          await fetch(`http://localhost:3000/api/usuarios/${usuario.id}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ facebookId: userData.facebookId }),
@@ -314,11 +312,9 @@ document.addEventListener("DOMContentLoaded", function () {
   loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
     const email = loginForm.email.value;
-    const senha = loginForm.senha.value;
-
-    try {
+    const senha = loginForm.senha.value;    try {
       const response = await fetch(
-        `http://localhost:3000/usuarios?email=${encodeURIComponent(email)}`
+        `http://localhost:3000/api/usuarios?email=${encodeURIComponent(email)}`
       );
       const usuarios = await response.json();
       if (usuarios.length === 0) {
@@ -358,10 +354,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const tipoUsuario = formData.get("tipoUsuario");
 
       // Verifica se o e-mail já está cadastrado
-      const email = formData.get("email");
-      try {
+      const email = formData.get("email");      try {
         const verificaResponse = await fetch(
-          `http://localhost:3000/usuarios?email=${encodeURIComponent(email)}`
+          `http://localhost:3000/api/usuarios?email=${encodeURIComponent(email)}`
         );
         const usuariosExistentes = await verificaResponse.json();
         if (usuariosExistentes.length > 0) {
@@ -409,10 +404,8 @@ document.addEventListener("DOMContentLoaded", function () {
         usuario.coletaDomiciliar = formData.get("coletaDomiciliar");
         usuario.horarioColeta = formData.get("horarioColeta");
         usuario.materiaisColeta = materiaisColeta;
-      }
-
-      try {
-        const response = await fetch("http://localhost:3000/usuarios", {
+      }      try {
+        const response = await fetch("http://localhost:3000/api/usuarios", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(usuario),

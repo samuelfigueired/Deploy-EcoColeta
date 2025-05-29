@@ -50,14 +50,13 @@ class DashboardAdmin {
     adjustLayout();
     window.addEventListener("resize", adjustLayout);
   }
-
   // Carregamento de dados da API
   async loadAllData() {
     try {
       const [usuariosRes, pontosRes, donationsRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/usuarios`),
-        fetch(`${API_BASE_URL}/pontosDeColeta`),
-        fetch(`${API_BASE_URL}/donations`)
+        fetch(`${API_BASE_URL}/api/usuarios`),
+        fetch(`${API_BASE_URL}/api/pontosDeColeta`),
+        fetch(`${API_BASE_URL}/api/donations`)
       ]);
 
       this.usuarios = await usuariosRes.json();

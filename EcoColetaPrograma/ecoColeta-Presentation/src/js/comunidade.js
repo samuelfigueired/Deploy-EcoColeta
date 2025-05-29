@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const containerContribuintes = document.querySelector(".contribuintes-container");
   const containerHistorias = document.querySelector(".historias-container");
 
+  // Configuração da API
+  const API_BASE_URL = "http://localhost:3000/api";
+
   const topContribuintes = [
     { 
         nome: "João Silva", 
@@ -32,48 +35,124 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  const comunidades = [
-    {
-      titulo: "Mutirão de Reciclagem no Bairro Verde",
-      descricao: "Conseguimos reciclar mais de 1 tonelada de materiais em um único dia!",
-      autor: "Carlos Lima",
-      tag: "Projeto Comunitário",
-      imagemProjeto: "https://placehold.co/300x150",
-      fotoAutor: "https://placehold.co/1"
-    },
-    {
-      titulo: "Oficina de Programação para Jovens",
-      descricao: "Capacitamos mais de 100 adolescentes com noções básicas de lógica e web.",
-      autor: "Maria Oliveira",
-      tag: "Educação",
-      imagemProjeto: "https://placehold.co/300x150",
-      fotoAutor: "https://placehold.co/1"
-    },
-    {
-      titulo: "Horta Urbana Colaborativa",
-      descricao: "Moradores se uniram para cultivar alimentos orgânicos na cidade.",
-      autor: "João Silva",
-      tag: "Sustentabilidade",
-      imagemProjeto: "https://placehold.co/300x150",
-      fotoAutor: "https://placehold.co/1"
-    },
-    {
-      titulo: "Feira de Trocas Solidárias",
-      descricao: "Evento promoveu a economia circular com trocas justas entre moradores.",
-      autor: "Ana Souza",
-      tag: "Economia Local",
-      imagemProjeto: "https://placehold.co/300x150",
-      fotoAutor: "https://placehold.co/1"
-    },
-    {
-      titulo: "Campanha de Doação de Sangue",
-      descricao: "Mais de 200 bolsas de sangue foram arrecadadas em um fim de semana.",
-      autor: "Lucas Pereira",
-      tag: "Saúde",
-      imagemProjeto: "https://placehold.co/300x150",
-      fotoAutor: "https://placehold.co/1"
-    },
-  ];
+  // Função para carregar comunidades da API
+  async function carregarComunidades() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/comunidades`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const comunidades = await response.json();
+      exibirComunidades(comunidades);
+    } catch (error) {
+      console.error("Erro ao carregar comunidades:", error);
+      // Fallback para dados estáticos em caso de erro
+      const comunidadesFallback = [
+        {
+          id: 1,
+          nome: "Mutirão de Reciclagem no Bairro Verde",
+          descricao: "Conseguimos reciclar mais de 1 tonelada de materiais em um único dia!",
+          tipo: "projeto-comunitario",
+          autor: { nome: "Carlos Lima", foto: "https://placehold.co/80" },
+          banner: "https://placehold.co/300x150",
+          curtidas: 89,
+          comentarios: 23,
+          membros: 127
+        }
+      ];
+      exibirComunidades(comunidadesFallback);
+    }
+  }
+  // Função para exibir comunidades
+  function exibirComunidades(comunidades) {
+    containerHistorias.innerHTML = "";
+    comunidades.forEach((comunidade) => {
+      const tipoFormatado = formatarTipo(comunidade.tipo);
+      
+      // Verificar se a imagem do banner existe e é válida
+      let bannerSrc = 'https://placehold.co/300x150';
+      if (comunidade.banner && comunidade.banner.trim() !== '') {
+        // Se é uma URL válida ou data URL (base64)
+        if (comunidade.banner.startsWith('http') || comunidade.banner.startsWith('data:')) {
+          bannerSrc = comunidade.banner;
+        }
+      }
+      
+      // Verificar se a foto do autor existe e é válida
+      let autorFotoSrc = 'https://placehold.co/80';
+      if (comunidade.autor && comunidade.autor.foto && comunidade.autor.foto.trim() !== '') {
+        if (comunidade.autor.foto.startsWith('http') || comunidade.autor.foto.startsWith('data:')) {
+          autorFotoSrc = comunidade.autor.foto;
+        }
+      }
+      
+      containerHistorias.innerHTML += `
+        <a href="detalhe-comunidade.html?id=${comunidade.id}" class="historia-card">
+          <img src="${bannerSrc}" alt="Imagem da comunidade" onerror="this.src='https://placehold.co/300x150'"/>
+          <div class="historia-card-content">
+            <span class="tag">${tipoFormatado}</span>
+            <h3>${comunidade.nome}</h3>
+            <p>${comunidade.descricao}</p>
+            <div class="autor">
+              <img src="${autorFotoSrc}" alt="Foto de ${comunidade.autor ? comunidade.autor.nome : 'Autor'}" onerror="this.src='https://placehold.co/80'">
+              <p>Por ${comunidade.autor ? comunidade.autor.nome : 'Autor Desconhecido'}</p>
+              <div class="icones">
+                <i class="fa-regular fa-heart"></i>
+                <span>${comunidade.curtidas || 0}</span>
+                <i class="fa-regular fa-comment"></i>
+                <span>${comunidade.comentarios || 0}</span>
+                <i class="fa-regular fa-users"></i>
+                <span>${comunidade.membros || 0}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      `;
+    });
+  }
+
+  // Função para formatar o tipo da comunidade
+  function formatarTipo(tipo) {
+    const tipos = {
+      'projeto-comunitario': 'Projeto Comunitário',
+      'educacao': 'Educação',
+      'sustentabilidade': 'Sustentabilidade',
+      'economia-local': 'Economia Local',
+      'saude': 'Saúde'
+    };
+    return tipos[tipo] || tipo;
+  }
+
+  // Função para adicionar nova comunidade
+  async function adicionarComunidade(dadosComunidade) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/comunidades`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosComunidade)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const novaComunidade = await response.json();
+      console.log('Comunidade criada com sucesso:', novaComunidade);
+      
+      // Recarregar a lista de comunidades
+      carregarComunidades();
+      
+      return novaComunidade;
+    } catch (error) {
+      console.error('Erro ao criar comunidade:', error);
+      throw error;
+    }
+  }
+
+  // Expor função globalmente para uso em outras páginas
+  window.adicionarComunidade = adicionarComunidade;
 
   // Popula Top Contribuintes
   containerContribuintes.innerHTML = "";
@@ -86,28 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
   });
-
-  // Popula Histórias em Destaque
-  containerHistorias.innerHTML = "";
-  comunidades.forEach((h, index) => {
-    containerHistorias.innerHTML += `
-      <a href="detalhe-historia.html?id=${index}" class="historia-card">
-        <img src="${h.imagemProjeto}" alt="Imagem do projeto"/>
-        <div class="historia-card-content">
-          <span class="tag">${h.tag}</span>
-          <h3>${h.titulo}</h3>
-          <p>${h.descricao}</p>
-          <div class="autor">
-            <img src="${h.fotoAutor}" alt="Foto de ${h.autor}">
-            <p>Por ${h.autor}</p>
-            <div class="icones">
-              <i class="fa-regular fa-heart"></i>
-              <i class="fa-regular fa-comment"></i>
-              <i class="fa-regular fa-bookmark"></i>
-            </div>
-          </div>
-        </div>
-      </a>
-    `;
-  });
+  // Carregar e exibir comunidades da API
+  carregarComunidades();
 });

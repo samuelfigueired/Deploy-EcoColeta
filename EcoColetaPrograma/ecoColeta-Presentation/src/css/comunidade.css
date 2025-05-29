@@ -38,6 +38,40 @@ h2 {
   color: #333;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.btn-criar-comunidade {
+  background: linear-gradient(135deg, #04aa6d 0%, #047857 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(4, 170, 109, 0.3);
+}
+
+.btn-criar-comunidade:hover {
+  background: linear-gradient(135deg, #059669 0%, #065f46 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(4, 170, 109, 0.4);
+}
+
+.btn-criar-comunidade i {
+  font-size: 0.9em;
+}
+
 .contribuintes-container {
   display: flex;
   gap: 20px;
@@ -165,6 +199,18 @@ h2 {
     min-width: 100px; /* mantém tamanho visível ao rolar */
     flex-shrink: 0;
   }
+
+  /* Responsivo para seção header */
+  .section-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .btn-criar-comunidade {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* DARK MODE SUAVE PADRÃO ECOPONTO - AJUSTES DE CONTRASTE ENTRE CONTAINERS */
@@ -251,8 +297,14 @@ body.dark-mode .btn-secondary {
   border: none !important;
 }
 body.dark-mode .btn-primary:hover,
-body.dark-mode .btn-secondary:hover {
+body.dark-mode .btn-secondary:hover,
+body.dark-mode .btn-criar-comunidade:hover {
   background: #10b981 !important;
+}
+body.dark-mode .btn-criar-comunidade {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  color: #fff !important;
+  border: none !important;
 }
 body.dark-mode .form-input,
 body.dark-mode .form-textarea,
