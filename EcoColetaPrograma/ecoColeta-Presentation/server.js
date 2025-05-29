@@ -4,14 +4,92 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const jsonServer = require('json-server');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const jsonServerRouter = jsonServer.router('db.json');
 const jsonServerMiddlewares = jsonServer.defaults();
 
-app.use(cors());
+// Configuração do multer para upload de imagens
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, 'public', 'uploads', 'comunidades');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'banner-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB
+  },
+  fileFilter: function (req, file, cb) {
+    const allowedTypes = /jpeg|jpg|png/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Apenas arquivos JPEG e PNG são permitidos'));
+    }
+  }
+});
+
+// Configuração completa do CORS
+const corsOptions = {
+  origin: [
+    'http://localhost:5500',    // Live Server padrão
+    'http://127.0.0.1:5500',   // Live Server alternativo
+    'http://localhost:5501',    // Live Server porta alternativa
+    'http://127.0.0.1:5501',   // Live Server porta alternativa
+    'http://localhost:3000',    // Próprio servidor
+    'http://127.0.0.1:3000',   // Próprio servidor
+    'http://localhost:8080',    // Outra porta comum
+    'http://127.0.0.1:8080'    // Outra porta comum
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+
+// Middleware para logs de requisições (útil para debug)
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url} - Origin: ${req.headers.origin || 'no-origin'}`);
+  next();
+});
+
 app.use(bodyParser.json());
-app.use(express.static('src'));
+app.use(express.static('public')); // Servir arquivos estáticos da pasta public
+app.use('/src', express.static('src')); // Servir arquivos CSS e JS
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+
+// Configuração específica do JSON Server com CORS
+app.use('/api', (req, res, next) => {
+  // Headers CORS específicos para JSON Server
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
+  // Responder OPTIONS requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200);
+  } else {
+    next();
+  }
+});
 
 // JSON Server routes
 app.use('/api', jsonServerMiddlewares, jsonServerRouter);
@@ -51,6 +129,268 @@ app.post('/api/donations', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// Comunidades endpoints
+// GET todas as comunidades com paginação e filtros
+app.get('/api/comunidades', (req, res) => {
+  try {
+    const { page = 1, limit = 10, tipo, autor, status = 'ativa' } = req.query;
+    const offset = (page - 1) * limit;
+    
+    let comunidades = jsonServerRouter.db.get('comunidades').value() || [];
+    
+    // Filtros
+    if (tipo) {
+      comunidades = comunidades.filter(c => c.tipo === tipo);
+    }
+    if (autor) {
+      comunidades = comunidades.filter(c => c.autor.nome.toLowerCase().includes(autor.toLowerCase()));
+    }
+    if (status) {
+      comunidades = comunidades.filter(c => c.status === status);
+    }
+    
+    // Ordenar por data de criação (mais recente primeiro)
+    comunidades.sort((a, b) => new Date(b.dataCriacao) - new Date(a.dataCriacao));
+    
+    // Paginação
+    const total = comunidades.length;
+    const paginatedComunidades = comunidades.slice(offset, offset + parseInt(limit));
+    
+    res.json({
+      comunidades: paginatedComunidades,
+      pagination: {
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+        itemsPerPage: parseInt(limit)
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar comunidades', details: error.message });
+  }
+});
+
+// GET comunidade específica por ID
+app.get('/api/comunidades/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const comunidade = jsonServerRouter.db.get('comunidades').find({ id: parseInt(id) }).value();
+    
+    if (!comunidade) {
+      return res.status(404).json({ error: 'Comunidade não encontrada' });
+    }
+    
+    // Incrementar visualizações
+    jsonServerRouter.db.get('comunidades')
+      .find({ id: parseInt(id) })
+      .assign({ visualizacoes: (comunidade.visualizacoes || 0) + 1 })
+      .write();
+    
+    res.json(comunidade);
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao buscar comunidade', details: error.message });
+  }
+});
+
+// POST criar nova comunidade
+app.post('/api/comunidades', upload.single('banner'), async (req, res) => {
+  try {
+    const { nome, descricao, tipo, regras, autorId, autorNome, autorEmail, autorFoto } = req.body;
+    
+    // Validações
+    if (!nome || nome.trim().length < 3) {
+      return res.status(400).json({ error: 'Nome da comunidade deve ter pelo menos 3 caracteres' });
+    }
+    
+    if (!descricao || descricao.trim().length < 20) {
+      return res.status(400).json({ error: 'Descrição deve ter pelo menos 20 caracteres' });
+    }
+    
+    if (!tipo) {
+      return res.status(400).json({ error: 'Tipo da comunidade é obrigatório' });
+    }
+    
+    if (!autorNome || !autorEmail) {
+      return res.status(400).json({ error: 'Dados do autor são obrigatórios' });
+    }
+    
+    // Verificar se já existe uma comunidade com o mesmo nome
+    const existingCommunity = jsonServerRouter.db.get('comunidades')
+      .find({ nome: nome.trim() })
+      .value();
+    
+    if (existingCommunity) {
+      return res.status(409).json({ error: 'Já existe uma comunidade com este nome' });
+    }
+    
+    // Gerar ID único
+    const newId = Date.now();
+    
+    // URL do banner
+    let bannerUrl = 'https://placehold.co/1200x300';
+    if (req.file) {
+      bannerUrl = `/uploads/comunidades/${req.file.filename}`;
+    }
+    
+    // Criar objeto da comunidade
+    const novaComunidade = {
+      id: newId,
+      nome: nome.trim(),
+      descricao: descricao.trim(),
+      tipo: tipo,
+      regras: regras ? regras.trim() : '',
+      banner: bannerUrl,
+      autor: {
+        id: autorId ? parseInt(autorId) : newId,
+        nome: autorNome.trim(),
+        email: autorEmail.trim(),
+        foto: autorFoto || 'https://placehold.co/80'
+      },
+      dataCriacao: new Date().toISOString(),
+      status: 'ativa',
+      membros: 1, // O criador é o primeiro membro
+      curtidas: 0,
+      comentarios: 0,
+      visualizacoes: 0,
+      tags: gerarTags(nome, descricao, tipo)
+    };
+    
+    // Salvar no banco
+    jsonServerRouter.db.get('comunidades').push(novaComunidade).write();
+    
+    res.status(201).json({
+      message: 'Comunidade criada com sucesso!',
+      comunidade: novaComunidade
+    });
+    
+  } catch (error) {
+    console.error('Erro ao criar comunidade:', error);
+    res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
+  }
+});
+
+// PUT atualizar comunidade
+app.put('/api/comunidades/:id', upload.single('banner'), (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nome, descricao, tipo, regras } = req.body;
+    
+    const comunidade = jsonServerRouter.db.get('comunidades').find({ id: parseInt(id) }).value();
+    
+    if (!comunidade) {
+      return res.status(404).json({ error: 'Comunidade não encontrada' });
+    }
+    
+    const updates = {};
+    
+    if (nome && nome.trim() !== comunidade.nome) {
+      // Verificar se o novo nome já existe
+      const existingCommunity = jsonServerRouter.db.get('comunidades')
+        .find({ nome: nome.trim() })
+        .value();
+      
+      if (existingCommunity && existingCommunity.id !== parseInt(id)) {
+        return res.status(409).json({ error: 'Já existe uma comunidade com este nome' });
+      }
+      
+      updates.nome = nome.trim();
+    }
+    
+    if (descricao) updates.descricao = descricao.trim();
+    if (tipo) updates.tipo = tipo;
+    if (regras !== undefined) updates.regras = regras.trim();
+    
+    if (req.file) {
+      updates.banner = `/uploads/comunidades/${req.file.filename}`;
+    }
+    
+    if (Object.keys(updates).length > 0) {
+      updates.tags = gerarTags(updates.nome || comunidade.nome, updates.descricao || comunidade.descricao, updates.tipo || comunidade.tipo);
+    }
+    
+    const comunidadeAtualizada = jsonServerRouter.db.get('comunidades')
+      .find({ id: parseInt(id) })
+      .assign(updates)
+      .write();
+    
+    res.json({
+      message: 'Comunidade atualizada com sucesso!',
+      comunidade: comunidadeAtualizada
+    });
+    
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar comunidade', details: error.message });
+  }
+});
+
+// DELETE comunidade
+app.delete('/api/comunidades/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const comunidade = jsonServerRouter.db.get('comunidades').find({ id: parseInt(id) }).value();
+    
+    if (!comunidade) {
+      return res.status(404).json({ error: 'Comunidade não encontrada' });
+    }
+    
+    // Marcar como inativa ao invés de deletar
+    jsonServerRouter.db.get('comunidades')
+      .find({ id: parseInt(id) })
+      .assign({ status: 'inativa' })
+      .write();
+    
+    res.json({ message: 'Comunidade removida com sucesso!' });
+    
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao remover comunidade', details: error.message });
+  }
+});
+
+// POST curtir/descurtir comunidade
+app.post('/api/comunidades/:id/curtir', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { action } = req.body; // 'like' ou 'unlike'
+    
+    const comunidade = jsonServerRouter.db.get('comunidades').find({ id: parseInt(id) }).value();
+    
+    if (!comunidade) {
+      return res.status(404).json({ error: 'Comunidade não encontrada' });
+    }
+    
+    let novasCurtidas = comunidade.curtidas || 0;
+    
+    if (action === 'like') {
+      novasCurtidas += 1;
+    } else if (action === 'unlike' && novasCurtidas > 0) {
+      novasCurtidas -= 1;
+    }
+    
+    jsonServerRouter.db.get('comunidades')
+      .find({ id: parseInt(id) })
+      .assign({ curtidas: novasCurtidas })
+      .write();
+    
+    res.json({ curtidas: novasCurtidas });
+    
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao processar curtida', details: error.message });
+  }
+});
+
+// Função auxiliar para gerar tags
+function gerarTags(nome, descricao, tipo) {
+  const texto = `${nome} ${descricao} ${tipo}`.toLowerCase();
+  const palavrasComuns = ['a', 'o', 'e', 'de', 'do', 'da', 'em', 'um', 'uma', 'para', 'com', 'por'];
+  
+  const palavras = texto.split(/\s+/)
+    .filter(palavra => palavra.length > 2 && !palavrasComuns.includes(palavra))
+    .slice(0, 5);
+  
+  return [...new Set(palavras)]; // Remove duplicatas
+}
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

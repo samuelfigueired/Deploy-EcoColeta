@@ -119,6 +119,24 @@
       "dataCadastro": "2025-05-27T18:20:40.084Z",
       "id": 7,
       "ecopontoId": 31
+    },
+    {
+      "nome": "Teste CORS 1748391441533",
+      "email": "teste.cors.1748391441533@ecocoleta.com",
+      "tipoUsuario": "doador",
+      "telefone": "(31) 99999-9999",
+      "endereco": "Rua de Teste, 123 - CORS City",
+      "id": 8
+    },
+    {
+      "nome": "Usuário de Teste CORS",
+      "email": "usuario.teste.1748393484559@ecocoleta.com",
+      "tipoUsuario": "doador",
+      "telefone": "(31) 98765-4321",
+      "endereco": "Rua de Teste CORS, 123",
+      "cidade": "Betim",
+      "estado": "MG",
+      "id": 9
     }
   ],
   "pontosDeColeta": [
@@ -684,6 +702,181 @@
       "paymentId": "pay_678901",
       "date": "2025-05-15T14:00:00.000Z",
       "status": "completed"
+    }
+  ],
+  "comunidades": [
+    {
+      "id": 1,
+      "nome": "Mutirão de Reciclagem no Bairro Verde",
+      "descricao": "Conseguimos reciclar mais de 1 tonelada de materiais em um único dia!",
+      "tipo": "projeto-comunitario",
+      "regras": "1. Respeite todos os membros\n2. Mantenha o foco no tema da comunidade\n3. Compartilhe conhecimento de forma construtiva",
+      "banner": "https://placehold.co/1200x300",
+      "autor": {
+        "id": 1,
+        "nome": "Carlos Lima",
+        "email": "carlos.lima@exemplo.com",
+        "foto": "https://placehold.co/80"
+      },
+      "dataCriacao": "2024-03-15T10:30:00.000Z",
+      "status": "ativa",
+      "membros": 127,
+      "curtidas": 89,
+      "comentarios": 23,
+      "visualizacoes": 1520,
+      "tags": [
+        "reciclagem",
+        "sustentabilidade",
+        "comunidade"
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Oficina de Programação para Jovens",
+      "descricao": "Capacitamos mais de 100 adolescentes com noções básicas de lógica e web.",
+      "tipo": "educacao",
+      "regras": "1. Ambiente educacional respeitoso\n2. Compartilhe recursos e materiais\n3. Ajude outros membros",
+      "banner": "https://placehold.co/1200x300",
+      "autor": {
+        "id": 2,
+        "nome": "Maria Oliveira",
+        "email": "maria.oliveira@exemplo.com",
+        "foto": "https://placehold.co/80"
+      },
+      "dataCriacao": "2024-02-20T14:00:00.000Z",
+      "status": "ativa",
+      "membros": 95,
+      "curtidas": 156,
+      "comentarios": 47,
+      "visualizacoes": 2340,
+      "tags": [
+        "educação",
+        "programação",
+        "jovens"
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Horta Urbana Colaborativa",
+      "descricao": "Moradores se uniram para cultivar alimentos orgânicos na cidade.",
+      "tipo": "sustentabilidade",
+      "regras": "1. Respeite o cronograma de plantio\n2. Compartilhe ferramentas e conhecimento\n3. Mantenha a área limpa",
+      "banner": "https://placehold.co/1200x300",
+      "autor": {
+        "id": 1,
+        "nome": "João Silva",
+        "email": "joao.silva@exemplo.com",
+        "foto": "https://placehold.co/80"
+      },
+      "dataCriacao": "2024-01-10T09:15:00.000Z",
+      "status": "ativa",
+      "membros": 73,
+      "curtidas": 112,
+      "comentarios": 31,
+      "visualizacoes": 1890,
+      "tags": [
+        "horta",
+        "sustentabilidade",
+        "orgânicos"
+      ]
+    },
+    {
+      "regras": "1. Respeite o meio ambiente\\n2. Trabalhe em equipe\\n3. Compartilhe experi�ncias",
+      "curtidas": 0,
+      "banner": "https://placehold.co/1200x300",
+      "membros": 1,
+      "tags": [
+        "sustentabilidade",
+        "meio-ambiente",
+        "comunidade"
+      ],
+      "dataCriacao": "2025-05-27T21:45:19.881Z",
+      "visualizacoes": 0,
+      "descricao": "Iniciativa para limpar e preservar os rios da nossa regi�o, envolvendo volunt�rios de toda a comunidade.",
+      "tipo": "sustentabilidade",
+      "autor": {
+        "email": "ana.silva@exemplo.com",
+        "foto": "https://placehold.co/80",
+        "nome": "Ana Silva",
+        "id": 1
+      },
+      "nome": "Campanha de Limpeza dos Rios",
+      "status": "ativa",
+      "comentarios": 0,
+      "id": 4
+    },
+    {
+      "regras": "1. Traga seus pr�prios materiais\\n2. Respeite o cronograma das atividades\\n3. Compartilhe suas experi�ncias",
+      "curtidas": 0,
+      "banner": "https://placehold.co/1200x300",
+      "membros": 1,
+      "tags": [
+        "compostagem",
+        "educacao",
+        "sustentabilidade"
+      ],
+      "dataCriacao": "2025-05-27T21:46:21.498Z",
+      "visualizacoes": 0,
+      "descricao": "Aprenda a transformar restos org�nicos em adubo nutritivo para suas plantas, reduzindo o lixo dom�stico.",
+      "tipo": "educacao",
+      "autor": {
+        "email": "pedro.oliveira@exemplo.com",
+        "foto": "https://placehold.co/80",
+        "nome": "Pedro Oliveira",
+        "id": 3
+      },
+      "nome": "Oficina de Compostagem Dom�stica",
+      "status": "ativa",
+      "comentarios": 0,
+      "id": 5
+    },
+    {
+      "regras": "1. Respeite todos os membros",
+      "curtidas": 0,
+      "banner": "https://placehold.co/1200x300",
+      "membros": 1,
+      "tags": [
+        "educacao",
+        "teste"
+      ],
+      "dataCriacao": "2025-05-27T21:49:56.072Z",
+      "visualizacoes": 0,
+      "descricao": "Uma comunidade de teste para verificar se a cria��o est� funcionando corretamente.",
+      "tipo": "educacao",
+      "autor": {
+        "email": "teste@exemplo.com",
+        "foto": "https://placehold.co/80",
+        "nome": "Usu�rio Teste",
+        "id": 1
+      },
+      "nome": "Teste de Cria��o",
+      "status": "ativa",
+      "comentarios": 0,
+      "id": 6
+    },
+    {
+      "nome": "Samuelzinho gostozinho 😈",
+      "descricao": "nkhbugvyfc6tyvg bjnkjhugovycr6vyguh klmjkbhiyu",
+      "tipo": "projeto-comunitario",
+      "regras": "m knjhughjnkhughkmlkjnujnikm lihjklmk",
+      "banner": "https://placehold.co/1200x300",
+      "autor": {
+        "id": 1,
+        "nome": "João Silva",
+        "email": "joao.silva@exemplo.com",
+        "foto": "https://placehold.co/80"
+      },
+      "dataCriacao": "2025-05-28T00:54:56.180Z",
+      "status": "ativa",
+      "membros": 1,
+      "curtidas": 0,
+      "comentarios": 0,
+      "visualizacoes": 0,
+      "tags": [
+        "projeto-comunitario",
+        "comunidade"
+      ],
+      "id": 7
     }
   ],
   "relatorios": [
