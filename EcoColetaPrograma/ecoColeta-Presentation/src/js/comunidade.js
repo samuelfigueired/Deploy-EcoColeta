@@ -66,45 +66,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // Função para exibir comunidades
   function exibirComunidades(comunidades) {
     containerHistorias.innerHTML = "";
-    comunidades.forEach((comunidade) => {
-      const tipoFormatado = formatarTipo(comunidade.tipo);
-      
-      // Verificar se a imagem do banner existe e é válida
-      let bannerSrc = 'https://placehold.co/300x150';
-      if (comunidade.banner && comunidade.banner.trim() !== '') {
-        // Se é uma URL válida ou data URL (base64)
-        if (comunidade.banner.startsWith('http') || comunidade.banner.startsWith('data:')) {
-          bannerSrc = comunidade.banner;
-        }
-      }
-      
-      // Verificar se a foto do autor existe e é válida
-      let autorFotoSrc = 'https://placehold.co/80';
-      if (comunidade.autor && comunidade.autor.foto && comunidade.autor.foto.trim() !== '') {
-        if (comunidade.autor.foto.startsWith('http') || comunidade.autor.foto.startsWith('data:')) {
-          autorFotoSrc = comunidade.autor.foto;
-        }
-      }
-      
+    comunidades.forEach(h => {
+      // Corrigido: buscar nome e foto do autor diretamente do objeto, já que usuariosPorId não existe nesse contexto
+      const nomeAutor = h.autor && h.autor.nome ? h.autor.nome : "Autor desconhecido";
+      const fotoAutor = h.autor && h.autor.foto ? h.autor.foto : "https://placehold.co/50";
+
       containerHistorias.innerHTML += `
-        <a href="detalhe-comunidade.html?id=${comunidade.id}" class="historia-card">
-          <img src="${bannerSrc}" alt="Imagem da comunidade" onerror="this.src='https://placehold.co/300x150'"/>
+        <a href="detalhe-comunidade.html?id=${h.id}" class="historia-card">
+          <img src="${h.banner || h.imagemCapa}" alt="Imagem do projeto"/>
           <div class="historia-card-content">
-            <span class="tag">${tipoFormatado}</span>
-            <h3>${comunidade.nome}</h3>
-            <p>${comunidade.descricao}</p>
-            <div class="autor">
-              <img src="${autorFotoSrc}" alt="Foto de ${comunidade.autor ? comunidade.autor.nome : 'Autor'}" onerror="this.src='https://placehold.co/80'">
-              <p>Por ${comunidade.autor ? comunidade.autor.nome : 'Autor Desconhecido'}</p>
-              <div class="icones">
-                <i class="fa-regular fa-heart"></i>
-                <span>${comunidade.curtidas || 0}</span>
-                <i class="fa-regular fa-comment"></i>
-                <span>${comunidade.comentarios || 0}</span>
-                <i class="fa-regular fa-users"></i>
-                <span>${comunidade.membros || 0}</span>
-              </div>
-            </div>
+            <h3>${h.nome}</h3>
+            <p>${h.descricao}</p>
+          </div>
+          <div class="autor-card-footer">
+            <img src="${fotoAutor}" alt="Foto de ${nomeAutor}">
+            <span>Por ${nomeAutor}</span>
           </div>
         </a>
       `;

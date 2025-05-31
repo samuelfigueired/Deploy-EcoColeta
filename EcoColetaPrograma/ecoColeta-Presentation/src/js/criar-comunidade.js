@@ -284,9 +284,9 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             dataCriacao: new Date().toISOString(),
             status: "ativa",
-            membros: 1,
+            membros: [dadosUsuario.id || 1], // Agora é um array de IDs
             curtidas: 0,
-            comentarios: 0,
+            comentarios: [], // Agora é um array de objetos de comentários
             visualizacoes: 0,
             tags: [document.getElementById('tipoComunidade').value, "comunidade"]
         };

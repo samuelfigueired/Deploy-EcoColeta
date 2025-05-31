@@ -233,6 +233,14 @@ app.post('/api/comunidades', upload.single('banner'), async (req, res) => {
       bannerUrl = `/uploads/comunidades/${req.file.filename}`;
     }
     
+    // Corrigir membros: array de IDs
+    let membros = [];
+    if (autorId) {
+      membros = [parseInt(autorId)];
+    } else {
+      membros = [newId];
+    }
+    
     // Criar objeto da comunidade
     const novaComunidade = {
       id: newId,
@@ -249,9 +257,9 @@ app.post('/api/comunidades', upload.single('banner'), async (req, res) => {
       },
       dataCriacao: new Date().toISOString(),
       status: 'ativa',
-      membros: 1, // O criador é o primeiro membro
+      membros: membros, // array de IDs
       curtidas: 0,
-      comentarios: 0,
+      comentarios: [], // garantir array
       visualizacoes: 0,
       tags: gerarTags(nome, descricao, tipo)
     };
@@ -267,6 +275,32 @@ app.post('/api/comunidades', upload.single('banner'), async (req, res) => {
   } catch (error) {
     console.error('Erro ao criar comunidade:', error);
     res.status(500).json({ error: 'Erro interno do servidor', details: error.message });
+  }
+});
+
+// PATCH participar/sair da comunidade (manipula array de membros)
+app.patch('/api/comunidades/:id/membros', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId, action } = req.body; // action: 'entrar' ou 'sair'
+    const comunidade = jsonServerRouter.db.get('comunidades').find({ id: parseInt(id) }).value();
+    if (!comunidade) {
+      return res.status(404).json({ error: 'Comunidade não encontrada' });
+    }
+    let membros = Array.isArray(comunidade.membros) ? comunidade.membros : [];
+    const uid = parseInt(userId);
+    if (action === 'entrar') {
+      if (!membros.includes(uid)) membros.push(uid);
+    } else if (action === 'sair') {
+      membros = membros.filter(m => m !== uid);
+    }
+    jsonServerRouter.db.get('comunidades')
+      .find({ id: parseInt(id) })
+      .assign({ membros })
+      .write();
+    res.json({ membros });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar membros', details: error.message });
   }
 });
 
@@ -395,4 +429,4 @@ function gerarTags(nome, descricao, tipo) {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-}); 
+});
