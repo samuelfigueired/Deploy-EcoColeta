@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoColeta - Pontos de Coleta</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="../src/css/dashboardAdmin.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Mobile sidebar toggle -->
+    <div class="mobile-toggle">
+      <button id="sidebar-toggle" class="toggle-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">EcoColeta</h1>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="dashboardAdmin.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+              Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="visao-geral.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              Visão Geral
+            </a>
+          </li>
+          <li>
+            <a href="desempenho.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 17.5v-10c0-.3.2-.5.5-.5h2c.3 0 .5.2.5.5v10c0 .3-.2.5-.5.5h-2c-.3 0-.5-.2-.5-.5Z"/><path d="M13 17.5v-7c0-.3.2-.5.5-.5h2c.3 0 .5.2.5.5v7c0 .3-.2.5-.5.5h-2c-.3 0-.5-.2-.5-.5Z"/></svg>
+              Desempenho
+            </a>
+          </li>
+          <li>
+            <a href="coletores.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Coletores
+            </a>
+          </li>
+          <li>
+            <a href="#" class="active">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Pontos de Coleta
+            </a>
+          </li>
+          <li>
+            <a href="agendas.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg>
+              Agendas
+            </a>
+          </li>
+          <li>
+            <a href="relatorios.html">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Z"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+              Relatórios
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Main content -->
+    <div id="main-content" class="main-content">
+      <div class="content-wrapper">
+        <div class="dashboard-header">
+          <h1 class="page-title">Pontos de Coleta</h1>
+          <div class="dashboard-controls">
+            <div class="controls-left">
+              <div class="filter-group">
+                <label for="status-filter">Status:</label>
+                <select id="status-filter" class="form-control">
+                  <option value="todos">Todos</option>
+                  <option value="ativo">Ativos</option>
+                  <option value="inativo">Inativos</option>
+                  <option value="pendente">Pendentes</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="material-filter">Material:</label>
+                <select id="material-filter" class="form-control">
+                  <option value="todos">Todos os materiais</option>
+                  <option value="papel">Papel</option>
+                  <option value="plastico">Plástico</option>
+                  <option value="vidro">Vidro</option>
+                  <option value="metal">Metal</option>
+                  <option value="organico">Orgânico</option>
+                  <option value="eletronico">Eletrônico</option>
+                </select>
+              </div>
+            </div>
+            <div class="controls-right">
+              <button id="add-collection-point" class="btn-primary btn-small">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                Adicionar Ponto
+              </button>
+              <button id="view-map" class="btn-secondary btn-small">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Ver no Mapa
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collection Points Statistics -->
+        <div class="stats-cards">
+          <div class="card stats-card">
+            <div class="card-content">
+              <div class="stats-info">
+                <p class="stats-title">Total de Pontos</p>
+                <p class="stats-value" id="total-points">24</p>
+              </div>
+              <div class="stats-icon bg-blue">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="card stats-card">
+            <div class="card-content">
+              <div class="stats-info">
+                <p class="stats-title">Pontos Ativos</p>
+                <p class="stats-value" id="active-points">20</p>
+              </div>
+              <div class="stats-icon bg-green">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="card stats-card">
+            <div class="card-content">
+              <div class="stats-info">
+                <p class="stats-title">Coletas Pendentes</p>
+                <p class="stats-value" id="pending-collections">7</p>
+              </div>
+              <div class="stats-icon bg-yellow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="card stats-card">
+            <div class="card-content">
+              <div class="stats-info">
+                <p class="stats-title">Volume Mensal</p>
+                <p class="stats-value" id="monthly-volume">1.2t</p>
+              </div>
+              <div class="stats-icon bg-red">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collection Points List -->
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Lista de Pontos de Coleta</h2>
+            <div class="card-actions">
+              <div class="search-box">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                <input type="text" placeholder="Buscar pontos de coleta..." id="point-search" class="search-input">
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="table-container">
+              <table class="data-table" id="points-table">
+                <thead>
+                  <tr>
+                    <th>Ponto de Coleta</th>
+                    <th>Status</th>
+                    <th>Materiais</th>
+                    <th>Última Coleta</th>
+                    <th>Volume Acumulado</th>
+                    <th>Coletor Responsável</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="points-tbody">
+                  <!-- Points data will be loaded here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="chart-cards">
+          <div class="card chart-card">
+            <div class="card-header">
+              <h2 class="card-title">Volume de Coleta por Material</h2>
+            </div>
+            <div class="card-content">
+              <div class="chart-container">
+                <canvas id="material-volume-chart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="card-header">
+              <h2 class="card-title">Distribuição Geográfica</h2>
+            </div>
+            <div class="card-content">
+              <div class="chart-container">
+                <canvas id="geographic-distribution-chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Map View -->
+        <div class="card" id="map-section" style="display: none;">
+          <div class="card-header">
+            <h2 class="card-title">Mapa dos Pontos de Coleta</h2>
+            <button id="close-map" class="btn-secondary btn-small">Fechar Mapa</button>
+          </div>
+          <div class="card-content">
+            <div class="map-container" id="map-container">
+              <p>Mapa dos pontos de coleta seria exibido aqui</p>
+              <p>Integração com Google Maps ou similar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Collection Point Modal -->
+  <div id="add-point-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Adicionar Novo Ponto de Coleta</h3>
+        <button class="modal-close" id="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="add-point-form">
+          <div class="form-group">
+            <label for="point-name">Nome do Ponto</label>
+            <input type="text" id="point-name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="point-address">Endereço</label>
+            <input type="text" id="point-address" name="address" required>
+          </div>
+          <div class="form-group">
+            <label for="point-description">Descrição</label>
+            <textarea id="point-description" name="description" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="point-materials">Materiais Aceitos</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="materials" value="papel"> Papel</label>
+              <label><input type="checkbox" name="materials" value="plastico"> Plástico</label>
+              <label><input type="checkbox" name="materials" value="vidro"> Vidro</label>
+              <label><input type="checkbox" name="materials" value="metal"> Metal</label>
+              <label><input type="checkbox" name="materials" value="organico"> Orgânico</label>
+              <label><input type="checkbox" name="materials" value="eletronico"> Eletrônico</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="point-capacity">Capacidade (kg)</label>
+            <input type="number" id="point-capacity" name="capacity" min="1" required>
+          </div>
+          <div class="form-group">
+            <label for="point-collector">Coletor Responsável</label>
+            <select id="point-collector" name="collector" required>
+              <option value="">Selecione um coletor</option>
+              <option value="joao">João Silva</option>
+              <option value="maria">Maria Santos</option>
+              <option value="pedro">Pedro Costa</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="cancel-add-point">Cancelar</button>
+        <button type="submit" form="add-point-form" class="btn-primary">Adicionar Ponto</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../src/js/dashboardAdmin.js"></script>
+  <script>
+    // Collection Points specific functionality
+    class CollectionPointsManager {
+      constructor() {
+        this.points = [];
+        this.filteredPoints = [];
+        this.init();
+      }
+
+      init() {
+        this.loadPoints();
+        this.setupEventListeners();
+        this.initCharts();
+      }
+
+      setupEventListeners() {
+        // Search functionality
+        document.getElementById('point-search').addEventListener('input', (e) => {
+          this.filterPoints(e.target.value);
+        });
+
+        // Filter functionality
+        document.getElementById('status-filter').addEventListener('change', () => {
+          this.applyFilters();
+        });
+
+        document.getElementById('material-filter').addEventListener('change', () => {
+          this.applyFilters();
+        });
+
+        // Add point modal
+        document.getElementById('add-collection-point').addEventListener('click', () => {
+          this.openAddModal();
+        });
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+          this.closeAddModal();
+        });
+
+        document.getElementById('cancel-add-point').addEventListener('click', () => {
+          this.closeAddModal();
+        });
+
+        document.getElementById('add-point-form').addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.addPoint();
+        });
+
+        // Map view
+        document.getElementById('view-map').addEventListener('click', () => {
+          this.toggleMapView();
+        });
+
+        document.getElementById('close-map').addEventListener('click', () => {
+          this.toggleMapView();
+        });
+      }
+
+      loadPoints() {
+        // Mock data - replace with actual API call
+        this.points = [
+          {
+            id: 1,
+            name: 'Praça Central',
+            address: 'Rua Principal, 123',
+            status: 'ativo',
+            materials: ['papel', 'plastico'],
+            lastCollection: '2024-01-14',
+            volume: 45.5,
+            capacity: 100,
+            collector: 'João Silva',
+            description: 'Ponto de coleta na praça central da cidade'
+          },
+          {
+            id: 2,
+            name: 'Escola Municipal',
+            address: 'Av. Educação, 456',
+            status: 'ativo',
+            materials: ['papel', 'plastico', 'vidro'],
+            lastCollection: '2024-01-13',
+            volume: 32.8,
+            capacity: 80,
+            collector: 'Maria Santos',
+            description: 'Ponto educativo na escola'
+          },
+          {
+            id: 3,
+            name: 'Mercado Local',
+            address: 'Rua Comércio, 789',
+            status: 'pendente',
+            materials: ['organico', 'papel'],
+            lastCollection: '2024-01-10',
+            volume: 67.2,
+            capacity: 120,
+            collector: 'Pedro Costa',
+            description: 'Coleta de resíduos do mercado'
+          }
+        ];
+
+        this.filteredPoints = [...this.points];
+        this.renderPoints();
+        this.updateStats();
+      }
+
+      renderPoints() {
+        const tbody = document.getElementById('points-tbody');
+        tbody.innerHTML = '';
+
+        this.filteredPoints.forEach(point => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div class="point-info">
+                <div class="point-name">${point.name}</div>
+                <div class="point-address">${point.address}</div>
+              </div>
+            </td>
+            <td>
+              <span class="status-badge status-${point.status}">
+                ${point.status === 'ativo' ? 'Ativo' : point.status === 'inativo' ? 'Inativo' : 'Pendente'}
+              </span>
+            </td>
+            <td>
+              <div class="materials-list">
+                ${point.materials.map(material => `<span class="material-tag">${this.formatMaterial(material)}</span>`).join('')}
+              </div>
+            </td>
+            <td>${this.formatDate(point.lastCollection)}</td>
+            <td>
+              <div class="volume-info">
+                <div class="volume-value">${point.volume}kg</div>
+                <div class="volume-bar">
+                  <div class="volume-fill" style="width: ${(point.volume / point.capacity) * 100}%"></div>
+                </div>
+                <div class="volume-capacity">${point.capacity}kg</div>
+              </div>
+            </td>
+            <td>${point.collector}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-icon" onclick="pointsManager.viewPoint(${point.id})" title="Ver detalhes">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button class="btn-icon" onclick="pointsManager.editPoint(${point.id})" title="Editar">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <button class="btn-icon btn-success" onclick="pointsManager.scheduleCollection(${point.id})" title="Agendar coleta">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg>
+                </button>
+                <button class="btn-icon btn-danger" onclick="pointsManager.removePoint(${point.id})" title="Remover">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"/></svg>
+                </button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      filterPoints(searchTerm) {
+        this.filteredPoints = this.points.filter(point =>
+          point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          point.address.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        this.applyFilters();
+      }
+
+      applyFilters() {
+        const statusFilter = document.getElementById('status-filter').value;
+        const materialFilter = document.getElementById('material-filter').value;
+
+        let filtered = [...this.points];
+
+        if (statusFilter !== 'todos') {
+          filtered = filtered.filter(point => point.status === statusFilter);
+        }
+
+        if (materialFilter !== 'todos') {
+          filtered = filtered.filter(point => point.materials.includes(materialFilter));
+        }
+
+        const searchTerm = document.getElementById('point-search').value;
+        if (searchTerm) {
+          filtered = filtered.filter(point =>
+            point.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            point.address.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
+
+        this.filteredPoints = filtered;
+        this.renderPoints();
+      }
+
+      updateStats() {
+        const totalPoints = this.points.length;
+        const activePoints = this.points.filter(p => p.status === 'ativo').length;
+        const pendingCollections = this.points.filter(p => p.status === 'pendente').length;
+        const monthlyVolume = this.points.reduce((sum, p) => sum + p.volume, 0).toFixed(1);
+
+        document.getElementById('total-points').textContent = totalPoints;
+        document.getElementById('active-points').textContent = activePoints;
+        document.getElementById('pending-collections').textContent = pendingCollections;
+        document.getElementById('monthly-volume').textContent = monthlyVolume + 'kg';
+      }
+
+      initCharts() {
+        // Material Volume Chart
+        const materialCtx = document.getElementById('material-volume-chart').getContext('2d');
+        new Chart(materialCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Papel', 'Plástico', 'Vidro', 'Metal', 'Orgânico', 'Eletrônico'],
+            datasets: [{
+              label: 'Volume (kg)',
+              data: [120, 85, 65, 45, 95, 25],
+              backgroundColor: [
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(16, 185, 129, 0.8)',
+                'rgba(245, 158, 11, 0.8)',
+                'rgba(239, 68, 68, 0.8)',
+                'rgba(139, 92, 246, 0.8)',
+                'rgba(107, 114, 128, 0.8)'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false
+              }
+            }
+          }
+        });
+
+        // Geographic Distribution Chart
+        const geoCtx = document.getElementById('geographic-distribution-chart').getContext('2d');
+        new Chart(geoCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Centro', 'Zona Norte', 'Zona Sul', 'Zona Leste', 'Zona Oeste'],
+            datasets: [{
+              data: [8, 6, 4, 3, 3],
+              backgroundColor: [
+                'rgb(59, 130, 246)',
+                'rgb(16, 185, 129)',
+                'rgb(245, 158, 11)',
+                'rgb(239, 68, 68)',
+                'rgb(139, 92, 246)'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+      }
+
+      openAddModal() {
+        document.getElementById('add-point-modal').style.display = 'block';
+      }
+
+      closeAddModal() {
+        document.getElementById('add-point-modal').style.display = 'none';
+        document.getElementById('add-point-form').reset();
+      }
+
+      addPoint() {
+        // Mock implementation - replace with actual API call
+        const formData = new FormData(document.getElementById('add-point-form'));
+        const materials = Array.from(formData.getAll('materials'));
+        
+        const newPoint = {
+          id: this.points.length + 1,
+          name: formData.get('name'),
+          address: formData.get('address'),
+          description: formData.get('description'),
+          materials: materials,
+          capacity: parseInt(formData.get('capacity')),
+          collector: formData.get('collector'),
+          status: 'ativo',
+          volume: 0,
+          lastCollection: new Date().toISOString().split('T')[0]
+        };
+
+        this.points.push(newPoint);
+        this.filteredPoints = [...this.points];
+        this.renderPoints();
+        this.updateStats();
+        this.closeAddModal();
+
+        // Show success message
+        alert('Ponto de coleta adicionado com sucesso!');
+      }
+
+      toggleMapView() {
+        const mapSection = document.getElementById('map-section');
+        if (mapSection.style.display === 'none') {
+          mapSection.style.display = 'block';
+          mapSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          mapSection.style.display = 'none';
+        }
+      }
+
+      viewPoint(id) {
+        alert(`Ver detalhes do ponto ID: ${id}`);
+      }
+
+      editPoint(id) {
+        alert(`Editar ponto ID: ${id}`);
+      }
+
+      scheduleCollection(id) {
+        alert(`Agendar coleta para o ponto ID: ${id}`);
+      }
+
+      removePoint(id) {
+        if (confirm('Tem certeza que deseja remover este ponto de coleta?')) {
+          this.points = this.points.filter(p => p.id !== id);
+          this.filteredPoints = this.filteredPoints.filter(p => p.id !== id);
+          this.renderPoints();
+          this.updateStats();
+        }
+      }
+
+      formatMaterial(material) {
+        const materials = {
+          'papel': 'Papel',
+          'plastico': 'Plástico',
+          'vidro': 'Vidro',
+          'metal': 'Metal',
+          'organico': 'Orgânico',
+          'eletronico': 'Eletrônico'
+        };
+        return materials[material] || material;
+      }
+
+      formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-BR');
+      }
+    }
+
+    // Initialize collection points manager
+    const pointsManager = new CollectionPointsManager();
+  </script>
+</body>
+</html>

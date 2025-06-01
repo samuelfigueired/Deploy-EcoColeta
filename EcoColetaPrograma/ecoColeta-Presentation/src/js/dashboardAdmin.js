@@ -12,6 +12,8 @@ class DashboardAdmin {
     this.currentUser = this.getCurrentUser();
     this.userCollectionPoints = [];
     this.userAgendas = [];
+    this.currentPeriod = { days: 30 }; // Período padrão de 30 dias
+    this.customDateRange = null; // Intervalo de datas personalizado
     
     this.init();  }
   
@@ -26,6 +28,11 @@ class DashboardAdmin {
     }
   }
     async init() {
+    // Validar se usuário está logado antes de continuar
+    if (!this.validateUserAuth()) {
+      return;
+    }
+
     this.setupSidebar();
     await this.loadAllData();
     this.loadUserCollectionPoints();
@@ -34,6 +41,46 @@ class DashboardAdmin {
     this.renderCharts();
     this.renderDynamicLists();
     this.setupEventListeners();
+  }
+
+  // Validar autenticação do usuário
+  validateUserAuth() {
+    if (!this.currentUser) {
+      console.warn('Usuário não autenticado. Redirecionando para login...');
+      this.showError('Acesso negado. Faça login para continuar.');
+      
+      // Redirecionar para página de login após um breve delay
+      setTimeout(() => {
+        window.location.href = 'autent.html';
+      }, 2000);
+      
+      return false;
+    }
+
+    // Verificar se o token ainda é válido (opcional)
+    const lastLogin = localStorage.getItem('lastLoginTime');
+    if (lastLogin) {
+      const loginTime = new Date(lastLogin);
+      const now = new Date();
+      const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+      
+      // Expirar sessão após 24 horas
+      if (hoursDiff > 24) {
+        console.warn('Sessão expirada. Redirecionando para login...');
+        localStorage.removeItem('usuarioLogado');
+        localStorage.removeItem('lastLoginTime');
+        this.showError('Sessão expirada. Faça login novamente.');
+        
+        setTimeout(() => {
+          window.location.href = 'autent.html';
+        }, 2000);
+        
+        return false;
+      }
+    }
+
+    console.log(`Dashboard carregado para usuário: ${this.currentUser.nome} (ID: ${this.currentUser.id})`);
+    return true;
   }
 
   // Configuração da sidebar
@@ -88,7 +135,6 @@ class DashboardAdmin {
       this.showError('Erro ao carregar dados do servidor');
     }
   }
-
   // Filtrar pontos de coleta do usuário logado
   loadUserCollectionPoints() {
     if (!this.currentUser) {
@@ -102,6 +148,48 @@ class DashboardAdmin {
     );
 
     console.log(`Pontos de coleta do usuário ${this.currentUser.nome}:`, this.userCollectionPoints.length);
+  }
+
+  // Obter coletores associados aos pontos de coleta do usuário
+  getUserAssociatedCollectors() {
+    if (!this.currentUser || this.userCollectionPoints.length === 0) {
+      return [];
+    }
+
+    // Buscar coletores que operam nas áreas dos pontos de coleta do usuário
+    const userCollectorIds = new Set();
+    const userCollectors = [];
+
+    this.userCollectionPoints.forEach(ponto => {
+      // Se o ponto tem coletores específicos associados
+      if (ponto.coletoresAssociados && ponto.coletoresAssociados.length > 0) {
+        ponto.coletoresAssociados.forEach(coletorId => {
+          userCollectorIds.add(coletorId);
+        });
+      }
+    });
+
+    // Buscar coletores por cidade/região se não houver associação direta
+    if (userCollectorIds.size === 0) {
+      const userCities = [...new Set(this.userCollectionPoints.map(p => p.cidade))];
+      
+      this.usuarios.filter(u => u.tipoUsuario === 'coletor').forEach(coletor => {
+        if (userCities.includes(coletor.cidade)) {
+          userCollectorIds.add(coletor.id);
+        }
+      });
+    }
+
+    // Obter dados completos dos coletores
+    userCollectorIds.forEach(coletorId => {
+      const coletor = this.usuarios.find(u => u.id === coletorId);
+      if (coletor) {
+        userCollectors.push(coletor);
+      }
+    });
+
+    console.log(`Coletores associados aos pontos do usuário:`, userCollectors.length);
+    return userCollectors;
   }
 
   // Carregar todas as agendas dos pontos de coleta do usuário
@@ -195,64 +283,117 @@ class DashboardAdmin {
       this.updateCard(elementId, materialCount[material] || 0);
     });
   }
-
-  // Geração de dados para gráficos
+  // Geração de dados para gráficos baseado nos pontos do usuário
   generateChartData() {
-    // Dados mensais simulados baseados nos pontos de coleta
-    const monthlyData = this.generateMonthlyData();
+    // Dados mensais baseados nos pontos de coleta do usuário
+    const monthlyData = this.generateUserMonthlyData();
     
-    // Dados de performance por região
-    const performanceData = this.generatePerformanceData();
+    // Dados de performance por tipo de material dos pontos do usuário
+    const performanceData = this.generateUserPerformanceData();
+    
+    // Dados de coletas por região dos pontos do usuário
+    const regionData = this.generateUserRegionData();
 
-    return { monthlyData, performanceData };
+    return { monthlyData, performanceData, regionData };
+  }
+  // Geração de dados para gráficos baseado nos pontos do usuário
+  generateChartData() {
+    // Dados mensais baseados nos pontos de coleta do usuário
+    const monthlyData = this.generateUserMonthlyData();
+    
+    // Dados de performance por tipo de material dos pontos do usuário
+    const performanceData = this.generateUserPerformanceData();
+    
+    // Dados de coletas por região dos pontos do usuário
+    const regionData = this.generateUserRegionData();
+
+    return { monthlyData, performanceData, regionData };
   }
 
-  generateMonthlyData() {
+  generateUserMonthlyData() {
     const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
-    const baseValue = this.pontosDeColeta.length * 3; // 3 coletas por ponto em média
+    const baseValue = this.userCollectionPoints.length * 4; // 4 coletas por ponto em média
     
-    return months.map(month => ({
-      name: month,
-      value: Math.floor(baseValue + (Math.random() - 0.5) * baseValue * 0.3)
-    }));
+    if (baseValue === 0) {
+      return months.map(month => ({ name: month, value: 0 }));
+    }
+    
+    return months.map((month, index) => {
+      // Simular crescimento ao longo dos meses
+      const growthFactor = 1 + (index * 0.1);
+      const randomVariation = (Math.random() - 0.5) * 0.3;
+      const value = Math.floor(baseValue * growthFactor * (1 + randomVariation));
+      
+      return {
+        name: month,
+        value: Math.max(value, 0)
+      };
+    });
   }
 
-  generatePerformanceData() {
-    // Agrupar pontos por região baseado no endereço
-    const regioes = {};
+  generateUserPerformanceData() {
+    // Agrupar por tipos de materiais aceitos nos pontos do usuário
+    const materialsCount = {};
+    const materialLabels = {
+      'plastico': 'Plástico',
+      'papel': 'Papel', 
+      'vidro': 'Vidro',
+      'metal': 'Metal',
+      'eletronicos': 'Eletrônicos',
+      'organico': 'Orgânico',
+      'oleo': 'Óleo'
+    };
     
-    this.pontosDeColeta.forEach(ponto => {
-      const endereco = ponto.endereco || '';
-      let regiao = 'Centro';
-      
-      if (endereco.includes('Alterosas')) regiao = 'Zona Norte';
-      else if (endereco.includes('Industrial')) regiao = 'Zona Sul';
-      else if (endereco.includes('Imbiruçu')) regiao = 'Zona Leste';
-      
-      regioes[regiao] = (regioes[regiao] || 0) + 1;
+    this.userCollectionPoints.forEach(ponto => {
+      if (ponto.materiaisAceitos && ponto.materiaisAceitos.length > 0) {
+        ponto.materiaisAceitos.forEach(material => {
+          materialsCount[material] = (materialsCount[material] || 0) + 1;
+        });
+      }
     });
 
-    const colors = ['#10B981', '#3B82F6', '#6366F1', '#F59E0B'];
+    if (Object.keys(materialsCount).length === 0) {
+      return [{ name: 'Sem dados', value: 1, color: '#E5E7EB' }];
+    }
+
+    const colors = ['#10B981', '#3B82F6', '#6366F1', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];
     let colorIndex = 0;
 
-    return Object.entries(regioes).map(([nome, value]) => ({
-      name: nome,
-      value: value * 10, // Multiplicar para simular coletas
+    return Object.entries(materialsCount).map(([material, count]) => ({
+      name: materialLabels[material] || material,
+      value: count * 15, // Multiplicar para simular volume de coletas
       color: colors[colorIndex++ % colors.length]
     }));
   }
+
+  generateUserRegionData() {
+    // Agrupar pontos por cidade/região
+    const regionCount = {};
+    
+    this.userCollectionPoints.forEach(ponto => {
+      const cidade = ponto.cidade || 'Não informado';
+      regionCount[cidade] = (regionCount[cidade] || 0) + 1;
+    });    return Object.entries(regionCount).map(([cidade, count]) => ({
+      name: cidade,
+      value: count,
+      coletas: count * 12 // Simular coletas por região
+    }));
+  }
+
   // Renderização dos gráficos
   renderCharts() {
-    const { monthlyData, performanceData } = this.generateChartData();
+    const { monthlyData, performanceData, regionData } = this.generateChartData();
     
     this.renderMonthlyChart(monthlyData);
     this.renderPerformanceChart(performanceData);
+    this.renderRegionChart(regionData);
   }
 
   // Renderização das listas dinâmicas
   renderDynamicLists() {
     this.renderPontosAtivosList();
     this.renderColetoresList();
+    this.renderColetoresPerformance();
   }
 
   renderPontosAtivosList() {
@@ -287,45 +428,112 @@ class DashboardAdmin {
 
     container.innerHTML = listHTML;
   }
-
   renderColetoresList() {
     const container = document.getElementById('coletores-list');
     if (!container) return;
 
-    const coletores = this.usuarios.filter(usuario => usuario.tipoUsuario === 'coletor');
+    // Obter coletores associados aos pontos de coleta do usuário logado
+    const coletoresAssociados = this.getUserAssociatedCollectors();
     
-    if (coletores.length === 0) {
-      container.innerHTML = '<div class="empty-state">Nenhum coletor encontrado</div>';
+    if (coletoresAssociados.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">👥</div>
+          <h3>Nenhum coletor associado</h3>
+          <p>Ainda não há coletores associados aos seus pontos de coleta.</p>
+        </div>
+      `;
       return;
     }
 
-    const listHTML = coletores.map(coletor => {
-      // Simular estatísticas do coletor
-      const coletasRealizadas = Math.floor(Math.random() * 100) + 50;
-      const statusAtivo = Math.random() > 0.3; // 70% chance de estar ativo
+    const listHTML = coletoresAssociados.map(coletor => {
+      // Calcular estatísticas baseadas nos pontos do usuário
+      const coletasRealizadas = this.calculateCollectorStats(coletor);
+      const statusAtivo = this.isCollectorActive(coletor);
+      const ultimaColeta = this.getLastCollectionDate(coletor);
       
       return `
         <div class="collector-item">
+          <div class="collector-avatar">
+            <img src="${coletor.imagem || 'https://placehold.co/50'}" alt="${coletor.nome}">
+            <div class="status-indicator ${statusAtivo ? 'active' : 'inactive'}"></div>
+          </div>
           <div class="collector-info">
             <div class="collector-header">
               <span class="collector-name">${coletor.nome}</span>
               <span class="collector-status ${statusAtivo ? 'active' : 'inactive'}">
-                ${statusAtivo ? 'Ativo' : 'Inativo'}
+                ${statusAtivo ? '✅ Ativo' : '⏸️ Inativo'}
               </span>
             </div>
             <div class="collector-details">
-              <span class="collector-email">${coletor.email}</span>
-              <span class="collector-stats">${coletasRealizadas} coletas realizadas</span>
+              <div class="detail-item">
+                <span class="label">📧 Email:</span>
+                <span class="value">${coletor.email}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">📱 Telefone:</span>
+                <span class="value">${coletor.telefone || 'Não informado'}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">♻️ Coletas:</span>
+                <span class="value">${coletasRealizadas} realizadas</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">📅 Última coleta:</span>
+                <span class="value">${ultimaColeta}</span>
+              </div>
+              ${coletor.materiaisColeta ? `
+                <div class="detail-item">
+                  <span class="label">🏷️ Materiais:</span>
+                  <span class="value">${coletor.materiaisColeta.join(', ')}</span>
+                </div>
+              ` : ''}
             </div>
           </div>
           <div class="collector-actions">
-            <button class="btn-small">Ver Perfil</button>
+            <button class="btn-small btn-primary" onclick="window.open('tel:${coletor.telefone}')">
+              📞 Ligar
+            </button>
+            <button class="btn-small btn-secondary" onclick="window.open('mailto:${coletor.email}')">
+              ✉️ Email
+            </button>
           </div>
         </div>
       `;
     }).join('');
 
     container.innerHTML = listHTML;
+  }
+
+  // Calcular estatísticas do coletor baseado nos pontos do usuário
+  calculateCollectorStats(coletor) {
+    // Simular coletas baseado nos pontos de coleta do usuário
+    const pontosAssociados = this.userCollectionPoints.filter(ponto => {
+      return ponto.cidade === coletor.cidade || 
+             (ponto.coletoresAssociados && ponto.coletoresAssociados.includes(coletor.id));
+    });
+    
+    // Base de coletas: 5-15 por ponto de coleta
+    return pontosAssociados.length * (Math.floor(Math.random() * 10) + 5);
+  }
+
+  // Verificar se o coletor está ativo
+  isCollectorActive(coletor) {
+    // Simular status baseado na última atividade
+    return Math.random() > 0.2; // 80% chance de estar ativo
+  }
+
+  // Obter data da última coleta
+  getLastCollectionDate(coletor) {
+    const daysAgo = Math.floor(Math.random() * 30) + 1;
+    const lastDate = new Date();
+    lastDate.setDate(lastDate.getDate() - daysAgo);
+    
+    if (daysAgo <= 7) {
+      return `${daysAgo} dia${daysAgo > 1 ? 's' : ''} atrás`;
+    } else {
+      return lastDate.toLocaleDateString('pt-BR');
+    }
   }
 
   renderMonthlyChart(data) {
@@ -348,7 +556,11 @@ class DashboardAdmin {
           backgroundColor: gradient,
           borderColor: "#10B981",
           tension: 0.4,
-          pointRadius: 0,
+          pointBackgroundColor: "#10B981",
+          pointBorderColor: "#ffffff",
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6,
         }],
       },
       options: {
@@ -356,7 +568,14 @@ class DashboardAdmin {
         maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          tooltip: { enabled: true },
+          tooltip: { 
+            enabled: true,
+            callbacks: {
+              label: function(context) {
+                return `Coletas: ${context.parsed.y}`;
+              }
+            }
+          },
         },
         scales: {
           x: { display: false },
@@ -365,10 +584,93 @@ class DashboardAdmin {
         elements: {
           line: { borderWidth: 2 },
         },
+        onHover: (event, activeElements) => {
+          event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
+        },
+        onClick: (event, activeElements) => {
+          if (activeElements.length > 0) {
+            const clickedIndex = activeElements[0].index;
+            const clickedMonth = data[clickedIndex];
+            this.showMonthDetails(clickedMonth);
+          }
+        }
       },
     });
   }
 
+  // Renderizar gráfico de região com interatividade
+  renderRegionChart(data) {
+    const ctx = document.getElementById("region-chart");
+    if (!ctx) {
+      console.warn('Elemento region-chart não encontrado');
+      return;
+    }
+
+    this.charts.region = new Chart(ctx.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: data.map(item => item.name),
+        datasets: [{
+          label: "Coletas por Região",
+          data: data.map(item => item.coletas),
+          backgroundColor: [
+            'rgba(16, 185, 129, 0.8)',
+            'rgba(59, 130, 246, 0.8)',
+            'rgba(99, 102, 241, 0.8)',
+            'rgba(245, 158, 11, 0.8)',
+            'rgba(239, 68, 68, 0.8)'
+          ],
+          borderColor: [
+            'rgba(16, 185, 129, 1)',
+            'rgba(59, 130, 246, 1)', 
+            'rgba(99, 102, 241, 1)',
+            'rgba(245, 158, 11, 1)',
+            'rgba(239, 68, 68, 1)'
+          ],
+          borderWidth: 1,
+          borderRadius: 4
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { 
+            enabled: true,
+            callbacks: {
+              label: function(context) {
+                return `${context.parsed.y} coletas realizadas`;
+              }
+            }
+          },
+        },
+        scales: {
+          x: { 
+            display: true,
+            grid: { display: false }
+          },
+          y: { 
+            display: true,
+            beginAtZero: true,
+            grid: { display: true, color: 'rgba(0,0,0,0.1)' }
+          },
+        },
+        onHover: (event, activeElements) => {
+          event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
+        },
+        onClick: (event, activeElements) => {
+          if (activeElements.length > 0) {
+            const clickedIndex = activeElements[0].index;
+            const clickedRegion = data[clickedIndex];
+            this.showRegionDetails(clickedRegion);
+          }
+        }
+      },
+    });
+  }
+
+  // Renderizar gráfico com interatividade aprimorada
   renderPerformanceChart(data) {
     const ctx = document.getElementById("performance-chart");
     if (!ctx) return;
@@ -390,340 +692,189 @@ class DashboardAdmin {
         cutout: "60%",
         plugins: {
           legend: { display: false },
-          tooltip: { enabled: true },
+          tooltip: { 
+            enabled: true,
+            callbacks: {
+              label: function(context) {
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = ((context.parsed / total) * 100).toFixed(1);
+                return `${context.label}: ${context.parsed} (${percentage}%)`;
+              }
+            }
+          },
         },
+        onHover: (event, activeElements) => {
+          event.native.target.style.cursor = activeElements.length > 0 ? 'pointer' : 'default';
+        },
+        onClick: (event, activeElements) => {
+          if (activeElements.length > 0) {
+            const clickedIndex = activeElements[0].index;
+            const clickedMaterial = data[clickedIndex];
+            this.showMaterialDetails(clickedMaterial);
+          }
+        }
       },
-    });  }
-  
-  // Event listeners para filtros e atualizações
-  setupEventListeners() {
-    // Botão de atualização
-    const refreshBtn = document.getElementById('refresh-data');
-    if (refreshBtn) {
-      refreshBtn.addEventListener('click', () => this.refreshDashboard());
-    }
+    });
 
-    // Filtros de período (se existirem)
-    const periodFilter = document.getElementById('period-filter');
-    if (periodFilter) {
-      periodFilter.addEventListener('change', (e) => this.filterByPeriod(e.target.value));
-    }
-
-    // Navigation setup
-    this.setupNavigation();    // Modal de criação de ponto de coleta
-    this.setupModalEventListeners();
-
-    // Navigation setup
-    this.setupNavigation();
-
-    // Agendas event listeners
-    this.setupAgendasEventListeners();
+    // Renderizar legenda personalizada
+    this.renderPerformanceLegend(data);
   }
 
-  // Configuração dos event listeners do modal
-  setupModalEventListeners() {
-    // Botão para abrir modal
-    const openModalBtn = document.getElementById('areas-ativas-link');
-    if (openModalBtn) {
-      openModalBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.openModal();
-      });
-    }
+  // Mostrar detalhes do material clicado
+  showMaterialDetails(material) {
+    const pointsWithMaterial = this.userCollectionPoints.filter(ponto => 
+      ponto.materiaisAceitos && ponto.materiaisAceitos.includes(material.name.toLowerCase())
+    );
 
-    // Botão para fechar modal
-    const closeModalBtn = document.getElementById('close-modal');
-    if (closeModalBtn) {
-      closeModalBtn.addEventListener('click', () => this.closeModal());
-    }
-
-    // Botão cancelar
-    const cancelModalBtn = document.getElementById('cancel-modal');
-    if (cancelModalBtn) {
-      cancelModalBtn.addEventListener('click', () => this.closeModal());
-    }
-
-    // Fechar modal ao clicar fora
-    const modalOverlay = document.getElementById('modal-novo-ponto');
-    if (modalOverlay) {
-      modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) {
-          this.closeModal();
-        }
-      });
-    }
-
-    // Formulário de criação
-    const form = document.getElementById('form-novo-ponto');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        this.handleFormSubmit(e);
-      });
-    }
-
-    // Máscara para CEP
-    const cepInput = document.getElementById('cep-ponto');
-    if (cepInput) {
-      cepInput.addEventListener('input', this.formatCEP);
-      cepInput.addEventListener('blur', this.searchAddressByCEP.bind(this));
-    }
-
-    // Máscara para telefone
-    const phoneInput = document.getElementById('telefone-ponto');
-    if (phoneInput) {
-      phoneInput.addEventListener('input', this.formatPhone);
-    }
-  }
-
-  // Controle do modal
-  openModal() {
-    const modal = document.getElementById('modal-novo-ponto');
-    if (modal) {
-      modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    }
-  }
-
-  closeModal() {
-    const modal = document.getElementById('modal-novo-ponto');
-    if (modal) {
-      modal.style.display = 'none';
-      document.body.style.overflow = 'auto';
-      this.resetForm();
-    }
-  }
-
-  resetForm() {
-    const form = document.getElementById('form-novo-ponto');
-    if (form) {
-      form.reset();
-    }
-  }
-
-  // Máscara para CEP
-  formatCEP(event) {
-    let value = event.target.value.replace(/\D/g, '');
-    value = value.replace(/(\d{5})(\d)/, '$1-$2');
-    event.target.value = value;
-  }
-
-  // Máscara para telefone
-  formatPhone(event) {
-    let value = event.target.value.replace(/\D/g, '');
-    value = value.replace(/(\d{2})(\d)/, '($1) $2');
-    value = value.replace(/(\d{4})(\d)/, '$1-$2');
-    value = value.replace(/(\d{4})-(\d)(\d{4})/, '$1$2-$3');
-    event.target.value = value;
-  }
-
-  // Buscar endereço pelo CEP usando ViaCEP API
-  async searchAddressByCEP(event) {
-    const cep = event.target.value.replace(/\D/g, '');
-    
-    if (cep.length === 8) {
-      try {
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
-        
-        if (data.erro) {
-          this.showError('CEP não encontrado');
-          return;
-        }
-
-        // Preencher campos automaticamente
-        const enderecoInput = document.getElementById('endereco-ponto');
-        const cidadeInput = document.getElementById('cidade-ponto');
-        const estadoInput = document.getElementById('estado-ponto');
-
-        if (enderecoInput) enderecoInput.value = `${data.logradouro}, ${data.bairro}`;
-        if (cidadeInput) cidadeInput.value = data.localidade;
-        if (estadoInput) estadoInput.value = data.uf;
-
-      } catch (error) {
-        console.error('Erro ao buscar CEP:', error);
-        this.showError('Erro ao buscar informações do CEP');
-      }
-    }
-  }
-
-  // Manipular envio do formulário
-  async handleFormSubmit(event) {
-    event.preventDefault();
-    
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    
-    // Validar campos obrigatórios
-    if (!this.validateForm(data)) {
-      return;
-    }
-
-    // Obter materiais aceitos (checkboxes)
-    const materiaisAceitos = Array.from(
-      document.querySelectorAll('input[name="materiaisAceitos"]:checked')
-    ).map(checkbox => checkbox.value);
-
-    if (materiaisAceitos.length === 0) {
-      this.showError('Selecione pelo menos um material aceito');
-      return;
-    }
-
-    // Preparar dados do ponto de coleta
-    const novoPonto = {
-      nome: data.nome,
-      endereco: `${data.endereco}, ${data.cidade} - ${data.estado}`,
-      horario: data.horario,
-      materiaisAceitos: materiaisAceitos,
-      contato: data.contato,
-      coletaDomiciliar: document.getElementById('coleta-domiciliar').checked,
-      agenda: []
-    };
-
-    // Gerar coordenadas (simulação - em produção usaria geocoding API)
-    const coordinates = await this.generateCoordinates(data.cidade, data.estado);
-    novoPonto.lat = coordinates.lat;
-    novoPonto.lng = coordinates.lng;
-
-    try {
-      // Salvar no banco
-      await this.saveCollectionPoint(novoPonto);
-      
-      this.showSuccess('Ponto de coleta criado com sucesso!');
-      this.closeModal();
-      
-      // Atualizar dashboard
-      await this.refreshDashboard();
-      
-    } catch (error) {
-      console.error('Erro ao criar ponto de coleta:', error);
-      this.showError('Erro ao criar ponto de coleta. Tente novamente.');
-    }
-  }
-
-  // Validar formulário
-  validateForm(data) {
-    const requiredFields = ['nome', 'cep', 'endereco', 'cidade', 'estado', 'contato', 'horario'];
-    
-    for (const field of requiredFields) {
-      if (!data[field] || data[field].trim() === '') {
-        this.showError(`Campo ${field} é obrigatório`);
-        return false;
-      }
-    }
-
-    // Validar CEP
-    const cepRegex = /^\d{5}-?\d{3}$/;
-    if (!cepRegex.test(data.cep)) {
-      this.showError('CEP deve ter formato válido (00000-000)');
-      return false;
-    }
-
-    // Validar telefone
-    const phoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
-    if (!phoneRegex.test(data.contato)) {
-      this.showError('Telefone deve ter formato válido ((00) 00000-0000)');
-      return false;
-    }
-
-    return true;
-  }
-
-  // Gerar coordenadas (simulação - em produção usaria Google Geocoding API)
-  async generateCoordinates(cidade, estado) {
-    // Coordenadas base para Betim, MG (região padrão)
-    const baseLat = -19.9677;
-    const baseLng = -44.1986;
-    
-    // Adicionar pequena variação aleatória para simular diferentes localizações
-    const variation = 0.02;
-    const lat = baseLat + (Math.random() - 0.5) * variation;
-    const lng = baseLng + (Math.random() - 0.5) * variation;
-    
-    return { lat, lng };
-  }
-
-  // Salvar ponto de coleta no banco
-  async saveCollectionPoint(pontoData) {
-    try {
-      const response = await fetch(`${API_BASE_URL}/pontosDeColeta`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(pontoData)
-      });
-
-      if (!response.ok) {
-        throw new Error('Erro ao salvar ponto de coleta');
-      }      const savedPoint = await response.json();
-      return savedPoint;
-    } catch (error) {
-      console.error('Erro na requisição:', error);
-      throw error;
-    }
-  }
-
-  // Métodos de notificação
-  showSuccess(message) {
-    this.showNotification(message, 'success');
-  }
-
-  showError(message) {
-    this.showNotification(message, 'error');
-  }
-
-  showNotification(message, type = 'info') {
-    // Remover notificações existentes
-    const existingNotifications = document.querySelectorAll('.notification');
-    existingNotifications.forEach(notification => notification.remove());
-
-    // Criar elemento de notificação
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-      <span>${message}</span>
-      <button onclick="this.parentElement.remove()">&times;</button>
+    const modal = document.createElement('div');
+    modal.className = 'material-details-modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Detalhes: ${material.name}</h3>
+          <button class="modal-close" onclick="this.closest('.material-details-modal').remove()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="material-stats">
+            <div class="stat-item">
+              <span class="stat-label">Pontos que aceitam:</span>
+              <span class="stat-value">${pointsWithMaterial.length}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Total de coletas:</span>
+              <span class="stat-value">${material.value}</span>
+            </div>
+          </div>
+          
+          <h4>Pontos de Coleta:</h4>
+          <div class="points-list">
+            ${pointsWithMaterial.map(ponto => `
+              <div class="point-item-detail">
+                <div class="point-name">${ponto.nome}</div>
+                <div class="point-address">${ponto.endereco}</div>
+                <div class="point-status ${ponto.coletaDomiciliar ? 'active' : 'inactive'}">
+                  ${ponto.coletaDomiciliar ? 'Coleta Domiciliar' : 'Ponto Fixo'}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
     `;
+    
+    document.body.appendChild(modal);
+  }
 
-    // Adicionar estilos inline se não estiverem no CSS
-    notification.style.cssText = `
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 20px;
-      border-radius: 4px;
-      color: white;
-      font-weight: 500;
-      z-index: 10000;
-      max-width: 300px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      background-color: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6'};
+  // Mostrar detalhes da região clicada
+  showRegionDetails(region) {
+    const pointsInRegion = this.userCollectionPoints.filter(ponto => 
+      ponto.cidade === region.name
+    );
+
+    const modal = document.createElement('div');
+    modal.className = 'region-details-modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Região: ${region.name}</h3>
+          <button class="modal-close" onclick="this.closest('.region-details-modal').remove()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="region-overview">
+            <div class="overview-stats">
+              <div class="overview-item">
+                <span class="overview-label">Pontos na região:</span>
+                <span class="overview-value">${pointsInRegion.length}</span>
+              </div>
+              <div class="overview-item">
+                <span class="overview-label">Coletas estimadas:</span>
+                <span class="overview-value">${region.coletas}</span>
+              </div>
+            </div>
+          </div>
+
+          <h4>Pontos de Coleta na Região:</h4>
+          <div class="region-points-list">
+            ${pointsInRegion.map(ponto => `
+              <div class="region-point-item">
+                <div class="point-header">
+                  <span class="point-name">${ponto.nome}</span>
+                  <span class="point-type ${ponto.coletaDomiciliar ? 'domiciliar' : 'fixo'}">
+                    ${ponto.coletaDomiciliar ? 'Domiciliar' : 'Fixo'}
+                  </span>
+                </div>
+                <div class="point-details">
+                  <div class="point-address">${ponto.endereco}</div>
+                  <div class="point-materials">
+                    Materiais: ${ponto.materiaisAceitos ? ponto.materiaisAceitos.join(', ') : 'N/A'}
+                  </div>
+                </div>
+                <div class="point-actions">
+                  <button class="btn-small btn-secondary" onclick="window.dashboardAdmin.showAgendasForCollectionPoint('${ponto.id}')">
+                    Ver Agendas
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
     `;
+    
+    document.body.appendChild(modal);
+  }
 
-    notification.querySelector('button').style.cssText = `
-      background: none;
-      border: none;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      padding: 0;
-      margin: 0;
-      line-height: 1;
+  // Mostrar detalhes do mês clicado
+  showMonthDetails(month) {
+    // Filtrar agendas do mês específico
+    const monthAgendas = this.userAgendas.filter(agenda => {
+      const agendaDate = new Date(agenda.dataHoraInicio);
+      const monthName = agendaDate.toLocaleString('pt-BR', { month: 'long' });
+      return monthName.toLowerCase().includes(month.name.toLowerCase());
+    });
+
+    const modal = document.createElement('div');
+    modal.className = 'month-details-modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Detalhes: ${month.name}</h3>
+          <button class="modal-close" onclick="this.closest('.month-details-modal').remove()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="month-stats">
+            <div class="stat-group">
+              <div class="stat-item">
+                <span class="stat-label">Coletas realizadas:</span>
+                <span class="stat-value">${month.value}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Agendamentos:</span>
+                <span class="stat-value">${monthAgendas.length}</span>
+              </div>
+            </div>
+          </div>
+
+          ${monthAgendas.length > 0 ? `
+            <h4>Agendamentos do período:</h4>
+            <div class="month-agendas-list">
+              ${monthAgendas.slice(0, 5).map(agenda => `
+                <div class="agenda-item-small">
+                  <div class="agenda-date">
+                    ${new Date(agenda.dataHoraInicio).toLocaleDateString('pt-BR')}
+                  </div>
+                  <div class="agenda-point">${agenda.pontoColetaNome || 'N/A'}</div>
+                  <div class="agenda-status ${agenda.status}">${this.getStatusText(agenda.status)}</div>
+                </div>
+              `).join('')}
+              ${monthAgendas.length > 5 ? `<div class="agenda-more">+${monthAgendas.length - 5} mais...</div>` : ''}
+            </div>
+          ` : '<p class="no-data">Nenhum agendamento neste período.</p>'}
+        </div>
+      </div>
     `;
-
-    // Adicionar ao documento
-    document.body.appendChild(notification);
-
-    // Remover automaticamente após 5 segundos
-    setTimeout(() => {
-      if (notification.parentElement) {
-        notification.remove();
-      }    }, 5000);
+    
+    document.body.appendChild(modal);
   }
 
   // ===== NAVIGATION METHODS =====
@@ -1205,7 +1356,366 @@ class DashboardAdmin {
     container.innerHTML = pointsHTML;
   }
 
-  // ...existing code...
+  // Renderizar performance dos coletores
+  renderColetoresPerformance() {
+    const container = document.getElementById('coletores-performance-list');
+    if (!container) return;
+
+    const coletoresAssociados = this.getUserAssociatedCollectors();
+    
+    if (coletoresAssociados.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state-small">
+          <p>Nenhum coletor associado encontrado</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Ordenar coletores por performance (coletas realizadas)
+    const coletoresComStats = coletoresAssociados.map(coletor => ({
+      ...coletor,
+      coletas: this.calculateCollectorStats(coletor),
+      status: this.isCollectorActive(coletor)
+    })).sort((a, b) => b.coletas - a.coletas);
+
+    const performanceHTML = coletoresComStats.slice(0, 5).map((coletor, index) => {
+      const rank = index + 1;
+      const percentage = Math.round((coletor.coletas / coletoresComStats[0].coletas) * 100);
+      
+      return `
+        <div class="performance-item">
+          <div class="performance-rank">#${rank}</div>
+          <div class="performance-info">
+            <div class="performance-header">
+              <span class="performance-name">${coletor.nome}</span>
+              <span class="performance-value">${coletor.coletas} coletas</span>
+            </div>
+            <div class="performance-bar">
+              <div class="performance-fill" style="width: ${percentage}%"></div>
+            </div>
+            <div class="performance-details">
+              <span class="performance-status ${coletor.status ? 'active' : 'inactive'}">
+                ${coletor.status ? '🟢 Ativo' : '🔴 Inativo'}
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = performanceHTML;
+  }
+
+  // Renderizar legenda dinâmica do gráfico de performance
+  renderPerformanceLegend(data) {
+    const container = document.getElementById('performance-legend');
+    if (!container || !data) return;
+
+    const total = data.reduce((sum, item) => sum + item.value, 0);
+    
+    const legendHTML = data.map(item => {
+      const percentage = total > 0 ? Math.round((item.value / total) * 100) : 0;
+      
+      return `
+        <div class="legend-item">
+          <div class="legend-color" style="background-color: ${item.color};"></div>
+          <span class="legend-label">${item.name}</span>
+          <span class="legend-value">${percentage}%</span>
+        </div>
+      `;
+    }).join('');
+
+    container.innerHTML = legendHTML;
+  }
+
+  // Exportar para Excel (implementação básica usando CSV formatado)
+  exportToExcel(data) {
+    // Para uma implementação completa, seria necessário usar uma biblioteca como SheetJS
+    // Por enquanto, vamos usar uma versão formatada em CSV que pode ser aberta no Excel
+    
+    let excelContent = '';
+    
+    // Cabeçalho do relatório
+    excelContent += `Relatório EcoColeta\n`;
+    excelContent += `Usuário:,${data.user.nome}\n`;
+    excelContent += `Email:,${data.user.email}\n`;
+    excelContent += `Data:,${new Date().toLocaleDateString('pt-BR')}\n\n`;
+
+    if (data.collectors) {
+      excelContent += `COLETORES ASSOCIADOS\n`;
+      excelContent += `Nome,Email,Telefone,Coletas Realizadas,Status,Última Coleta\n`;
+      data.collectors.forEach(collector => {
+        const stats = this.calculateCollectorStats(collector);
+        const lastCollection = this.getLastCollectionDate(collector);
+        const status = this.isCollectorActive(collector) ? 'Ativo' : 'Inativo';
+        excelContent += `"${collector.nome}","${collector.email}","${collector.telefone || 'N/A'}",${stats},${status},"${lastCollection}"\n`;
+      });
+      excelContent += '\n';
+    }
+
+    if (data.collections) {
+      excelContent += `PONTOS DE COLETA\n`;
+      excelContent += `Nome,Endereço,Cidade,Estado,Materiais Aceitos,Coleta Domiciliar,Horário,Contato\n`;
+      data.collections.forEach(ponto => {
+        const materiais = ponto.materiaisAceitos ? ponto.materiaisAceitos.join('; ') : 'N/A';
+        const domiciliar = ponto.coletaDomiciliar ? 'Sim' : 'Não';
+        excelContent += `"${ponto.nome}","${ponto.endereco}","${ponto.cidade || 'N/A'}","${ponto.estado || 'N/A'}","${materiais}",${domiciliar},"${ponto.horario || 'N/A'}","${ponto.contato || 'N/A'}"\n`;
+      });
+      excelContent += '\n';
+    }
+
+    if (data.agendas) {
+      excelContent += `AGENDAMENTOS\n`;
+      excelContent += `Data,Horário,Ponto de Coleta,Status,Materiais,Contato Responsável,Observações\n`;
+      data.agendas.forEach(agenda => {
+        const dataInicio = new Date(agenda.dataHoraInicio);
+        const dataFormatada = dataInicio.toLocaleDateString('pt-BR');
+        const horarioFormatado = dataInicio.toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'});
+        const materiais = agenda.materiais ? agenda.materiais.join('; ') : 'N/A';
+        const status = this.getStatusText(agenda.status);
+        excelContent += `"${dataFormatada}","${horarioFormatado}","${agenda.pontoColetaNome || 'N/A'}","${status}","${materiais}","${agenda.contatoResponsavel || 'N/A'}","${agenda.observacoes || 'N/A'}"\n`;
+      });
+      excelContent += '\n';
+    }
+
+    if (data.performance) {
+      excelContent += `RELATÓRIO DE PERFORMANCE\n`;
+      excelContent += `Nome,Email,Telefone,Coletas Realizadas,Última Coleta,Status,Materiais Coletados\n`;
+      data.performance.forEach(perf => {
+        const materiaisColetados = perf.materiaisColetados ? perf.materiaisColetados.join('; ') : 'N/A';
+        const status = perf.statusAtivo ? 'Ativo' : 'Inativo';
+        excelContent += `"${perf.nome}","${perf.email}","${perf.telefone || 'N/A'}",${perf.coletasRealizadas},"${perf.ultimaColeta}",${status},"${materiaisColetados}"\n`;
+      });
+    }
+
+    // Criar e baixar arquivo
+    const blob = new Blob(['\ufeff' + excelContent], { 
+      type: 'text/csv;charset=utf-8;' 
+    });
+    
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `relatorio_ecocoleta_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Função auxiliar para calcular performance avançada dos coletores
+  calculateAdvancedCollectorStats(collector) {
+    // Simular dados de performance mais detalhados
+    const baseStats = this.calculateCollectorStats(collector);
+    
+    return {
+      coletasRealizadas: baseStats,
+      coletasEsteMes: Math.floor(baseStats * 0.3),
+      mediaColetasPorDia: (baseStats / 30).toFixed(1),
+      eficiencia: Math.min(100, (baseStats * 5)).toFixed(1), // Simular % de eficiência
+      pontuacao: baseStats * 10, // Sistema de pontos
+      ranking: this.getCollectorRanking(collector),
+      tendencia: this.getCollectorTrend(collector)
+    };
+  }
+
+  // Obter ranking do coletor
+  getCollectorRanking(collector) {
+    const collectors = this.getUserAssociatedCollectors();
+    const collectorStats = collectors.map(c => ({
+      id: c.id,
+      stats: this.calculateCollectorStats(c)
+    }));
+    
+    collectorStats.sort((a, b) => b.stats - a.stats);
+    const position = collectorStats.findIndex(c => c.id === collector.id) + 1;
+    
+    return `${position}º de ${collectors.length}`;
+  }
+
+  // Obter tendência do coletor (simulada)
+  getCollectorTrend(collector) {
+    const trends = ['📈 Crescendo', '📊 Estável', '📉 Declinando'];
+    return trends[Math.floor(Math.random() * trends.length)];
+  }
+
+  // Adicionar métricas de sustentabilidade
+  calculateSustainabilityMetrics() {
+    const totalCollectionPoints = this.userCollectionPoints.length;
+    const totalMaterials = new Set();
+    
+    this.userCollectionPoints.forEach(ponto => {
+      if (ponto.materiaisAceitos) {
+        ponto.materiaisAceitos.forEach(material => totalMaterials.add(material));
+      }
+    });
+
+    // Estimativas de impacto ambiental (simuladas)
+    const estimatedCollections = totalCollectionPoints * 12; // 12 coletas por ponto por mês
+    const co2Saved = estimatedCollections * 2.5; // kg de CO2 economizado
+    const treesEquivalent = Math.floor(co2Saved / 22); // Árvores equivalentes
+    const wasteRecycled = estimatedCollections * 15; // kg de resíduos reciclados
+
+    return {
+      totalMaterialTypes: totalMaterials.size,
+      estimatedCollections,
+      co2Saved: co2Saved.toFixed(1),
+      treesEquivalent,
+      wasteRecycled: wasteRecycled.toFixed(1),
+      recyclabilityScore: Math.min(100, (totalMaterials.size * 14.3)).toFixed(1)
+    };
+  }
+
+  // Mostrar métricas de sustentabilidade
+  showSustainabilityMetrics() {
+    const metrics = this.calculateSustainabilityMetrics();
+    
+    const modal = document.createElement('div');
+    modal.className = 'sustainability-modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🌱 Métricas de Sustentabilidade</h3>
+          <button class="modal-close" onclick="this.closest('.sustainability-modal').remove()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="sustainability-grid">
+            <div class="metric-card co2">
+              <div class="metric-icon">🌍</div>
+              <div class="metric-value">${metrics.co2Saved} kg</div>
+              <div class="metric-label">CO² Economizado</div>
+            </div>
+            
+            <div class="metric-card trees">
+              <div class="metric-icon">🌳</div>
+              <div class="metric-value">${metrics.treesEquivalent}</div>
+              <div class="metric-label">Árvores Equivalentes</div>
+            </div>
+            
+            <div class="metric-card waste">
+              <div class="metric-icon">♻️</div>
+              <div class="metric-value">${metrics.wasteRecycled} kg</div>
+              <div class="metric-label">Resíduos Reciclados</div>
+            </div>
+            
+            <div class="metric-card score">
+              <div class="metric-icon">📊</div>
+              <div class="metric-value">${metrics.recyclabilityScore}%</div>
+              <div class="metric-label">Score de Reciclabilidade</div>
+            </div>
+          </div>
+          
+          <div class="impact-details">
+            <h4>Detalhes do Impacto:</h4>
+            <ul>
+              <li><strong>${metrics.totalMaterialTypes}</strong> tipos diferentes de materiais aceitos</li>
+              <li><strong>${metrics.estimatedCollections}</strong> coletas estimadas por mês</li>
+              <li>Contribuição para <strong>redução de emissões</strong> de gases do efeito estufa</li>
+              <li>Apoio ao <strong>desenvolvimento sustentável</strong> da comunidade</li>
+            </ul>
+          </div>
+          
+          <div class="sustainability-actions">
+            <button class="btn-primary" onclick="window.dashboardAdmin.shareImpact(${JSON.stringify(metrics).replace(/"/g, '&quot;')})">
+              📤 Compartilhar Impacto
+            </button>
+            <button class="btn-secondary" onclick="window.dashboardAdmin.downloadImpactReport(${JSON.stringify(metrics).replace(/"/g, '&quot;')})">
+              📄 Baixar Relatório
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+  }
+
+  // Compartilhar impacto nas redes sociais
+  shareImpact(metrics) {
+    const message = `🌱 Meu impacto sustentável com a EcoColeta:\n\n🌍 ${metrics.co2Saved} kg de CO² economizado\n🌳 ${metrics.treesEquivalent} árvores equivalentes\n♻️ ${metrics.wasteRecycled} kg de resíduos reciclados\n\n#EcoColeta #Sustentabilidade #MeioAmbiente`;
+    
+    // Opções de compartilhamento
+    const shareModal = document.createElement('div');
+    shareModal.className = 'share-modal';
+    shareModal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Compartilhar Impacto</h3>
+          <button class="modal-close" onclick="this.closest('.share-modal').remove()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="share-options">
+            <button class="share-btn whatsapp" onclick="window.open('https://wa.me/?text=${encodeURIComponent(message)}', '_blank')">
+              📱 WhatsApp
+            </button>
+            <button class="share-btn facebook" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(message)}', '_blank')">
+              📘 Facebook
+            </button>
+            <button class="share-btn twitter" onclick="window.open('https://twitter.com/intent/tweet?text=${encodeURIComponent(message)}', '_blank')">
+              🐦 Twitter
+            </button>
+            <button class="share-btn copy" onclick="navigator.clipboard.writeText('${message.replace(/'/g, "\\'")}').then(() => alert('Texto copiado!'))">
+              📋 Copiar Texto
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(shareModal);
+    
+    // Fechar modal anterior
+    document.querySelector('.sustainability-modal')?.remove();
+  }
+
+  // Baixar relatório de impacto
+  downloadImpactReport(metrics) {
+    const reportContent = `
+RELATÓRIO DE IMPACTO AMBIENTAL - ECOCOLETA
+==========================================
+
+Usuário: ${this.currentUser.nome}
+Email: ${this.currentUser.email}
+Data: ${new Date().toLocaleDateString('pt-BR')}
+
+MÉTRICAS DE SUSTENTABILIDADE:
+-----------------------------
+🌍 CO² Economizado: ${metrics.co2Saved} kg
+🌳 Árvores Equivalentes: ${metrics.treesEquivalent}
+♻️ Resíduos Reciclados: ${metrics.wasteRecycled} kg
+📊 Score de Reciclabilidade: ${metrics.recyclabilityScore}%
+
+DETALHOS:
+---------
+• Tipos de materiais aceitos: ${metrics.totalMaterialTypes}
+• Coletas estimadas/mês: ${metrics.estimatedCollections}
+• Pontos de coleta ativos: ${this.userCollectionPoints.length}
+
+CONTRIBUIÇÕES:
+--------------
+✓ Redução de emissões de gases do efeito estufa
+✓ Promoção da economia circular
+✓ Desenvolvimento sustentável da comunidade
+✓ Educação ambiental e conscientização
+
+--
+Relatório gerado automaticamente pela plataforma EcoColeta
+    `.trim();
+
+    const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `impacto_ambiental_${new Date().toISOString().split('T')[0]}.txt`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Fechar modal
+    document.querySelector('.sustainability-modal')?.remove();
+  }
 }
 
 // Inicializar dashboard quando DOM estiver pronto
