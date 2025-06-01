@@ -138,16 +138,16 @@
       ],
       "contato": "(31) 3512-3000",
       "coletaDomiciliar": true,
-      "criadoPor": 2,
-      "agenda": [
+      "criadoPor": 2,      "agenda": [
         {
           "idAgenda": "agenda-ecoponto1-001",
           "idUsuarioAgendamento": 2,
+          "coletorId": 7,
           "dataHoraInicio": "2025-06-10T10:00:00Z",
           "dataHoraFim": "2025-06-10T11:00:00Z",
           "tipo": "coleta_agendada_empresa",
           "descricao": "Coleta de papelão agendada pela Empresa Exemplo Ltda.",
-          "status": "confirmado",
+          "status": "concluido",
           "materiais": [
             "papelão"
           ],
@@ -157,17 +157,96 @@
         {
           "idAgenda": "agenda-ecoponto1-002",
           "idUsuarioAgendamento": 5,
+          "coletorId": 6,
           "dataHoraInicio": "2025-06-12T14:00:00Z",
           "dataHoraFim": "2025-06-12T14:30:00Z",
           "tipo": "entrega_voluntaria_grande_volume",
           "descricao": "Entrega de eletrônicos por Samuel.",
-          "status": "confirmado",
+          "status": "concluido",
           "materiais": [
             "eletronicos",
             "baterias"
           ],
           "contatoResponsavel": "Samuel Maciel",
           "observacoes": "Necessário auxílio para descarregar."
+        },
+        {
+          "idAgenda": "agenda-ecoponto1-003",
+          "idUsuarioAgendamento": 2,
+          "coletorId": 7,
+          "dataHoraInicio": "2025-05-28T09:00:00Z",
+          "dataHoraFim": "2025-05-28T10:00:00Z",
+          "tipo": "coleta_domiciliar",
+          "descricao": "Coleta domiciliar de plásticos e papel",
+          "status": "concluido",
+          "materiais": [
+            "plastico",
+            "papel"
+          ],
+          "contatoResponsavel": "Samuel Maciel",
+          "observacoes": "Coleta realizada com sucesso."
+        },
+        {
+          "idAgenda": "agenda-ecoponto1-004",
+          "idUsuarioAgendamento": 2,
+          "coletorId": 6,
+          "dataHoraInicio": "2025-05-25T15:00:00Z",
+          "dataHoraFim": "2025-05-25T16:00:00Z",
+          "tipo": "coleta_domiciliar",
+          "descricao": "Coleta de materiais recicláveis residenciais",
+          "status": "concluido",
+          "materiais": [
+            "plastico",
+            "metal",
+            "papel"
+          ],
+          "contatoResponsavel": "Matheus Augusto",
+          "observacoes": "Coleta em área residencial."
+        },
+        {
+          "idAgenda": "agenda-ecoponto1-005",
+          "idUsuarioAgendamento": 2,
+          "coletorId": 7,
+          "dataHoraInicio": "2025-05-20T13:00:00Z",
+          "dataHoraFim": "2025-05-20T14:00:00Z",
+          "tipo": "coleta_comercial",
+          "descricao": "Coleta de eletrônicos comerciais",
+          "status": "concluido",
+          "materiais": [
+            "eletronicos",
+            "baterias"
+          ],
+          "contatoResponsavel": "Samuel Maciel",
+          "observacoes": "Coleta de equipamentos de escritório."
+        }
+      ],
+      "historico": [
+        {
+          "id": "hist_001",
+          "coletorId": 7,
+          "dataColeta": "2025-05-15T10:00:00Z",
+          "materiaisColetados": ["eletronicos", "baterias"],
+          "quantidadeKg": 45,
+          "status": "concluido",
+          "observacoes": "Coleta de equipamentos eletrônicos antigos"
+        },
+        {
+          "id": "hist_002",
+          "coletorId": 6,
+          "dataColeta": "2025-05-10T14:00:00Z",
+          "materiaisColetados": ["plastico", "papel", "metal"],
+          "quantidadeKg": 25,
+          "status": "concluido",
+          "observacoes": "Coleta domiciliar regular"
+        },
+        {
+          "id": "hist_003",
+          "coletorId": 7,
+          "dataColeta": "2025-05-05T16:00:00Z",
+          "materiaisColetados": ["eletronicos"],
+          "quantidadeKg": 30,
+          "status": "concluido",
+          "observacoes": "Coleta de computadores e periféricos"
         }
       ]
     },
@@ -182,11 +261,53 @@
         "plastico",
         "papel",
         "metal"
-      ],
-      "contato": "(31) 3512-3001",
+      ],      "contato": "(31) 3512-3001",
       "coletaDomiciliar": false,
       "criadoPor": 7,
-      "agenda": []
+      "agenda": [
+        {
+          "idAgenda": "agenda-ecoponto2-001",
+          "idUsuarioAgendamento": 2,
+          "coletorId": 6,
+          "dataHoraInicio": "2025-05-22T08:00:00Z",
+          "dataHoraFim": "2025-05-22T09:00:00Z",
+          "tipo": "coleta_domiciliar",
+          "descricao": "Coleta de plásticos e papel residencial",
+          "status": "concluido",
+          "materiais": [
+            "plastico",
+            "papel"
+          ],
+          "contatoResponsavel": "Matheus Augusto",
+          "observacoes": "Coleta de materiais domésticos."
+        },
+        {
+          "idAgenda": "agenda-ecoponto2-002",
+          "idUsuarioAgendamento": 2,
+          "coletorId": 7,
+          "dataHoraInicio": "2025-05-18T10:00:00Z",
+          "dataHoraFim": "2025-05-18T11:00:00Z",
+          "tipo": "coleta_comercial",
+          "descricao": "Coleta de metais leves",
+          "status": "concluido",
+          "materiais": [
+            "metal"
+          ],
+          "contatoResponsavel": "Samuel Maciel",
+          "observacoes": "Coleta de materiais metálicos separados."
+        }
+      ],
+      "historico": [
+        {
+          "id": "hist_alt_001",
+          "coletorId": 6,
+          "dataColeta": "2025-05-12T09:00:00Z",
+          "materiaisColetados": ["plastico", "papel"],
+          "quantidadeKg": 20,
+          "status": "concluido",
+          "observacoes": "Coleta regular de materiais recicláveis"
+        }
+      ]
     },
     {
       "id": 3,

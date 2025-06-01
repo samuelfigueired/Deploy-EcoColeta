@@ -356,134 +356,262 @@
 
   <!-- Modals container -->
   <div id="modals-container"></div>
-
   <script src="../src/js/dashboardAdmin.js"></script>
   <script>
-    // Instanciar dashboard para página de visão geral
-    window.dashboardAdmin = new DashboardAdmin();
-    
-    // Customizar para visão geral
-    document.addEventListener('DOMContentLoaded', function() {
-      // Atualizar estatísticas específicas do usuário
-      updateOverviewStats();
-      
-      // Renderizar gráficos da visão geral
-      renderOverviewCharts();
-      
-      // Carregar atividades recentes
-      loadRecentActivities();
-    });
+    // Overview page manager
+    class OverviewManager {
+      constructor() {
+        this.currentUser = null;
+        this.userPoints = [];
+        this.collectors = [];
+        this.agendas = [];
+        this.init();
+      }
 
-    function updateOverviewStats() {
-      if (window.dashboardAdmin) {
-        const userPoints = window.dashboardAdmin.userCollectionPoints.length;
-        const userCollectors = window.dashboardAdmin.getUserAssociatedCollectors().length;
-        const userAgendas = window.dashboardAdmin.userAgendas.length;
-        const monthlyCollections = userPoints * 8; // Estimativa
+      async init() {
+        // Wait for dashboard admin to load
+        await this.waitForDashboard();
+        this.loadCurrentUser();
+        await this.loadData();
+        this.updateOverviewStats();
+        this.renderOverviewCharts();
+        this.loadRecentActivities();
+      }
 
+      waitForDashboard() {
+        return new Promise((resolve) => {
+          const checkDashboard = () => {
+            if (window.dashboardAdmin && window.dashboardAdmin.usuarios) {
+              resolve();
+            } else {
+              setTimeout(checkDashboard, 100);
+            }
+          };
+          checkDashboard();
+        });
+      }
+
+      loadCurrentUser() {
+        this.currentUser = window.dashboardAdmin.currentUser;
+        this.userPoints = window.dashboardAdmin.userCollectionPoints || [];
+      }
+
+      async loadData() {
+        // Load real data from dashboard
+        this.collectors = window.dashboardAdmin.getUserAssociatedCollectors() || [];
+        this.agendas = this.calculateUserAgendas();
+        
+        console.log('Overview data loaded:', {
+          userPoints: this.userPoints.length,
+          collectors: this.collectors.length,
+          agendas: this.agendas.length
+        });
+      }
+
+      calculateUserAgendas() {
+        const allAgendas = [];
+        this.userPoints.forEach(point => {
+          if (point.agenda && point.agenda.length > 0) {
+            point.agenda.forEach(agenda => {
+              allAgendas.push({
+                ...agenda,
+                pointName: point.nome,
+                pointId: point.id
+              });
+            });
+          }
+        });
+        return allAgendas;
+      }
+
+      updateOverviewStats() {
+        // Calculate real statistics
+        const userPoints = this.userPoints.length;
+        const userCollectors = this.collectors.length;
+        const userAgendas = this.agendas.length;
+        
+        // Calculate monthly collections from real data
+        const monthlyCollections = this.calculateMonthlyCollections();
+
+        // Update DOM elements
         document.getElementById('user-pontos-total').textContent = userPoints;
         document.getElementById('user-coletores-total').textContent = userCollectors;
         document.getElementById('user-coletas-mes').textContent = monthlyCollections;
         document.getElementById('user-agendas-total').textContent = userAgendas;
       }
-    }
 
-    function renderOverviewCharts() {
-      // Reutilizar os gráficos existentes com IDs diferentes
-      if (window.dashboardAdmin) {
-        const chartData = window.dashboardAdmin.generateChartData();
+      calculateMonthlyCollections() {
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
         
-        // Gráfico mensal
-        const monthlyCtx = document.getElementById('overview-monthly-chart');
-        if (monthlyCtx) {
-          new Chart(monthlyCtx.getContext('2d'), {
-            type: 'line',
-            data: {
-              labels: chartData.monthlyData.map(item => item.name),
-              datasets: [{
-                label: 'Coletas',
-                data: chartData.monthlyData.map(item => item.value),
-                borderColor: '#10B981',
-                backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                tension: 0.4,
-                fill: true
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: { legend: { display: false } },
-              scales: {
-                y: { beginAtZero: true, grid: { display: true, color: 'rgba(0,0,0,0.1)' } },
-                x: { grid: { display: false } }
-              }
-            }
+        let monthlyCollections = 0;
+        
+        this.agendas.forEach(agenda => {
+          const agendaDate = new Date(agenda.dataHoraInicio);
+          if (agendaDate.getMonth() === currentMonth && 
+              agendaDate.getFullYear() === currentYear &&
+              agenda.status === 'concluido') {
+            monthlyCollections++;
+          }
+        });        // If no real data, estimate based on points
+        return monthlyCollections || Math.max(1, this.userPoints.length * 6);
+      }
+
+      getRecentActivities() {
+        const activities = [];
+        const now = new Date();
+
+        // Get recent agenda activities
+        const sortedAgendas = [...this.agendas]
+          .sort((a, b) => new Date(b.dataHoraInicio) - new Date(a.dataHoraInicio))
+          .slice(0, 5);
+
+        sortedAgendas.forEach(agenda => {
+          const agendaDate = new Date(agenda.dataHoraInicio);
+          const timeDiff = now - agendaDate;
+          const timeText = this.formatTimeAgo(timeDiff);
+
+          if (agenda.status === 'concluido') {
+            activities.push({
+              type: 'coleta',
+              title: 'Coleta realizada',
+              description: `Coleta de ${agenda.observacoes || 'materiais'} em ${agenda.pointName}`,
+              time: timeText,
+              icon: '♻️'
+            });
+          } else if (agenda.status === 'agendado') {
+            activities.push({
+              type: 'agenda',
+              title: 'Agendamento confirmado',
+              description: `Coleta agendada em ${agenda.pointName}`,
+              time: timeText,
+              icon: '📅'
+            });
+          }
+        });
+
+        // Add collector activities
+        if (this.collectors.length > 0) {
+          activities.push({
+            type: 'coletor',
+            title: 'Coletores ativos',
+            description: `${this.collectors.length} coletores associados aos seus pontos`,
+            time: 'Hoje',
+            icon: '👤'
           });
         }
 
-        // Gráfico de materiais
-        const materialsCtx = document.getElementById('overview-materials-chart');
-        if (materialsCtx) {
-          new Chart(materialsCtx.getContext('2d'), {
-            type: 'doughnut',
-            data: {
-              labels: chartData.performanceData.map(item => item.name),
-              datasets: [{
-                data: chartData.performanceData.map(item => item.value),
-                backgroundColor: chartData.performanceData.map(item => item.color),
-                borderWidth: 0
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              cutout: '60%',
-              plugins: { legend: { position: 'bottom' } }
-            }
+        // If no real activities, provide meaningful defaults
+        if (activities.length === 0) {
+          activities.push({
+            type: 'info',
+            title: 'Sistema ativo',
+            description: `Monitorando ${this.userPoints.length} pontos de coleta`,
+            time: 'Agora',
+            icon: '📊'
           });
+        }
+
+        return activities.slice(0, 5); // Limit to 5 activities
+      }
+
+      formatTimeAgo(timeDiff) {
+        const minutes = Math.floor(timeDiff / (1000 * 60));
+        const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+        if (days > 0) return `${days} dia${days > 1 ? 's' : ''} atrás`;
+        if (hours > 0) return `${hours} hora${hours > 1 ? 's' : ''} atrás`;
+        if (minutes > 0) return `${minutes} minuto${minutes > 1 ? 's' : ''} atrás`;
+        return 'Agora mesmo';
+      }
+
+      renderOverviewCharts() {
+        if (window.dashboardAdmin) {
+          const chartData = window.dashboardAdmin.generateChartData();
+          
+          // Monthly chart
+          const monthlyCtx = document.getElementById('overview-monthly-chart');
+          if (monthlyCtx) {
+            new Chart(monthlyCtx.getContext('2d'), {
+              type: 'line',
+              data: {
+                labels: chartData.monthlyData.map(item => item.name),
+                datasets: [{
+                  label: 'Coletas',
+                  data: chartData.monthlyData.map(item => item.value),
+                  borderColor: '#10B981',
+                  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                  tension: 0.4,
+                  fill: true
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                  y: { beginAtZero: true, grid: { display: true, color: 'rgba(0,0,0,0.1)' } },
+                  x: { grid: { display: false } }
+                }
+              }
+            });
+          }
+
+          // Materials chart
+          const materialsCtx = document.getElementById('overview-materials-chart');
+          if (materialsCtx) {
+            new Chart(materialsCtx.getContext('2d'), {
+              type: 'doughnut',
+              data: {
+                labels: chartData.performanceData.map(item => item.name),
+                datasets: [{
+                  data: chartData.performanceData.map(item => item.value),
+                  backgroundColor: chartData.performanceData.map(item => item.color),
+                  borderWidth: 0
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: { legend: { position: 'bottom' } }
+              }
+            });
+          }
         }
       }
-    }
 
-    function loadRecentActivities() {
-      const container = document.getElementById('recent-activities');
-      if (!container) return;
+      loadRecentActivities() {
+        const container = document.getElementById('recent-activities');
+        if (!container) return;
 
-      const activities = [
-        {
-          type: 'coleta',
-          title: 'Nova coleta realizada',
-          description: 'Coleta de plásticos no Ecoponto Central',
-          time: '2 horas atrás',
-          icon: '♻️'
-        },
-        {
-          type: 'agenda',
-          title: 'Agendamento confirmado',
-          description: 'Coleta agendada para próxima terça-feira',
-          time: '5 horas atrás',
-          icon: '📅'
-        },
-        {
-          type: 'coletor',
-          title: 'Novo coletor associado',
-          description: 'João Silva se associou ao seu ecoponto',
-          time: '1 dia atrás',
-          icon: '👤'
-        }
-      ];
-
-      const activitiesHTML = activities.map(activity => `
-        <div class="activity-item">
-          <div class="activity-icon">${activity.icon}</div>
-          <div class="activity-content">
-            <h4>${activity.title}</h4>
-            <p>${activity.description}</p>
-            <span class="activity-time">${activity.time}</span>
+        const activities = this.getRecentActivities();
+        const activitiesHTML = activities.map(activity => `
+          <div class="activity-item">
+            <div class="activity-icon">${activity.icon}</div>
+            <div class="activity-content">
+              <h4>${activity.title}</h4>
+              <p>${activity.description}</p>
+              <span class="activity-time">${activity.time}</span>
+            </div>
           </div>
-        </div>
-      `).join('');
-    container.innerHTML = activitiesHTML;
+        `).join('');
+        
+        container.innerHTML = activitiesHTML;
+      }
+    }    // Instantiate overview manager
+    const overviewManager = new OverviewManager();
+    
+    // Keep original dashboard instance for compatibility
+    window.dashboardAdmin = new DashboardAdmin();
+
+    function updateOverviewStats() {
+      // This will be handled by OverviewManager
+      if (overviewManager) {
+        overviewManager.updateOverviewStats();
+      }
     }
   </script>
 

@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Relatórios - EcoColeta Dashboard</title>  <link rel="stylesheet" href="styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="../src/css/navFooter.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <link rel="stylesheet" href="../src/css/navFooter.css">
   <link rel="stylesheet" href="../src/css/dashboardAdmin.css" />
   <script src="../src/js/sidebar.js"></script>
+  <script src="../src/js/relatorios.js"></script>
 </head>
 <body>
   <div class="dashboard-container">
@@ -600,8 +600,14 @@
           transform: translateX(0);        opacity: 1;
         }
       }
-    `;
-    document.head.appendChild(style);
+    `;    document.head.appendChild(style);
+  </script>
+
+  <!-- Initialize Reports Manager -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      new RelatoriosManager();
+    });
   </script>
 
   <!-- Sidebar overlay para mobile -->

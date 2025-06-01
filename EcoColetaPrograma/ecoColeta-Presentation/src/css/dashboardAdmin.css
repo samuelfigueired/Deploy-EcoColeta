@@ -148,16 +148,21 @@ body {
   border-bottom: 1px solid var(--color-gray-100);
   padding: 0 1.5rem;
   position: relative;
+  min-width: 0; /* Permite que o flex shrink funcione corretamente */
 }
 
 .logo {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 800;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: visible;
+  flex-shrink: 0;
+  line-height: 1.2;
 }
 /* Melhorias no scroll moderno */
 ::-webkit-scrollbar {
@@ -1969,6 +1974,20 @@ textarea:hover {
   border-radius: var(--border-radius-full);
   color: white;
   flex-shrink: 0;
+}
+
+.collector-avatar img {
+  width: 60px; /* Increased size */
+  height: 60px; /* Increased size */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--color-primary-light); /* Enhanced border */
+  box-shadow: var(--shadow-md); /* Enhanced shadow */
+  transition: transform 0.2s ease-in-out;
+}
+
+.collector-avatar img:hover {
+  transform: scale(1.1); /* Add a hover effect */
 }
 
 .collector-info {

@@ -2,11 +2,57 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoColeta - Pontos de Coleta</title>  <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>EcoColeta - Pontos de Coleta</title>  <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="../src/css/dashboardAdmin.css" />
   <script src="../src/js/sidebar.js"></script>
+  <style>
+    /* Toast notification animations */
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+
+    /* Point details modal styles */
+    .point-details {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .detail-row {
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    
+    .detail-row strong {
+      display: inline-block;
+      width: 150px;
+      color: #374151;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
   <div class="dashboard-container">
@@ -291,7 +337,6 @@
       </div>
     </div>
   </div>
-
   <script src="../src/js/dashboardAdmin.js"></script>
   <script>
     // Collection Points specific functionality
@@ -299,16 +344,138 @@
       constructor() {
         this.points = [];
         this.filteredPoints = [];
+        this.allPoints = [];
+        this.collectors = [];
+        this.currentUser = null;
         this.init();
       }
 
-      init() {
-        this.loadPoints();
+      async init() {
+        // Wait for dashboard admin to load
+        await this.waitForDashboard();
+        this.loadCurrentUser();
+        await this.loadData();
         this.setupEventListeners();
         this.initCharts();
       }
 
-      setupEventListeners() {
+      waitForDashboard() {
+        return new Promise((resolve) => {
+          const checkDashboard = () => {
+            if (window.dashboardAdmin && window.dashboardAdmin.pontosDeColeta) {
+              resolve();
+            } else {
+              setTimeout(checkDashboard, 100);
+            }
+          };
+          checkDashboard();
+        });
+      }
+
+      loadCurrentUser() {
+        this.currentUser = window.dashboardAdmin.currentUser;
+      }
+
+      async loadData() {
+        try {
+          // Load all points from dashboard data
+          this.allPoints = window.dashboardAdmin.pontosDeColeta || [];
+          
+          // Load all collectors
+          this.collectors = window.dashboardAdmin.usuarios.filter(u => u.tipoUsuario === 'coletor') || [];
+          
+          // Filter points based on user type
+          if (this.currentUser && this.currentUser.tipoUsuario === 'coletor') {
+            // For collectors, show only their own points
+            this.points = this.allPoints.filter(point => 
+              point.coletorId === this.currentUser.id || 
+              point.criadoPor === this.currentUser.id
+            );
+          } else {
+            // For admin or other users, show all points
+            this.points = this.allPoints;
+          }
+
+          // Process points data to add required fields
+          this.points = this.points.map(point => this.processPointData(point));
+
+          this.filteredPoints = [...this.points];
+          this.renderPoints();
+          this.updateStats();
+          this.loadCollectorsInModal();
+        } catch (error) {
+          console.error('Erro ao carregar dados:', error);
+          this.points = [];
+          this.filteredPoints = [];
+          this.renderPoints();
+          this.updateStats();
+        }
+      }
+
+      processPointData(point) {
+        // Find collector for this point
+        let collector = 'Não definido';
+        if (point.coletorId) {
+          const collectorUser = this.collectors.find(c => c.id === point.coletorId);
+          if (collectorUser) {
+            collector = collectorUser.nome;
+          }
+        } else if (point.criadoPor) {
+          const creatorUser = window.dashboardAdmin.usuarios.find(u => u.id === point.criadoPor);
+          if (creatorUser && creatorUser.tipoUsuario === 'coletor') {
+            collector = creatorUser.nome;
+          }
+        }
+
+        // Generate mock volume and capacity data based on point activity
+        const agendas = point.agenda || [];
+        const baseVolume = Math.random() * 80 + 20; // 20-100kg
+        const capacity = Math.floor(Math.random() * 50 + 100); // 100-150kg
+        
+        // Determine status based on recent activity
+        let status = 'ativo';
+        if (agendas.length === 0) {
+          status = Math.random() > 0.7 ? 'inativo' : 'ativo';
+        } else {
+          const hasRecentActivity = agendas.some(agenda => {
+            const agendaDate = new Date(agenda.dataHoraInicio);
+            const now = new Date();
+            const daysDiff = (now - agendaDate) / (1000 * 60 * 60 * 24);
+            return daysDiff <= 30;
+          });
+          status = hasRecentActivity ? 'ativo' : 'pendente';
+        }
+
+        // Get last collection date
+        let lastCollection = '2024-01-01';
+        if (agendas.length > 0) {
+          const sortedAgendas = agendas
+            .filter(a => a.status === 'concluido' || a.status === 'confirmado')
+            .sort((a, b) => new Date(b.dataHoraInicio) - new Date(a.dataHoraInicio));
+          if (sortedAgendas.length > 0) {
+            lastCollection = sortedAgendas[0].dataHoraInicio.split('T')[0];
+          }
+        }
+
+        return {
+          id: point.id,
+          name: point.nome,
+          address: point.endereco,
+          status: status,
+          materials: point.materiaisAceitos || [],
+          lastCollection: lastCollection,
+          volume: parseFloat(baseVolume.toFixed(1)),
+          capacity: capacity,
+          collector: collector,
+          description: point.descricao || `Ecoponto localizado em ${point.endereco}`,
+          horario: point.horario || 'Não informado',
+          contato: point.contato || 'Não informado',
+          coletaDomiciliar: point.coletaDomiciliar || false,
+          lat: point.lat,
+          lng: point.lng,
+          agenda: point.agenda || []
+        };
+      }      setupEventListeners() {
         // Search functionality
         document.getElementById('point-search').addEventListener('input', (e) => {
           this.filterPoints(e.target.value);
@@ -325,6 +492,7 @@
 
         // Add point modal
         document.getElementById('add-collection-point').addEventListener('click', () => {
+          this.resetAddForm();
           this.openAddModal();
         });
 
@@ -338,7 +506,14 @@
 
         document.getElementById('add-point-form').addEventListener('submit', (e) => {
           e.preventDefault();
-          this.addPoint();
+          
+          // Check if we're editing or adding
+          const editId = e.target.dataset.editId;
+          if (editId) {
+            this.updatePoint(editId);
+          } else {
+            this.addPoint();
+          }
         });
 
         // Map view
@@ -351,50 +526,211 @@
         });
       }
 
-      loadPoints() {
-        // Mock data - replace with actual API call
-        this.points = [
-          {
-            id: 1,
-            name: 'Praça Central',
-            address: 'Rua Principal, 123',
-            status: 'ativo',
-            materials: ['papel', 'plastico'],
-            lastCollection: '2024-01-14',
-            volume: 45.5,
-            capacity: 100,
-            collector: 'João Silva',
-            description: 'Ponto de coleta na praça central da cidade'
-          },
-          {
-            id: 2,
-            name: 'Escola Municipal',
-            address: 'Av. Educação, 456',
-            status: 'ativo',
-            materials: ['papel', 'plastico', 'vidro'],
-            lastCollection: '2024-01-13',
-            volume: 32.8,
-            capacity: 80,
-            collector: 'Maria Santos',
-            description: 'Ponto educativo na escola'
-          },
-          {
-            id: 3,
-            name: 'Mercado Local',
-            address: 'Rua Comércio, 789',
-            status: 'pendente',
-            materials: ['organico', 'papel'],
-            lastCollection: '2024-01-10',
-            volume: 67.2,
-            capacity: 120,
-            collector: 'Pedro Costa',
-            description: 'Coleta de resíduos do mercado'
-          }
-        ];
+      resetAddForm() {
+        const form = document.getElementById('add-point-form');
+        form.reset();
+        delete form.dataset.editId;
+        
+        // Reset modal title and button text
+        document.querySelector('#add-point-modal .modal-header h3').textContent = 'Adicionar Novo Ponto de Coleta';
+        document.querySelector('#add-point-modal button[type="submit"]').textContent = 'Adicionar Ponto';
+      }
 
-        this.filteredPoints = [...this.points];
-        this.renderPoints();
-        this.updateStats();
+      updatePoint(id) {
+        const formData = new FormData(document.getElementById('add-point-form'));
+        const materials = Array.from(formData.getAll('materials'));
+        
+        try {
+          // Find and update in database
+          const dbPoint = window.dashboardAdmin.pontosDeColeta.find(p => p.id == id);
+          if (dbPoint) {
+            dbPoint.nome = formData.get('name');
+            dbPoint.endereco = formData.get('address');
+            dbPoint.descricao = formData.get('description');
+            dbPoint.materiaisAceitos = materials;
+            dbPoint.coletorId = formData.get('collector');
+          }
+
+          // Update local data
+          const pointIndex = this.points.findIndex(p => p.id == id);
+          if (pointIndex !== -1) {
+            const updatedPoint = this.processPointData(dbPoint);
+            this.points[pointIndex] = updatedPoint;
+            
+            // Update filtered points if necessary
+            const filteredIndex = this.filteredPoints.findIndex(p => p.id == id);
+            if (filteredIndex !== -1) {
+              this.filteredPoints[filteredIndex] = updatedPoint;
+            }
+          }
+
+          // Update UI
+          this.renderPoints();
+          this.updateStats();
+          this.initCharts();
+          this.closeAddModal();
+          this.resetAddForm();
+
+          this.showMessage('Ponto de coleta atualizado com sucesso!', 'success');
+        } catch (error) {
+          console.error('Erro ao atualizar ponto:', error);
+          this.showMessage('Erro ao atualizar ponto de coleta. Tente novamente.', 'error');
+        }
+      }
+
+      toggleMapView() {
+        const mapSection = document.getElementById('map-section');
+        const mapContainer = document.getElementById('map-container');
+        
+        if (mapSection.style.display === 'none') {
+          mapSection.style.display = 'block';
+          this.initializeMap();
+          mapSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          mapSection.style.display = 'none';
+        }
+      }
+
+      initializeMap() {
+        const mapContainer = document.getElementById('map-container');
+        
+        // Create a simple map visualization with the points
+        const mapHtml = `
+          <div class="simple-map">
+            <h4>Pontos de Coleta Cadastrados</h4>
+            <div class="map-points">
+              ${this.filteredPoints.map(point => `
+                <div class="map-point" data-id="${point.id}">
+                  <div class="point-marker status-${point.status}"></div>
+                  <div class="point-info">
+                    <strong>${point.name}</strong>
+                    <p>${point.address}</p>
+                    <span class="point-status">${point.status === 'ativo' ? 'Ativo' : point.status === 'inativo' ? 'Inativo' : 'Pendente'}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="map-legend">
+              <h5>Legenda:</h5>
+              <div class="legend-item">
+                <div class="point-marker status-ativo"></div>
+                <span>Ponto Ativo</span>
+              </div>
+              <div class="legend-item">
+                <div class="point-marker status-pendente"></div>
+                <span>Coleta Pendente</span>
+              </div>
+              <div class="legend-item">
+                <div class="point-marker status-inativo"></div>
+                <span>Ponto Inativo</span>
+              </div>
+            </div>
+          </div>
+          <style>
+            .simple-map {
+              padding: 20px;
+              background: #f8f9fa;
+              border-radius: 8px;
+              min-height: 400px;
+            }
+            .map-points {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+              gap: 15px;
+              margin: 20px 0;
+            }
+            .map-point {
+              display: flex;
+              align-items: center;
+              padding: 12px;
+              background: white;
+              border-radius: 6px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              cursor: pointer;
+              transition: transform 0.2s ease;
+            }
+            .map-point:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            .point-marker {
+              width: 16px;
+              height: 16px;
+              border-radius: 50%;
+              margin-right: 12px;
+              flex-shrink: 0;
+            }
+            .point-marker.status-ativo {
+              background-color: #10b981;
+            }
+            .point-marker.status-pendente {
+              background-color: #f59e0b;
+            }
+            .point-marker.status-inativo {
+              background-color: #ef4444;
+            }
+            .point-info strong {
+              display: block;
+              margin-bottom: 4px;
+              color: #1f2937;
+            }
+            .point-info p {
+              margin: 0 0 4px 0;
+              color: #6b7280;
+              font-size: 14px;
+            }
+            .point-status {
+              font-size: 12px;
+              font-weight: 500;
+              text-transform: capitalize;
+            }
+            .map-legend {
+              border-top: 1px solid #e5e7eb;
+              padding-top: 15px;
+              margin-top: 20px;
+            }
+            .map-legend h5 {
+              margin: 0 0 10px 0;
+              color: #374151;
+            }
+            .legend-item {
+              display: flex;
+              align-items: center;
+              margin-bottom: 8px;
+            }
+            .legend-item .point-marker {
+              margin-right: 8px;
+            }
+            .legend-item span {
+              color: #6b7280;
+              font-size: 14px;
+            }
+          </style>
+        `;
+        
+        mapContainer.innerHTML = mapHtml;
+
+        // Add click handlers for map points
+        document.querySelectorAll('.map-point').forEach(point => {
+          point.addEventListener('click', (e) => {
+            const pointId = e.currentTarget.dataset.id;
+            this.viewPoint(pointId);
+          });
+        });
+      }
+
+      loadCollectorsInModal() {
+        const collectorSelect = document.getElementById('point-collector');
+        if (!collectorSelect) return;
+
+        collectorSelect.innerHTML = '<option value="">Selecione um coletor</option>';
+        
+        this.collectors.forEach(collector => {
+          const option = document.createElement('option');
+          option.value = collector.id;
+          option.textContent = collector.nome;
+          collectorSelect.appendChild(option);
+        });
       }
 
       renderPoints() {
@@ -496,18 +832,20 @@
         document.getElementById('active-points').textContent = activePoints;
         document.getElementById('pending-collections').textContent = pendingCollections;
         document.getElementById('monthly-volume').textContent = monthlyVolume + 'kg';
-      }
+      }      initCharts() {
+        // Calculate material volumes from actual data
+        const materialVolumes = this.calculateMaterialVolumes();
+        const geographicData = this.calculateGeographicDistribution();
 
-      initCharts() {
         // Material Volume Chart
         const materialCtx = document.getElementById('material-volume-chart').getContext('2d');
         new Chart(materialCtx, {
           type: 'bar',
           data: {
-            labels: ['Papel', 'Plástico', 'Vidro', 'Metal', 'Orgânico', 'Eletrônico'],
+            labels: Object.keys(materialVolumes),
             datasets: [{
               label: 'Volume (kg)',
-              data: [120, 85, 65, 45, 95, 25],
+              data: Object.values(materialVolumes),
               backgroundColor: [
                 'rgba(59, 130, 246, 0.8)',
                 'rgba(16, 185, 129, 0.8)',
@@ -525,6 +863,11 @@
               legend: {
                 display: false
               }
+            },
+            scales: {
+              y: {
+                beginAtZero: true
+              }
             }
           }
         });
@@ -534,9 +877,9 @@
         new Chart(geoCtx, {
           type: 'doughnut',
           data: {
-            labels: ['Centro', 'Zona Norte', 'Zona Sul', 'Zona Leste', 'Zona Oeste'],
+            labels: Object.keys(geographicData),
             datasets: [{
-              data: [8, 6, 4, 3, 3],
+              data: Object.values(geographicData),
               backgroundColor: [
                 'rgb(59, 130, 246)',
                 'rgb(16, 185, 129)',
@@ -551,7 +894,57 @@
             maintainAspectRatio: false
           }
         });
-      }      openAddModal() {
+      }
+
+      calculateMaterialVolumes() {
+        const volumes = {
+          'Papel': 0,
+          'Plástico': 0,
+          'Vidro': 0,
+          'Metal': 0,
+          'Orgânico': 0,
+          'Eletrônico': 0
+        };
+
+        this.points.forEach(point => {
+          point.materials.forEach(material => {
+            const materialName = this.formatMaterial(material);
+            if (volumes.hasOwnProperty(materialName)) {
+              volumes[materialName] += point.volume;
+            }
+          });
+        });
+
+        return volumes;
+      }
+
+      calculateGeographicDistribution() {
+        const distribution = {};
+        
+        this.points.forEach(point => {
+          // Simple geographic classification based on address
+          const address = point.address.toLowerCase();
+          let region = 'Outros';
+          
+          if (address.includes('centro')) {
+            region = 'Centro';
+          } else if (address.includes('norte')) {
+            region = 'Zona Norte';
+          } else if (address.includes('sul')) {
+            region = 'Zona Sul';
+          } else if (address.includes('leste')) {
+            region = 'Zona Leste';
+          } else if (address.includes('oeste')) {
+            region = 'Zona Oeste';
+          }
+          
+          distribution[region] = (distribution[region] || 0) + 1;
+        });
+
+        return distribution;
+      }
+
+      openAddModal() {
         if (window.dashboardAdmin) {
           window.dashboardAdmin.openModal('add-point-modal');
         }
@@ -561,65 +954,324 @@
         if (window.dashboardAdmin) {
           window.dashboardAdmin.closeModalById('add-point-modal');
         }
-      }
-
-      addPoint() {
-        // Mock implementation - replace with actual API call
+      }      addPoint() {
         const formData = new FormData(document.getElementById('add-point-form'));
         const materials = Array.from(formData.getAll('materials'));
         
         const newPoint = {
-          id: this.points.length + 1,
-          name: formData.get('name'),
-          address: formData.get('address'),
-          description: formData.get('description'),
-          materials: materials,
-          capacity: parseInt(formData.get('capacity')),
-          collector: formData.get('collector'),
+          id: Date.now(), // Temporary ID
+          nome: formData.get('name'),
+          endereco: formData.get('address'),
+          descricao: formData.get('description'),
+          materiaisAceitos: materials,
+          horario: '08:00-18:00', // Default schedule
+          contato: 'Não informado',
+          coletaDomiciliar: false,
+          coletorId: formData.get('collector'),
           status: 'ativo',
-          volume: 0,
-          lastCollection: new Date().toISOString().split('T')[0]
+          criadoPor: this.currentUser ? this.currentUser.id : null,
+          lat: -23.5505 + (Math.random() - 0.5) * 0.1, // Random coordinates near São Paulo
+          lng: -46.6333 + (Math.random() - 0.5) * 0.1,
+          agenda: []
         };
 
-        this.points.push(newPoint);
-        this.filteredPoints = [...this.points];
-        this.renderPoints();
-        this.updateStats();
-        this.closeAddModal();
+        try {
+          // Add to database
+          window.dashboardAdmin.pontosDeColeta.push(newPoint);
+          
+          // Process and add to local data
+          const processedPoint = this.processPointData(newPoint);
+          this.points.push(processedPoint);
+          this.allPoints.push(newPoint);
+          this.filteredPoints = [...this.points];
+          
+          // Update UI
+          this.renderPoints();
+          this.updateStats();
+          this.initCharts(); // Refresh charts with new data
+          this.closeAddModal();
 
-        // Show success message
-        alert('Ponto de coleta adicionado com sucesso!');
-      }
+          // Reset form
+          document.getElementById('add-point-form').reset();
 
-      toggleMapView() {
-        const mapSection = document.getElementById('map-section');
-        if (mapSection.style.display === 'none') {
-          mapSection.style.display = 'block';
-          mapSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          mapSection.style.display = 'none';
+          // Show success message
+          this.showMessage('Ponto de coleta adicionado com sucesso!', 'success');
+        } catch (error) {
+          console.error('Erro ao adicionar ponto:', error);
+          this.showMessage('Erro ao adicionar ponto de coleta. Tente novamente.', 'error');
         }
       }
 
       viewPoint(id) {
-        alert(`Ver detalhes do ponto ID: ${id}`);
+        const point = this.points.find(p => p.id == id);
+        if (!point) {
+          this.showMessage('Ponto não encontrado!', 'error');
+          return;
+        }
+
+        const detailsHtml = `
+          <div class="modal" id="view-point-modal" style="display: block;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Detalhes do Ponto de Coleta</h3>
+                <button class="modal-close" onclick="pointsManager.closeViewModal()">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="point-details">
+                  <div class="detail-row">
+                    <strong>Nome:</strong> ${point.name}
+                  </div>
+                  <div class="detail-row">
+                    <strong>Endereço:</strong> ${point.address}
+                  </div>
+                  <div class="detail-row">
+                    <strong>Status:</strong> 
+                    <span class="status-badge status-${point.status}">
+                      ${point.status === 'ativo' ? 'Ativo' : point.status === 'inativo' ? 'Inativo' : 'Pendente'}
+                    </span>
+                  </div>
+                  <div class="detail-row">
+                    <strong>Materiais Aceitos:</strong>
+                    <div class="materials-list">
+                      ${point.materials.map(material => `<span class="material-tag">${this.formatMaterial(material)}</span>`).join('')}
+                    </div>
+                  </div>
+                  <div class="detail-row">
+                    <strong>Horário:</strong> ${point.horario}
+                  </div>
+                  <div class="detail-row">
+                    <strong>Contato:</strong> ${point.contato}
+                  </div>
+                  <div class="detail-row">
+                    <strong>Coletor Responsável:</strong> ${point.collector}
+                  </div>
+                  <div class="detail-row">
+                    <strong>Capacidade:</strong> ${point.capacity}kg
+                  </div>
+                  <div class="detail-row">
+                    <strong>Volume Atual:</strong> ${point.volume}kg
+                  </div>
+                  <div class="detail-row">
+                    <strong>Última Coleta:</strong> ${this.formatDate(point.lastCollection)}
+                  </div>
+                  <div class="detail-row">
+                    <strong>Descrição:</strong> ${point.description}
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="pointsManager.closeViewModal()">Fechar</button>
+                <button type="button" class="btn-primary" onclick="pointsManager.editPoint(${point.id})">Editar</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Add modal to DOM
+        document.body.insertAdjacentHTML('beforeend', detailsHtml);
+      }
+
+      closeViewModal() {
+        const modal = document.getElementById('view-point-modal');
+        if (modal) {
+          modal.remove();
+        }
       }
 
       editPoint(id) {
-        alert(`Editar ponto ID: ${id}`);
+        const point = this.points.find(p => p.id == id);
+        if (!point) {
+          this.showMessage('Ponto não encontrado!', 'error');
+          return;
+        }
+
+        // Close view modal if open
+        this.closeViewModal();
+
+        // Pre-fill form with current data
+        document.getElementById('point-name').value = point.name;
+        document.getElementById('point-address').value = point.address;
+        document.getElementById('point-description').value = point.description;
+        document.getElementById('point-capacity').value = point.capacity;
+        document.getElementById('point-collector').value = point.coletorId || '';
+
+        // Check materials
+        const materialCheckboxes = document.querySelectorAll('input[name="materials"]');
+        materialCheckboxes.forEach(checkbox => {
+          checkbox.checked = point.materials.includes(checkbox.value);
+        });
+
+        // Store ID for update
+        document.getElementById('add-point-form').dataset.editId = id;
+        
+        // Change modal title and button text
+        document.querySelector('#add-point-modal .modal-header h3').textContent = 'Editar Ponto de Coleta';
+        document.querySelector('#add-point-modal button[type="submit"]').textContent = 'Atualizar Ponto';
+
+        this.openAddModal();
       }
 
       scheduleCollection(id) {
-        alert(`Agendar coleta para o ponto ID: ${id}`);
+        const point = this.points.find(p => p.id == id);
+        if (!point) {
+          this.showMessage('Ponto não encontrado!', 'error');
+          return;
+        }
+
+        const scheduleHtml = `
+          <div class="modal" id="schedule-modal" style="display: block;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3>Agendar Coleta - ${point.name}</h3>
+                <button class="modal-close" onclick="pointsManager.closeScheduleModal()">&times;</button>
+              </div>
+              <div class="modal-body">
+                <form id="schedule-form">
+                  <div class="form-group">
+                    <label for="schedule-date">Data da Coleta</label>
+                    <input type="date" id="schedule-date" name="date" required min="${new Date().toISOString().split('T')[0]}">
+                  </div>
+                  <div class="form-group">
+                    <label for="schedule-time">Horário</label>
+                    <input type="time" id="schedule-time" name="time" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="schedule-collector">Coletor</label>
+                    <select id="schedule-collector" name="collector" required>
+                      <option value="">Selecione um coletor</option>
+                      ${this.collectors.map(collector => 
+                        `<option value="${collector.id}" ${collector.id === point.coletorId ? 'selected' : ''}>${collector.nome}</option>`
+                      ).join('')}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="schedule-notes">Observações</label>
+                    <textarea id="schedule-notes" name="notes" rows="3" placeholder="Observações sobre a coleta..."></textarea>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="pointsManager.closeScheduleModal()">Cancelar</button>
+                <button type="button" class="btn-primary" onclick="pointsManager.confirmSchedule(${id})">Agendar</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', scheduleHtml);
+      }
+
+      closeScheduleModal() {
+        const modal = document.getElementById('schedule-modal');
+        if (modal) {
+          modal.remove();
+        }
+      }
+
+      confirmSchedule(pointId) {
+        const form = document.getElementById('schedule-form');
+        const formData = new FormData(form);
+        
+        const scheduleData = {
+          id: Date.now(),
+          pontoId: pointId,
+          dataHoraInicio: `${formData.get('date')}T${formData.get('time')}:00`,
+          coletorId: formData.get('collector'),
+          status: 'agendado',
+          observacoes: formData.get('notes'),
+          criadoPor: this.currentUser ? this.currentUser.id : null,
+          criadoEm: new Date().toISOString()
+        };
+
+        try {
+          // Find the point in the database and add to agenda
+          const dbPoint = window.dashboardAdmin.pontosDeColeta.find(p => p.id == pointId);
+          if (dbPoint) {
+            if (!dbPoint.agenda) {
+              dbPoint.agenda = [];
+            }
+            dbPoint.agenda.push(scheduleData);
+          }
+
+          // Update local data
+          const localPoint = this.points.find(p => p.id == pointId);
+          if (localPoint) {
+            if (!localPoint.agenda) {
+              localPoint.agenda = [];
+            }
+            localPoint.agenda.push(scheduleData);
+            localPoint.status = 'pendente'; // Update status
+          }
+
+          this.closeScheduleModal();
+          this.renderPoints();
+          this.updateStats();
+          this.showMessage('Coleta agendada com sucesso!', 'success');
+        } catch (error) {
+          console.error('Erro ao agendar coleta:', error);
+          this.showMessage('Erro ao agendar coleta. Tente novamente.', 'error');
+        }
       }
 
       removePoint(id) {
-        if (confirm('Tem certeza que deseja remover este ponto de coleta?')) {
-          this.points = this.points.filter(p => p.id !== id);
-          this.filteredPoints = this.filteredPoints.filter(p => p.id !== id);
+        if (!confirm('Tem certeza que deseja remover este ponto de coleta?')) {
+          return;
+        }
+
+        try {
+          // Remove from database
+          const dbIndex = window.dashboardAdmin.pontosDeColeta.findIndex(p => p.id == id);
+          if (dbIndex !== -1) {
+            window.dashboardAdmin.pontosDeColeta.splice(dbIndex, 1);
+          }
+
+          // Remove from local arrays
+          this.points = this.points.filter(p => p.id != id);
+          this.allPoints = this.allPoints.filter(p => p.id != id);
+          this.filteredPoints = this.filteredPoints.filter(p => p.id != id);
+          
+          // Update UI
           this.renderPoints();
           this.updateStats();
+          this.initCharts();
+          
+          this.showMessage('Ponto de coleta removido com sucesso!', 'success');
+        } catch (error) {
+          console.error('Erro ao remover ponto:', error);
+          this.showMessage('Erro ao remover ponto de coleta. Tente novamente.', 'error');
         }
+      }
+
+      showMessage(message, type = 'info') {
+        // Create toast notification
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        toast.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 12px 20px;
+          border-radius: 4px;
+          color: white;
+          z-index: 10000;
+          font-weight: 500;
+          background-color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          animation: slideIn 0.3s ease-out;
+        `;
+
+        document.body.appendChild(toast);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+          toast.style.animation = 'slideOut 0.3s ease-in';
+          setTimeout(() => {
+            if (toast.parentNode) {
+              toast.parentNode.removeChild(toast);
+            }
+          }, 300);
+        }, 3000);
       }
 
       formatMaterial(material) {
