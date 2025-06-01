@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoColeta - Pontos de Coleta</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>EcoColeta - Pontos de Coleta</title>  <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="../src/css/dashboardAdmin.css" />
+  <script src="../src/js/sidebar.js"></script>
 </head>
 <body>
   <div class="dashboard-container">
@@ -243,7 +243,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Adicionar Novo Ponto de Coleta</h3>
-        <button class="modal-close" id="close-modal">&times;</button>
+        <button class="modal-close" id="close-point-modal">&times;</button>
       </div>
       <div class="modal-body">
         <form id="add-point-form">
@@ -328,7 +328,7 @@
           this.openAddModal();
         });
 
-        document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('close-point-modal').addEventListener('click', () => {
           this.closeAddModal();
         });
 
@@ -551,15 +551,16 @@
             maintainAspectRatio: false
           }
         });
-      }
-
-      openAddModal() {
-        document.getElementById('add-point-modal').style.display = 'block';
+      }      openAddModal() {
+        if (window.dashboardAdmin) {
+          window.dashboardAdmin.openModal('add-point-modal');
+        }
       }
 
       closeAddModal() {
-        document.getElementById('add-point-modal').style.display = 'none';
-        document.getElementById('add-point-form').reset();
+        if (window.dashboardAdmin) {
+          window.dashboardAdmin.closeModalById('add-point-modal');
+        }
       }
 
       addPoint() {
@@ -636,11 +637,19 @@
       formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('pt-BR');
-      }
-    }
+      }    }
 
     // Initialize collection points manager
     const pointsManager = new CollectionPointsManager();
+    
+    // Reinitialize modal management after page scripts load
+    if (window.dashboardAdmin) {
+      window.dashboardAdmin.reinitializeModals();
+    }
   </script>
+
+  <!-- Sidebar overlay para mobile -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
 </body>
 </html>

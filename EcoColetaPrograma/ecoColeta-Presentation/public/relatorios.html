@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Relatórios - EcoColeta Dashboard</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Relatórios - EcoColeta Dashboard</title>  <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="../src/css/navFooter.css">
   <link rel="stylesheet" href="../src/css/dashboardAdmin.css" />
+  <script src="../src/js/sidebar.js"></script>
 </head>
 <body>
   <div class="dashboard-container">
@@ -58,7 +58,7 @@
           <li>
             <a href="agendas.html">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg>
-              Minhas Agendas
+              Agendas
             </a>
           </li>
           <li>
@@ -597,12 +597,15 @@
           opacity: 0;
         }
         to {
-          transform: translateX(0);
-          opacity: 1;
+          transform: translateX(0);        opacity: 1;
         }
       }
     `;
     document.head.appendChild(style);
   </script>
+
+  <!-- Sidebar overlay para mobile -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
 </body>
 </html>

@@ -26,21 +26,28 @@ class DashboardAdmin {
       console.error('Erro ao obter usuário logado:', error);
       return null;
     }
-  }
-    async init() {
+  }  async init() {
     // Validar se usuário está logado antes de continuar
     if (!this.validateUserAuth()) {
       return;
     }
 
-    this.setupSidebar();
+    // Sidebar é agora gerenciado automaticamente pelo sidebar.js
     await this.loadAllData();
     this.loadUserCollectionPoints();
     this.loadUserAgendas();
     this.updateDashboardStats();
+    this.updateStatsWithAnimation();
     this.renderCharts();
     this.renderDynamicLists();
     this.setupEventListeners();
+    this.addRealTimeIndicators();
+    this.startRealTimeUpdates();
+    this.setupModalManagement();
+    
+    // Initialize all enhanced features
+    this.initializeEnhancements();
+    this.monitorPerformance();
   }
 
   // Validar autenticação do usuário
@@ -80,38 +87,7 @@ class DashboardAdmin {
     }
 
     console.log(`Dashboard carregado para usuário: ${this.currentUser.nome} (ID: ${this.currentUser.id})`);
-    return true;
-  }
-
-  // Configuração da sidebar
-  setupSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const sidebarToggle = document.getElementById("sidebar-toggle");
-    const sidebarOverlay = document.getElementById("sidebar-overlay");
-    const mainContent = document.getElementById("main-content");
-
-    function toggleSidebar() {
-      sidebar.classList.toggle("open");
-      sidebarOverlay.classList.toggle("visible");
-    }
-
-    sidebarToggle?.addEventListener("click", toggleSidebar);
-    sidebarOverlay?.addEventListener("click", toggleSidebar);
-
-    // Ajuste responsivo
-    const adjustLayout = () => {
-      if (window.innerWidth < 768) {
-        sidebar.classList.remove("open");
-        sidebarOverlay.classList.remove("visible");
-        mainContent.style.marginLeft = "0";
-      } else {
-        mainContent.style.marginLeft = `${sidebar.offsetWidth}px`;
-      }
-    };
-
-    adjustLayout();
-    window.addEventListener("resize", adjustLayout);
-  }
+    return true;  }
 
   // Carregamento de dados da API
   async loadAllData() {
@@ -1715,6 +1691,459 @@ Relatório gerado automaticamente pela plataforma EcoColeta
     
     // Fechar modal
     document.querySelector('.sustainability-modal')?.remove();
+  }
+
+  // Função para atualizar contadores dinamicamente com animação
+  updateStatsWithAnimation() {
+    const stats = this.calculateStats();
+    
+    // Stats do dashboard principal
+    this.animateCounter('total-pontos', stats.totalPontosColeta);
+    this.animateCounter('total-coletores', stats.totalColetores);
+    this.animateCounter('coletas-feitas', stats.coletasFeitas);
+    this.animateCounter('coletas-pendentes', stats.coletasPendentes);
+
+    // Stats das agendas se estiver na seção de agendas
+    if (document.getElementById('total-agendas')) {
+      this.animateCounter('total-agendas', this.userAgendas.length);
+      this.animateCounter('agendas-hoje', this.userAgendas.filter(a => this.isToday(a.dataColeta)).length);
+      this.animateCounter('agendas-pendentes', this.userAgendas.filter(a => a.status === 'agendado').length);
+      this.animateCounter('agendas-concluidas', this.userAgendas.filter(a => a.status === 'concluido').length);
+    }
+  }
+
+  // Animação suave para contadores
+  animateCounter(elementId, targetValue) {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const startValue = parseInt(element.textContent) || 0;
+    const duration = 1000; // 1 segundo
+    const startTime = performance.now();
+
+    const animate = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function para animação suave
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.round(startValue + (targetValue - startValue) * easeOut);
+      
+      element.textContent = currentValue;
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }
+
+  // Função para verificar se uma data é hoje
+  isToday(dateString) {
+    const today = new Date();
+    const date = new Date(dateString);
+    return date.toDateString() === today.toDateString();
+  }
+
+  // Função para atualizar o status dos pontos em tempo real
+  updatePointsStatus() {
+    const pointsList = document.getElementById('pontos-ativos-list');
+    if (!pointsList) return;
+
+    // Simular atualizações de status dos pontos
+    const points = pointsList.querySelectorAll('.point-item');
+    points.forEach((point, index) => {
+      const statusElement = point.querySelector('.point-status');
+      if (statusElement && Math.random() > 0.9) { // 10% chance de mudança
+        // Simular mudança de status
+        const isActive = statusElement.classList.contains('status-active');
+        if (isActive && Math.random() > 0.8) {
+          statusElement.classList.remove('status-active');
+          statusElement.classList.add('status-maintenance');
+          statusElement.textContent = 'Manutenção';
+        }
+      }
+    });
+  }
+
+  // Função para atualizar status dos coletores
+  updateCollectorsStatus() {
+    const collectorsList = document.getElementById('coletores-list');
+    if (!collectorsList) return;
+
+    const collectors = collectorsList.querySelectorAll('.collector-item');
+    collectors.forEach(collector => {
+      const statusElement = collector.querySelector('.collector-status');
+      if (statusElement && Math.random() > 0.95) { // 5% chance de mudança
+        const isOnline = statusElement.classList.contains('online');
+        if (isOnline) {
+          statusElement.classList.remove('online');
+          statusElement.classList.add('offline');
+          statusElement.textContent = 'Offline';
+        } else {
+          statusElement.classList.remove('offline');
+          statusElement.classList.add('online');
+          statusElement.textContent = 'Online';
+        }
+      }
+    });
+  }
+
+  // Função para atualizar dados em tempo real
+  startRealTimeUpdates() {
+    // Atualizar a cada 30 segundos
+    setInterval(() => {
+      this.updatePointsStatus();
+      this.updateCollectorsStatus();
+      
+      // Atualizar timestamp na interface
+      const lastUpdate = document.querySelector('.last-update');
+      if (lastUpdate) {
+        lastUpdate.textContent = `Última atualização: ${new Date().toLocaleTimeString()}`;
+      }
+    }, 30000);
+
+    // Atualizar contadores a cada 5 minutos
+    setInterval(() => {
+      this.updateStatsWithAnimation();
+    }, 300000);
+  }
+
+  // Função para adicionar indicadores de tempo real
+  addRealTimeIndicators() {
+    // Adicionar indicador de última atualização
+    const header = document.querySelector('.dashboard-header');
+    if (header && !header.querySelector('.last-update')) {
+      const lastUpdateElement = document.createElement('div');
+      lastUpdateElement.className = 'last-update';
+      lastUpdateElement.style.cssText = 'font-size: 0.875rem; color: var(--color-gray-500); margin-top: 0.5rem;';
+      lastUpdateElement.textContent = `Última atualização: ${new Date().toLocaleTimeString()}`;
+      header.appendChild(lastUpdateElement);
+    }
+
+    // Adicionar indicadores de status em tempo real
+    const statusElements = document.querySelectorAll('.collector-status.online');
+    statusElements.forEach(element => {
+      if (!element.querySelector('.pulse-indicator')) {
+        const pulseIndicator = document.createElement('span');
+        pulseIndicator.className = 'pulse-indicator';
+        pulseIndicator.style.cssText = `
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          background: #10b981;
+          border-radius: 50%;
+          margin-left: 4px;
+          animation: pulse 2s infinite;
+        `;
+        element.appendChild(pulseIndicator);
+      }
+    });
+  }
+
+  // Enhanced interactive features for final polish
+  
+  // Add smooth scrolling to navigation
+  setupSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  }
+
+  // Add keyboard navigation
+  setupKeyboardNavigation() {
+    document.addEventListener('keydown', (e) => {
+      // ESC key to close modals
+      if (e.key === 'Escape') {
+        const activeModal = document.querySelector('.modal[style*="block"]');
+        if (activeModal) {
+          activeModal.style.display = 'none';
+        }
+      }
+      
+      // Tab navigation improvements
+      if (e.key === 'Tab') {
+        this.handleTabNavigation(e);
+      }
+    });
+  }
+
+  // Add loading states for dynamic content
+  showLoadingState(container) {
+    container.innerHTML = `
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <span style="margin-left: 1rem;">Carregando...</span>
+      </div>
+    `;
+  }
+
+  // Add success/error notifications
+  showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+      <div class="notification-content">
+        <span class="notification-icon">
+          ${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}
+        </span>
+        <span class="notification-message">${message}</span>
+        <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
+      </div>
+    `;
+    
+    // Add styles for notifications
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: ${type === 'success' ? '#10B981' : type === 'error' ? '#EF4444' : '#3B82F6'};
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+      animation: slideInRight 0.3s ease;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      if (notification.parentElement) {
+        notification.style.animation = 'slideOutRight 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+      }
+    }, 5000);
+  }
+
+  // Add real-time data simulation
+  simulateRealTimeUpdates() {
+    setInterval(() => {
+      // Update online status indicators
+      const onlineIndicators = document.querySelectorAll('.status-indicator.online');
+      onlineIndicators.forEach(indicator => {
+        // Simulate occasional status changes
+        if (Math.random() < 0.05) { // 5% chance every interval
+          indicator.classList.toggle('online');
+          indicator.classList.toggle('offline');
+        }
+      });
+
+      // Update timestamps
+      const timeElements = document.querySelectorAll('.time-ago');
+      timeElements.forEach(element => {
+        const currentTime = element.textContent;
+        if (currentTime.includes('min atrás')) {
+          const minutes = parseInt(currentTime);
+          element.textContent = `${minutes + 1} min atrás`;
+        }
+      });
+
+      // Simulate new activities
+      if (Math.random() < 0.1) { // 10% chance
+        this.addNewActivity();
+      }
+    }, 30000); // Every 30 seconds
+  }
+
+  // Add new activity simulation
+  addNewActivity() {
+    const activities = [
+      'Nova coleta realizada',
+      'Coletor chegou ao ponto',
+      'Material processado',
+      'Rota otimizada',
+      'Agendamento confirmado'
+    ];
+    
+    const activity = activities[Math.floor(Math.random() * activities.length)];
+    this.showNotification(activity, 'info');
+  }
+
+  // Enhanced chart tooltips
+  setupEnhancedTooltips() {
+    // Add custom tooltips for charts
+    Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(15, 23, 42, 0.9)';
+    Chart.defaults.plugins.tooltip.titleColor = '#F8FAFC';
+    Chart.defaults.plugins.tooltip.bodyColor = '#CBD5E1';
+    Chart.defaults.plugins.tooltip.borderColor = '#334155';
+    Chart.defaults.plugins.tooltip.borderWidth = 1;
+    Chart.defaults.plugins.tooltip.cornerRadius = 8;
+    Chart.defaults.plugins.tooltip.displayColors = false;
+  }
+
+  // Add data export functionality
+  exportData(data, filename, format = 'json') {
+    let content, mimeType;
+    
+    if (format === 'json') {
+      content = JSON.stringify(data, null, 2);
+      mimeType = 'application/json';
+    } else if (format === 'csv') {
+      content = this.convertToCSV(data);
+      mimeType = 'text/csv';
+    }
+    
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}.${format}`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Convert data to CSV format
+  convertToCSV(data) {
+    if (!data.length) return '';
+    
+    const headers = Object.keys(data[0]);
+    const csvHeaders = headers.join(',');
+    const csvRows = data.map(row => 
+      headers.map(header => `"${row[header] || ''}"`).join(',')
+    );
+    
+    return [csvHeaders, ...csvRows].join('\n');
+  }
+
+  // Add performance monitoring
+  monitorPerformance() {
+    // Monitor page load performance
+    window.addEventListener('load', () => {
+      const perfData = performance.getEntriesByType('navigation')[0];
+      const loadTime = perfData.loadEventEnd - perfData.loadEventStart;
+      
+      if (loadTime > 3000) { // If load time > 3 seconds
+        console.warn('Page load time is high:', loadTime + 'ms');
+      }
+    });
+  }
+  // Universal Modal Management
+  setupModalManagement() {
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        this.closeModal(e.target);
+      }
+    });
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const openModal = document.querySelector('.modal.show');
+        if (openModal) {
+          this.closeModal(openModal);
+        }
+      }
+    });
+
+    // Use a delayed setup to ensure all page elements are loaded
+    setTimeout(() => {
+      this.setupModalButtons();
+    }, 100);
+  }
+
+  // Setup modal buttons - called after a delay to ensure all page elements exist
+  setupModalButtons() {
+    // Setup close buttons
+    document.querySelectorAll('.modal-close').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const modal = e.target.closest('.modal');
+        if (modal) {
+          this.closeModal(modal);
+        }
+      });
+    });
+
+    // Setup cancel buttons
+    document.querySelectorAll('[id*="cancel"]').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const modal = e.target.closest('.modal');
+        if (modal) {
+          this.closeModal(modal);
+        }
+      });
+    });
+  }
+  // Open modal with animation
+  openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+      console.log(`Opening modal: ${modalId}`);
+      modal.style.display = 'flex';
+      // Force reflow
+      modal.offsetHeight;
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      
+      // Focus on first input
+      const firstInput = modal.querySelector('input, select, textarea');
+      if (firstInput) {
+        setTimeout(() => firstInput.focus(), 100);
+      }
+    } else {
+      console.error(`Modal not found: ${modalId}`);
+    }
+  }
+
+  // Close modal with animation
+  closeModal(modal) {
+    if (modal) {
+      console.log(`Closing modal: ${modal.id}`);
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+      
+      setTimeout(() => {
+        modal.style.display = 'none';
+        // Reset form if exists
+        const form = modal.querySelector('form');
+        if (form) {
+          form.reset();
+        }
+      }, 300);
+    }
+  }
+
+  // Close modal by ID
+  closeModalById(modalId) {
+    const modal = document.getElementById(modalId);
+    this.closeModal(modal);
+  }
+  // Adicionar indicadores visuais de carregamento
+  addLoadingStates() {
+    const sidebarLinks = document.querySelectorAll(".sidebar-nav a");
+    
+    sidebarLinks.forEach(link => {
+      link.addEventListener("click", (e) => {
+        // Adicionar estado de carregamento apenas se estiver navegando para outra página
+        if (link.href && !link.href.includes("#") && link.href !== window.location.href) {
+          link.classList.add("loading");
+          
+          // Remover estado de loading após um timeout (caso a navegação não ocorra)
+          setTimeout(() => {
+            link.classList.remove("loading");
+          }, 3000);
+        }
+      });
+    });
+  }
+
+  // Public method to reinitialize modal management for dynamically loaded content
+  reinitializeModals() {
+    this.setupModalButtons();
   }
 }
 

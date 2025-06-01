@@ -2,11 +2,255 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EcoColeta - Coletores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>EcoColeta - Coletores</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="../src/css/dashboardAdmin.css" />
+  <!-- Sidebar functionality -->
+  <script src="../src/js/sidebar.js"></script>
+  <style>
+    /* Coletores page specific styles */
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .user-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+    }
+
+    .user-email {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-ativo {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10B981;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .status-inativo {
+      background: rgba(107, 114, 128, 0.1);
+      color: #6B7280;
+      border: 1px solid rgba(107, 114, 128, 0.2);
+    }
+
+    .status-pendente {
+      background: rgba(245, 158, 11, 0.1);
+      color: #F59E0B;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      color: #F59E0B;
+    }
+
+    .rating-value {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-left: 0.25rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-color);
+      background: var(--surface-color);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+    }
+
+    .btn-icon:hover {
+      background: var(--surface-hover);
+      color: var(--text-primary);
+      transform: translateY(-1px);
+    }
+
+    .btn-icon.btn-danger:hover {
+      background: rgba(239, 68, 68, 0.1);
+      color: #EF4444;
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+
+    .controls-right {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .filter-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .filter-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--surface-color);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .search-input {
+      position: relative;
+      max-width: 300px;
+    }
+
+    .search-input input {
+      width: 100%;
+      padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--surface-color);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+    }
+
+    .search-input .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-content h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .activity-content p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .activity-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .filter-controls {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+      }
+
+      .controls-right {
+        flex-direction: column;
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="dashboard-container">
@@ -240,7 +484,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3>Adicionar Novo Coletor</h3>
-        <button class="modal-close" id="close-modal">&times;</button>
+        <button class="modal-close" id="close-collector-modal">&times;</button>
       </div>
       <div class="modal-body">
         <form id="add-collector-form">
@@ -323,7 +567,7 @@
           this.openAddModal();
         });
 
-        document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('close-collector-modal').addEventListener('click', () => {
           this.closeAddModal();
         });
 
@@ -555,15 +799,16 @@
             </div>
           </div>
         `).join('');
-      }
-
-      openAddModal() {
-        document.getElementById('add-collector-modal').style.display = 'block';
+      }      openAddModal() {
+        if (window.dashboardAdmin) {
+          window.dashboardAdmin.openModal('add-collector-modal');
+        }
       }
 
       closeAddModal() {
-        document.getElementById('add-collector-modal').style.display = 'none';
-        document.getElementById('add-collector-form').reset();
+        if (window.dashboardAdmin) {
+          window.dashboardAdmin.closeModalById('add-collector-modal');
+        }
       }
 
       addCollector() {
@@ -630,11 +875,19 @@
       formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleDateString('pt-BR');
-      }
-    }
+      }    }
 
     // Initialize collectors manager
     const collectorsManager = new CollectorsManager();
+    
+    // Reinitialize modal management after page scripts load
+    if (window.dashboardAdmin) {
+      window.dashboardAdmin.reinitializeModals();
+    }
   </script>
+
+  <!-- Sidebar overlay para mobile -->
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
 </body>
 </html>
