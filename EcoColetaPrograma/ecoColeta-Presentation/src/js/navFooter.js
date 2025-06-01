@@ -77,7 +77,6 @@ const menuItems = [
   { text: "Guia", href: "guiaEdu.html" },
   { text: "Recompensas", href: "recompensas.html" },
   { text: "Comunidade", href: "comunidade.html" },
-  { text: "Doações", href: "doacoes.html" },
 ];
 
 // Criando itens do menu principal
@@ -336,6 +335,36 @@ function updateUserInterface() {
       mobileUserAvatar.appendChild(img);
     } else {
       mobileUserAvatar.innerHTML = (user.nome || "U").charAt(0).toUpperCase();
+    }
+
+    // Adicionar botão de dashboard para coletor
+    if (user.tipoUsuario === "coletor") {
+      // Remover botões antigos para evitar repetição
+      const oldDashboardDesktop =
+        userProfileDesktop.querySelector(".dashboard-button");
+      if (oldDashboardDesktop) oldDashboardDesktop.remove();
+      const oldDashboardMobile = mobileUserInfo.querySelector(
+        ".mobile-dashboard-button"
+      );
+      if (oldDashboardMobile) oldDashboardMobile.remove();
+
+      // Botão para desktop (estilo igual aos outros do header)
+      let dashboardButtonDesktop = document.createElement("button");
+      dashboardButtonDesktop.className = "dashboard-button";
+      dashboardButtonDesktop.innerHTML = `<svg style="margin-right:6px;vertical-align:middle;" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="13" width="7" height="8" rx="2"/><rect x="14" y="3" width="7" height="18" rx="2"/></svg>Dashboard`;
+      dashboardButtonDesktop.addEventListener("click", function () {
+        window.location.href = "dashboardAdmin.html";
+      });
+      userProfileDesktop.appendChild(dashboardButtonDesktop);
+
+      // Botão para mobile (estilo igual aos outros do menu mobile)
+      let dashboardButtonMobile = document.createElement("button");
+      dashboardButtonMobile.className = "mobile-dashboard-button";
+      dashboardButtonMobile.innerHTML = `<svg style="margin-right:6px;vertical-align:middle;" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="13" width="7" height="8" rx="2"/><rect x="14" y="3" width="7" height="18" rx="2"/></svg>Dashboard`;
+      dashboardButtonMobile.addEventListener("click", function () {
+        window.location.href = "dashboardAdmin.html";
+      });
+      mobileUserInfo.appendChild(dashboardButtonMobile);
     }
   } else {
     // Usuário não está logado
