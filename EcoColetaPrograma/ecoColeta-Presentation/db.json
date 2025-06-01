@@ -11,7 +11,7 @@
       "dataNascimento": "1990-01-01",
       "tipoUsuario": "doador",
       "ecopontos": 0,
-      "imagem": "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/0f6c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c"
+            "imagem": "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/0f6c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c"
     },
     {
       "nome": "Matheus Augusto",
@@ -22,6 +22,7 @@
       "cidade": "Betim",
       "estado": "MG",
       "tipoUsuario": "coletor",
+      "ecopontos": 100000,
       "senha": "2603Betim#2",
       "imagem": "assets/img/AvatarScrollMaster.jpg",
       "emailVerificado": false,
@@ -52,6 +53,7 @@
       "cidade": "Sarzedo",
       "estado": "MG",
       "tipoUsuario": "doador",
+      "ecopontos": 0,
       "senha": "ScrumMaster@123",
       "imagem": "assets/img/AvatarScrollMaster.jpg",
       "emailVerificado": false,
@@ -152,7 +154,7 @@
       "endereco": "Rua Amapá",
       "cidade": "Betim",
       "estado": "MG",
-         "tipoUsuario": "coletor",
+      "tipoUsuario": "coletor",
       "ecopontos": 0,
       "razaoSocial": "quero mudar o mundo",
       "cnpj": "12345678999",
