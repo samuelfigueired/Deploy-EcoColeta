@@ -10,7 +10,7 @@ async function buscarUsuarioCompleto(id) {
   return res.json();
 }
 
-// Função para exibir histórico de pontos
+// Função para exibir histórico de pontos no container correto
 function exibirHistoricoEcopontos(historico) {
   const historicoDiv = document.getElementById("historico-ecopontos");
   if (!historicoDiv) return;
@@ -43,7 +43,7 @@ async function atualizarEcopontosEHistorico() {
 
 document.addEventListener("DOMContentLoaded", atualizarEcopontosEHistorico);
 
-// Ao trocar recompensa, registrar no histórico e atualizar backend
+// Função para trocar recompensa, registrar no histórico e atualizar backend
 async function trocarRecompensa(pontosNecessarios, nomeRecompensa) {
   const usuarioLogado = getUsuarioLogado();
   if (!usuarioLogado) return alert("Faça login para resgatar recompensas.");
