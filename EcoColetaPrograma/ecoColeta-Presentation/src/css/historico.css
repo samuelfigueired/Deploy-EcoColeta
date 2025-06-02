@@ -103,17 +103,6 @@ main {
     font-size: 0.92rem;
 }
 
-/* Rodapé */
-footer {
-    background: #e0e0e0;
-    color: #444;
-    text-align: center;
-    padding: 14px 0;
-    font-size: 0.98rem;
-    letter-spacing: 0.5px;
-    margin-top: auto;
-}
-
 /* Responsividade */
 @media (max-width: 600px) {
     #historico {
