@@ -10,21 +10,25 @@ async function buscarUsuarioCompleto(id) {
   return res.json();
 }
 
-// Função para exibir histórico de pontos
+// Função para exibir histórico de pontos no container correto (agora usando <li> dinâmico)
 function exibirHistoricoEcopontos(historico) {
-  const historicoDiv = document.getElementById("historico-ecopontos");
-  if (!historicoDiv) return;
+  const historicoUl = document.getElementById("historico-ecopontos");
+  if (!historicoUl) return;
+  historicoUl.innerHTML = '';
   if (!historico || historico.length === 0) {
-    historicoDiv.innerHTML = '<p class="recompensas-historico-vazio">Nenhum ponto gasto ainda.</p>';
+    historicoUl.innerHTML = '<li class="recompensas-historico-vazio">Nenhum ponto gasto ainda.</li>';
     return;
   }
-  historicoDiv.innerHTML = historico.map(item => `
-    <div class="recompensas-historico-item">
+  historico.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'recompensas-historico-item';
+    li.innerHTML = `
       <span class="recompensas-historico-recompensa">${item.recompensa}</span>
       <span class="recompensas-historico-pontos">-${item.pontos} pts</span>
       <span class="recompensas-historico-data">${new Date(item.data).toLocaleString('pt-BR')}</span>
-    </div>
-  `).join("");
+    `;
+    historicoUl.appendChild(li);
+  });
 }
 
 // Atualiza ecopontos e histórico ao carregar
@@ -43,7 +47,7 @@ async function atualizarEcopontosEHistorico() {
 
 document.addEventListener("DOMContentLoaded", atualizarEcopontosEHistorico);
 
-// Ao trocar recompensa, registrar no histórico e atualizar backend
+// Função para trocar recompensa, registrar no histórico e atualizar backend
 async function trocarRecompensa(pontosNecessarios, nomeRecompensa) {
   const usuarioLogado = getUsuarioLogado();
   if (!usuarioLogado) return alert("Faça login para resgatar recompensas.");
