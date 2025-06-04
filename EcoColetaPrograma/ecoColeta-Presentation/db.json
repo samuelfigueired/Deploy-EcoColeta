@@ -916,82 +916,6 @@
   ],
   "comunidades": [
     {
-      "nome": "Samuelzinho",
-      "descricao": "111111111111111111111111111111111111111",
-      "tipo": "projeto-comunitario",
-      "regras": "wwwwwwwwwwwwwwwwwwwwwwwwwwwww",
-      "banner": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAABrCAYAAAAfIuJkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dIxAYAwEMDAp/4FA0u71EOWuyUG8rzfvwdC6xYyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJDZzACdlBMD+sbJEAAAAAElFTkSuQmCC",
-      "autor": {
-        "id": 4,
-        "nome": "kauan gomes marques",
-        "email": "kayangomes849@gmail.com",
-        "foto": "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/8d4b0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c"
-      },
-      "dataCriacao": "2025-05-31T01:14:25.920Z",
-      "status": "ativa",
-      "membros": [
-        4
-      ],
-      "curtidas": 0,
-      "comentarios": [
-        {
-          "id": 1748654187091,
-          "texto": "........kkklmoloiokokm",
-          "autorId": 4,
-          "autorNome": "kauan gomes marques",
-          "autorFoto": "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/8d4b0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c",
-          "data": "2025-05-31T01:16:27.091Z",
-          "parentId": null,
-          "respostas": [
-            {
-              "id": 1748654230218,
-              "texto": "selok",
-              "autorId": 4,
-              "autorNome": "kauan gomes marques",
-              "autorFoto": "assets/img/AvatarScrollMaster.jpg",
-              "data": "2025-05-31T01:17:10.218Z",
-              "parentId": "1748654187091",
-              "respostas": [
-                {
-                  "id": 1748654246602,
-                  "texto": "nbygfr6tgvhjbk",
-                  "autorId": 4,
-                  "autorNome": "kauan gomes marques",
-                  "autorFoto": "assets/img/AvatarScrollMaster.jpg",
-                  "data": "2025-05-31T01:17:26.602Z",
-                  "parentId": "1748654230218"
-                },
-                {
-                  "id": 1748654302221,
-                  "texto": "dsfrgdtyu",
-                  "autorId": 2,
-                  "autorNome": "Matheus Augusto",
-                  "autorFoto": "assets/img/avatarCaique.jpg",
-                  "data": "2025-05-31T01:18:22.221Z",
-                  "parentId": "1748654230218"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": 1748654237221,
-          "texto": "okokokokokok",
-          "autorId": 4,
-          "autorNome": "kauan gomes marques",
-          "autorFoto": "assets/img/AvatarScrollMaster.jpg",
-          "data": "2025-05-31T01:17:17.221Z",
-          "parentId": null
-        }
-      ],
-      "visualizacoes": 0,
-      "tags": [
-        "projeto-comunitario",
-        "comunidade"
-      ],
-      "id": 1
-    },
-    {
       "nome": "Desmatamento na amazonia",
       "descricao": "essa comunidade e feita para tratar de assuntos como o desmatamento não limitando apenas o da amazonia mas em todo o mundo e como isso afeta o clima mundial e outros aspectos da saude do nosso planeta",
       "tipo": "sustentabilidade",
@@ -1007,7 +931,8 @@
       "status": "ativa",
       "membros": [
         2,
-        4
+        3,
+        1
       ],
       "curtidas": 0,
       "comentarios": [
@@ -1018,7 +943,18 @@
           "autorNome": "Matheus Augusto",
           "autorFoto": "assets/img/AvatarScrollMaster.jpg",
           "data": "2025-05-31T02:56:45.683Z",
-          "parentId": null
+          "parentId": null,
+          "respostas": [
+            {
+              "id": 1748997544116,
+              "texto": "sdfg",
+              "autorId": 4,
+              "autorNome": "kauan gomes marques",
+              "autorFoto": "assets/img/AvatarKauan.jpg",
+              "data": "2025-06-04T00:39:04.116Z",
+              "parentId": "1748660205683"
+            }
+          ]
         },
         {
           "id": 1748804315951,

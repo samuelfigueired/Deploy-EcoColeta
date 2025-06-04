@@ -145,36 +145,53 @@ function renderComunidade(comunidade, participando) {
     btn.classList.toggle("participando", participando);
 }
 
+// Busca usuário por ID (imagem atualizada)
+async function buscarUsuarioPorId(id) {
+    const res = await fetch(`${API_BASE_URL}/usuarios/${id}`);
+    if (!res.ok) return null;
+    return res.json();
+}
+
 // Renderiza comentários aninhados
-function renderComentarios(comentarios, usuario, comunidadeId, nivel = 0) {
+async function renderComentarios(comentarios, usuario, comunidadeId, nivel = 0, participando = false) {
     const list = nivel === 0 ? document.getElementById("comentarios-list") : document.createElement("div");
     if (nivel === 0) list.innerHTML = "";
     if (!comentarios.length && nivel === 0) {
         list.innerHTML = '<div class="comentario vazio">Nenhum comentário ainda.</div>';
         return;
     }
-    comentarios.forEach(c => {
+    for (const c of comentarios) {
         const podeExcluir = usuario && c.autorId === usuario.id;
+        // Busca imagem atualizada do autor
+        let autorFoto = c.autorFoto;
+        let autorNome = c.autorNome;
+        try {
+            const autor = await buscarUsuarioPorId(c.autorId);
+            if (autor) {
+                autorFoto = autor.imagem || autor.foto || autorFoto;
+                autorNome = autor.nome || autorNome;
+            }
+        } catch {}
         const comentarioDiv = document.createElement("div");
         comentarioDiv.className = "comentario" + (nivel > 0 ? " comentario-resposta" : "");
         comentarioDiv.innerHTML = `
             <div class="comentario-autor">
-                <img src="${c.autorFoto}" alt="${c.autorNome}" style="width:28px;height:28px;border-radius:50%;margin-right:8px;vertical-align:middle;"> ${c.autorNome}
+                <img src="${autorFoto}" alt="${autorNome}" style="width:28px;height:28px;border-radius:50%;margin-right:8px;vertical-align:middle;"> ${autorNome}
             </div>
             <div class="comentario-texto">${c.texto}</div>
             <div class="comentario-footer">
                 <span>${new Date(c.data).toLocaleString('pt-BR')}</span>
-                <button class="btn-responder-comentario" data-id="${c.id}">Responder</button>
+                ${participando ? `<button class="btn-responder-comentario" data-id="${c.id}">Responder</button>` : ""}
                 ${podeExcluir ? `<button class="btn-excluir-comentario" data-id="${c.id}">Excluir</button>` : ""}
             </div>
         `;
         // Respostas aninhadas
         if (c.respostas && c.respostas.length) {
-            const respostasDiv = renderComentarios(c.respostas, usuario, comunidadeId, nivel + 1);
+            const respostasDiv = await renderComentarios(c.respostas, usuario, comunidadeId, nivel + 1, participando);
             comentarioDiv.appendChild(respostasDiv);
         }
         list.appendChild(comentarioDiv);
-    });
+    }
     if (nivel === 0) {
         // Handler de exclusão
         list.querySelectorAll(".btn-excluir-comentario").forEach(btn => {
@@ -185,30 +202,32 @@ function renderComentarios(comentarios, usuario, comunidadeId, nivel = 0) {
             };
         });
         // Handler de resposta
-        list.querySelectorAll(".btn-responder-comentario").forEach(btn => {
-            btn.onclick = function () {
-                const parentDiv = btn.closest('.comentario');
-                let form = parentDiv.querySelector('.form-resposta');
-                if (form) { form.remove(); return; }
-                form = document.createElement('div');
-                form.className = 'form-resposta';
-                form.innerHTML = `
-                    <textarea class="input-resposta" placeholder="Responder..."></textarea>
-                    <button class="btn-enviar-resposta">Enviar</button>
-                `;
-                parentDiv.appendChild(form);
-                const textarea = form.querySelector('.input-resposta');
-                const enviarBtn = form.querySelector('.btn-enviar-resposta');
-                enviarBtn.onclick = async () => {
-                    const texto = textarea.value.trim();
-                    if (!texto) return;
-                    enviarBtn.disabled = true;
-                    const usuario = getUsuarioLogado();
-                    await postarComentario(comunidadeId, texto, usuario, btn.dataset.id);
-                    carregarComentarios();
+        if (participando) {
+            list.querySelectorAll(".btn-responder-comentario").forEach(btn => {
+                btn.onclick = function () {
+                    const parentDiv = btn.closest('.comentario');
+                    let form = parentDiv.querySelector('.form-resposta');
+                    if (form) { form.remove(); return; }
+                    form = document.createElement('div');
+                    form.className = 'form-resposta';
+                    form.innerHTML = `
+                        <textarea class="input-resposta" placeholder="Responder..."></textarea>
+                        <button class="btn-enviar-resposta">Enviar</button>
+                    `;
+                    parentDiv.appendChild(form);
+                    const textarea = form.querySelector('.input-resposta');
+                    const enviarBtn = form.querySelector('.btn-enviar-resposta');
+                    enviarBtn.onclick = async () => {
+                        const texto = textarea.value.trim();
+                        if (!texto) return;
+                        enviarBtn.disabled = true;
+                        const usuario = getUsuarioLogado();
+                        await postarComentario(comunidadeId, texto, usuario, btn.dataset.id);
+                        carregarComentarios();
+                    };
                 };
-            };
-        });
+            });
+        }
     }
     return list;
 }
@@ -217,8 +236,10 @@ function renderComentarios(comentarios, usuario, comunidadeId, nivel = 0) {
 async function carregarComentarios() {
     const comunidadeId = getQueryParam("id");
     const usuario = getUsuarioLogado();
+    const comunidade = await fetchComunidade(comunidadeId);
+    const participando = usuarioParticipa(comunidade, usuario);
     const comentarios = await fetchComentarios(comunidadeId);
-    renderComentarios(comentarios, usuario, comunidadeId);
+    await renderComentarios(comentarios, usuario, comunidadeId, 0, participando);
 }
 
 // Handler de comentário
@@ -287,6 +308,7 @@ function setupParticiparBtn(comunidade, participando) {
             feedback.style.color = novoParticipando ? "#080" : "#c00";
             setupParticiparBtn(comunidade, novoParticipando);
             setupComentarioForm(comunidade.id, novoParticipando);
+            await carregarComentarios(); // Atualiza comentários para refletir o novo status de participação
         } catch (e) {
             feedback.textContent = "Erro ao atualizar participação. Tente novamente.";
             feedback.style.color = "#c00";
