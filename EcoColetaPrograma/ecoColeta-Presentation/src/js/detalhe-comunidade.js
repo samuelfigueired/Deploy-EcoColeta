@@ -102,15 +102,26 @@ function usuarioParticipa(comunidade, usuario) {
     return comunidade.membros.includes(usuario.id);
 }
 
-// Participar/Sair da comunidade (usando array de membros e nova rota PATCH)
+// Participar/Sair da comunidade (usando array de membros e PATCH padrão do json-server)
 async function toggleParticipacao(comunidade, usuario, participando) {
     if (!usuario) return;
-    const action = participando ? 'sair' : 'entrar';
-    await fetch(`${API_BASE_URL}/comunidades/${comunidade.id}/membros`, {
+    // Atualiza membros localmente
+    let membros = Array.isArray(comunidade.membros) ? [...comunidade.membros] : [];
+    if (participando) {
+        // Sair: remove usuário
+        membros = membros.filter(id => id !== usuario.id);
+    } else {
+        // Entrar: adiciona usuário
+        if (!membros.includes(usuario.id)) membros.push(usuario.id);
+    }
+    // PATCH padrão para json-server
+    await fetch(`${API_BASE_URL}/comunidades/${comunidade.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: usuario.id, action })
+        body: JSON.stringify({ membros })
     });
+    // Atualiza objeto local
+    comunidade.membros = membros;
 }
 
 // Renderiza dados da comunidade
@@ -236,11 +247,80 @@ function setupComentarioForm(comunidadeId, participando) {
 function setupParticiparBtn(comunidade, participando) {
     const usuario = getUsuarioLogado();
     const btn = document.getElementById("btn-participar");
+    const membrosCount = document.getElementById("comunidade-membros-count");
+    let feedback = document.getElementById("participacao-feedback");
+    if (!feedback) {
+        feedback = document.createElement("div");
+        feedback.id = "participacao-feedback";
+        feedback.style.marginTop = "10px";
+        btn.parentNode.insertBefore(feedback, btn.nextSibling);
+    }
+    // Se o usuário for o autor, exibe apenas o botão de exclusão
+    if (usuario && comunidade.autor && usuario.id === comunidade.autor.id) {
+        btn.style.display = "none";
+        mostrarBotaoExcluirComunidade(comunidade);
+        return;
+    } else {
+        removerBotaoExcluirComunidade();
+        btn.style.display = "";
+    }
     btn.onclick = async () => {
+        if (!usuario || !usuario.id) {
+            feedback.textContent = "Você precisa estar logado para participar da comunidade.";
+            feedback.style.color = "#c00";
+            btn.disabled = false;
+            return;
+        }
         btn.disabled = true;
-        await toggleParticipacao(comunidade, usuario, participando);
-        location.reload();
+        try {
+            await toggleParticipacao(comunidade, usuario, participando);
+            if (participando) {
+                comunidade.membros = comunidade.membros.filter(id => id !== usuario.id);
+            } else {
+                if (!comunidade.membros.includes(usuario.id)) comunidade.membros.push(usuario.id);
+            }
+            const novoParticipando = !participando;
+            btn.textContent = novoParticipando ? "Sair da Comunidade" : "Participar";
+            btn.classList.toggle("participando", novoParticipando);
+            membrosCount.textContent = comunidade.membros.length;
+            feedback.textContent = novoParticipando ? "Você agora é membro da comunidade!" : "Você saiu da comunidade.";
+            feedback.style.color = novoParticipando ? "#080" : "#c00";
+            setupParticiparBtn(comunidade, novoParticipando);
+            setupComentarioForm(comunidade.id, novoParticipando);
+        } catch (e) {
+            feedback.textContent = "Erro ao atualizar participação. Tente novamente.";
+            feedback.style.color = "#c00";
+            console.error(e);
+        }
+        btn.disabled = false;
     };
+}
+
+// Exibe botão de exclusão apenas para o dono
+function mostrarBotaoExcluirComunidade(comunidade) {
+    let btnExcluir = document.getElementById("btn-excluir-comunidade");
+    const btnParticipar = document.getElementById("btn-participar");
+    if (!btnExcluir && btnParticipar) {
+        btnExcluir = document.createElement("button");
+        btnExcluir.id = "btn-excluir-comunidade";
+        btnExcluir.textContent = "Excluir Comunidade";
+        btnExcluir.className = "btn btn-danger btn-participar participando";
+        btnExcluir.style.marginTop = "16px";
+        btnParticipar.parentNode.insertBefore(btnExcluir, btnParticipar.nextSibling);
+    }
+    if (btnExcluir) {
+        btnExcluir.onclick = async () => {
+            if (confirm("Tem certeza que deseja excluir esta comunidade? Esta ação não pode ser desfeita.")) {
+                await fetch(`${API_BASE_URL}/comunidades/${comunidade.id}`, { method: "DELETE" });
+                alert("Comunidade excluída com sucesso!");
+                window.location.href = "comunidade.html";
+            }
+        };
+    }
+}
+function removerBotaoExcluirComunidade() {
+    const btnExcluir = document.getElementById("btn-excluir-comunidade");
+    if (btnExcluir) btnExcluir.remove();
 }
 
 // Inicialização

@@ -12,7 +12,7 @@
       "tipoUsuario": "doador",
       "ecopontos": 100000000000,
       "historicoEcopontos": 0,
-            "imagem": "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/0f6c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c"
+      "imagem": "https://cdn.builder.io/api/v1/image/assets/4c6f6ec200514327a30a7409483092ac/0f6c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c"
     },
     {
       "nome": "Matheus Augusto",
@@ -56,10 +56,10 @@
       "cidade": "Sarzedo",
       "estado": "MG",
       "tipoUsuario": "doador",
-      "ecopontos": 0,
+      "ecopontos": 700,
       "historicoEcopontos": 0,
       "senha": "ScrumMaster@123",
-      "imagem": "assets/img/AvatarScrollMaster.jpg",
+      "imagem": "assets/img/AvatarKauan.jpg",
       "emailVerificado": false,
       "id": 4
     },
@@ -72,7 +72,7 @@
       "cidade": "Betim",
       "estado": "MG",
       "tipoUsuario": "doador",
-      "ecopontos": 0, 
+      "ecopontos": 0,
       "historicoEcopontos": 0,
       "senha": "Samuca02.",
       "imagem": "assets/img/AvatarScrollMaster.jpg",
@@ -198,7 +198,8 @@
       ],
       "contato": "(31) 3512-3000",
       "coletaDomiciliar": true,
-      "criadoPor": 2,      "agenda": [
+      "criadoPor": 2,
+      "agenda": [
         {
           "idAgenda": "agenda-ecoponto1-001",
           "idUsuarioAgendamento": 2,
@@ -285,7 +286,10 @@
           "id": "hist_001",
           "coletorId": 7,
           "dataColeta": "2025-05-15T10:00:00Z",
-          "materiaisColetados": ["eletronicos", "baterias"],
+          "materiaisColetados": [
+            "eletronicos",
+            "baterias"
+          ],
           "quantidadeKg": 45,
           "status": "concluido",
           "observacoes": "Coleta de equipamentos eletrônicos antigos"
@@ -294,7 +298,11 @@
           "id": "hist_002",
           "coletorId": 6,
           "dataColeta": "2025-05-10T14:00:00Z",
-          "materiaisColetados": ["plastico", "papel", "metal"],
+          "materiaisColetados": [
+            "plastico",
+            "papel",
+            "metal"
+          ],
           "quantidadeKg": 25,
           "status": "concluido",
           "observacoes": "Coleta domiciliar regular"
@@ -303,7 +311,9 @@
           "id": "hist_003",
           "coletorId": 7,
           "dataColeta": "2025-05-05T16:00:00Z",
-          "materiaisColetados": ["eletronicos"],
+          "materiaisColetados": [
+            "eletronicos"
+          ],
           "quantidadeKg": 30,
           "status": "concluido",
           "observacoes": "Coleta de computadores e periféricos"
@@ -321,7 +331,8 @@
         "plastico",
         "papel",
         "metal"
-      ],      "contato": "(31) 3512-3001",
+      ],
+      "contato": "(31) 3512-3001",
       "coletaDomiciliar": false,
       "criadoPor": 7,
       "agenda": [
@@ -362,7 +373,10 @@
           "id": "hist_alt_001",
           "coletorId": 6,
           "dataColeta": "2025-05-12T09:00:00Z",
-          "materiaisColetados": ["plastico", "papel"],
+          "materiaisColetados": [
+            "plastico",
+            "papel"
+          ],
           "quantidadeKg": 20,
           "status": "concluido",
           "observacoes": "Coleta regular de materiais recicláveis"
@@ -992,7 +1006,8 @@
       "dataCriacao": "2025-05-31T02:54:57.719Z",
       "status": "ativa",
       "membros": [
-        2
+        2,
+        4
       ],
       "curtidas": 0,
       "comentarios": [
@@ -1021,7 +1036,18 @@
               "autorNome": "Matheus Augusto",
               "autorFoto": "assets/img/AvatarScrollMaster.jpg",
               "data": "2025-06-01T18:58:42.383Z",
-              "parentId": "1748804315951"
+              "parentId": "1748804315951",
+              "respostas": [
+                {
+                  "id": 1748996445085,
+                  "texto": "adertyukl",
+                  "autorId": 4,
+                  "autorNome": "kauan gomes marques",
+                  "autorFoto": "assets/img/AvatarScrollMaster.jpg",
+                  "data": "2025-06-04T00:20:45.085Z",
+                  "parentId": "1748804322383"
+                }
+              ]
             }
           ]
         }

@@ -29,6 +29,7 @@ const defaultAvatars = [
   "assets/img/AvatarScrollMaster.jpg",
   "assets/img/avatarCaique.jpg",
   "assets/img/AvatarThiagão.jpg",
+  "assets/img/AvatarKauan.jpg"
 ];
 
 // Função para mostrar feedback visual
