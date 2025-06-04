@@ -932,7 +932,8 @@
       "membros": [
         2,
         3,
-        1
+        1,
+        4
       ],
       "curtidas": 0,
       "comentarios": [
@@ -1072,6 +1073,47 @@
         "comunidade"
       ],
       "id": 5
+    }
+  ],
+  "eventos": [
+    {
+      "titulo": "qwertyuytrew",
+      "descricao": "wqedefdfge4r5tfrftgvbftgdrftgdr",
+      "data": "2025-06-18",
+      "hora": "15:11",
+      "imagem": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAABrCAYAAAAfIuJkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dIxAYAwEMDAp/4FA0u71EOWuyUG8rzfvwdC6xYyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJDZzACdlBMD+sbJEAAAAAElFTkSuQmCC",
+      "autor": {
+        "nome": "kauan gomes marques",
+        "email": "kayangomes849@gmail.com",
+        "foto": "assets/img/AvatarKauan.jpg"
+      },
+      "id": 1
+    },
+    {
+      "titulo": "Evento 2",
+      "descricao": "Esse é o segundo teste de eventos",
+      "data": "2025-07-08",
+      "hora": "20:00",
+      "imagem": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAABrCAYAAAAfIuJkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dIxAYAwEMDAp/4FA0u71EOWuyUG8rzfvwdC6xYyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJDZzACdlBMD+sbJEAAAAAElFTkSuQmCC",
+      "autor": {
+        "nome": "kauan gomes marques",
+        "email": "kayangomes849@gmail.com",
+        "foto": "assets/img/AvatarKauan.jpg"
+      },
+      "id": 2
+    },
+    {
+      "titulo": "Teste 3",
+      "descricao": "teste de notificação",
+      "data": "2025-06-04",
+      "hora": "14:25",
+      "imagem": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAABrCAYAAAAfIuJkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dIxAYAwEMDAp/4FA0u71EOWuyUG8rzfvwdC6xYyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJDZzACdlBMD+sbJEAAAAAElFTkSuQmCC",
+      "autor": {
+        "nome": "kauan gomes marques",
+        "email": "kayangomes849@gmail.com",
+        "foto": "assets/img/AvatarKauan.jpg"
+      },
+      "id": 3
     }
   ],
   "relatorios": [
