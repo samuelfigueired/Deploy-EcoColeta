@@ -994,6 +994,84 @@
         "comunidade"
       ],
       "id": 2
+    },
+    {
+      "nome": "aswdergthj",
+      "descricao": "qwertyukliuytrgdeswartyuilkjhg",
+      "tipo": "saude",
+      "regras": "swdertyujkluytrewrtyukjjhre",
+      "banner": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAABrCAYAAAAfIuJkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dIxAYAwEMDAp/4FA0u71EOWuyUG8rzfvwdC6xYyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJDZzACdlBMD+sbJEAAAAAElFTkSuQmCC",
+      "autor": {
+        "id": 4,
+        "nome": "kauan gomes marques",
+        "email": "kayangomes849@gmail.com",
+        "foto": "assets/img/AvatarKauan.jpg"
+      },
+      "dataCriacao": "2025-06-04T01:19:34.309Z",
+      "status": "ativa",
+      "membros": [
+        4
+      ],
+      "curtidas": 0,
+      "comentarios": [],
+      "visualizacoes": 0,
+      "tags": [
+        "saude",
+        "comunidade"
+      ],
+      "id": 3
+    },
+    {
+      "nome": "Samuelzinho",
+      "descricao": "qwertyukliuytrgdeswartyuilkjhgqwertyukliuytrgdeswartyuilkjhgqwertyukliuytrgdeswartyuilkjhg",
+      "tipo": "tecnologia",
+      "regras": "qwertyukliuytrgdeswartyuilkjhgqwertyukliuytrgdeswartyuilkjhgqwertyukliuytrgdeswartyuilkjhg",
+      "banner": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAABrCAYAAAAfIuJkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dIxAYAwEMDAp/4FA0u71EOWuyUG8rzfvwdC6xYyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJDZzACdlBMD+sbJEAAAAAElFTkSuQmCC",
+      "autor": {
+        "id": 4,
+        "nome": "kauan gomes marques",
+        "email": "kayangomes849@gmail.com",
+        "foto": "assets/img/AvatarKauan.jpg"
+      },
+      "dataCriacao": "2025-06-04T01:21:05.489Z",
+      "status": "ativa",
+      "membros": [
+        4
+      ],
+      "curtidas": 0,
+      "comentarios": [],
+      "visualizacoes": 0,
+      "tags": [
+        "tecnologia",
+        "comunidade"
+      ],
+      "id": 4
+    },
+    {
+      "nome": "Arthuzinho Rei Delas",
+      "descricao": "qwertyukliuytrgdeswartyuilkjhgqwertyukliuytrgdeswartyuilkjhg",
+      "tipo": "cultura",
+      "regras": "qwertyukliuytrgdeswartyuilkjhg",
+      "banner": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKEAAABrCAYAAAAfIuJkAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEtSURBVHhe7dIxAYAwEMDAp/4FA0u71EOWuyUG8rzfvwdC6xYyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJGdCciYkZ0JyJiRnQnImJDZzACdlBMD+sbJEAAAAAElFTkSuQmCC",
+      "autor": {
+        "id": 4,
+        "nome": "kauan gomes marques",
+        "email": "kayangomes849@gmail.com",
+        "foto": "assets/img/AvatarKauan.jpg"
+      },
+      "dataCriacao": "2025-06-04T01:21:27.927Z",
+      "status": "ativa",
+      "membros": [
+        4
+      ],
+      "curtidas": 0,
+      "comentarios": [],
+      "visualizacoes": 0,
+      "tags": [
+        "cultura",
+        "comunidade"
+      ],
+      "id": 5
     }
   ],
   "relatorios": [
