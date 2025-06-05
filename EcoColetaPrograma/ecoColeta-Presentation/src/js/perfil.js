@@ -27,8 +27,8 @@ const defaultAvatars = [
   "assets/img/avatarCaique.jpg",
   "assets/img/AvatarThiagão.jpg",
   "assets/img/AvatarScrollMaster.jpg",
-  "assets/img/avatarCaique.jpg",
-  "assets/img/AvatarThiagão.jpg",
+  "assets/img/Avatarfenomeno.jpg",
+  "assets/img/AvatarMatheus.jpg",
   "assets/img/AvatarKauan.jpg"
 ];
 
