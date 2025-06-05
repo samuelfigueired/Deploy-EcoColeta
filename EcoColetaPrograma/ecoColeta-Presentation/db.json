@@ -179,6 +179,54 @@
       "dataCadastro": "2025-05-31T03:12:10.381Z",
       "id": 10,
       "ecopontoId": 32
+    },
+    {
+      "nome": "Artur ferreira silva",
+      "email": "artuzin@gmail.com",
+      "telefone": "(31) 99835-9590",
+      "cep": "32510-030",
+      "endereco": "Avenida Duque de Caxias",
+      "cidade": "Igarapé",
+      "estado": "MG",
+      "tipoUsuario": "coletor",
+      "razaoSocial": "por que eu quero",
+      "cnpj": "18.272.871/8728-28",
+      "areaAtuacao": "industrial",
+      "coletaDomiciliar": "nao",
+      "horarioColeta": "09 as 10",
+      "materiaisColeta": [
+        "eletronicos"
+      ],
+      "senha": "123Artur",
+      "imagem": "",
+      "emailVerificado": false,
+      "dataCadastro": "2025-06-05T00:09:27.625Z",
+      "id": 11,
+      "ecopontoId": 32
+    },
+    {
+      "nome": "kauan gomes marques",
+      "email": "kayangomes8439@gmail.com",
+      "telefone": "(31) 97170-7010",
+      "cep": "32450-000",
+      "endereco": "Alameda Beija Flor 113",
+      "cidade": "Sarzedo",
+      "estado": "MG",
+      "tipoUsuario": "coletor",
+      "razaoSocial": "por que eu quero",
+      "cnpj": "09.876.543/2345-67",
+      "areaAtuacao": "comercial",
+      "coletaDomiciliar": "sim",
+      "horarioColeta": "09 as 10",
+      "materiaisColeta": [
+        "metal"
+      ],
+      "senha": "Sprint222",
+      "imagem": "",
+      "emailVerificado": false,
+      "dataCadastro": "2025-06-05T00:14:36.995Z",
+      "id": 12,
+      "ecopontoId": 33
     }
   ],
   "pontosDeColeta": [
@@ -890,6 +938,38 @@
       "coletorId": 7,
       "status": "ativo",
       "id": 31
+    },
+    {
+      "nome": "Ecoponto por que eu quero",
+      "lat": -20.0666078,
+      "lng": -44.301954,
+      "endereco": "Avenida Duque de Caxias, Igarapé - MG",
+      "horario": "09 as 10",
+      "materiaisAceitos": [
+        "eletronicos"
+      ],
+      "contato": "(31) 99835-9590",
+      "coletaDomiciliar": false,
+      "agenda": [],
+      "coletorId": 11,
+      "status": "ativo",
+      "id": 32
+    },
+    {
+      "nome": "Ecoponto por que eu quero",
+      "lat": -20.0396059,
+      "lng": -44.1215759,
+      "endereco": "Alameda Beija Flor 113, Sarzedo - MG",
+      "horario": "09 as 10",
+      "materiaisAceitos": [
+        "metal"
+      ],
+      "contato": "(31) 97170-7010",
+      "coletaDomiciliar": true,
+      "agenda": [],
+      "coletorId": 12,
+      "status": "ativo",
+      "id": 33
     }
   ],
   "donations": [
