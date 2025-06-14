@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Fix CSS and JS paths",
+			"type": "shell",
+			"command": "powershell.exe",
+			"args": [
+				"-Command",
+				"Get-ChildItem -Path ./public/*.html -Recurse | Select-Object FullName"
+			],
+			"group": "build",
+			"problemMatcher": []
+		}
+	]
+}
